@@ -35,7 +35,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	Array ( 'Project' => 'index,show,new,create,delete,edit,update',
 	        'Timeset' => 'index,new,create' ),
 	Array ( 'Project' => 'index,show,new,create,delete,edit,update',
-	      'Timeset' => 'index,new,create' )
+	        'Timeset' => 'index,new,create' )
 );
 
 ?>
