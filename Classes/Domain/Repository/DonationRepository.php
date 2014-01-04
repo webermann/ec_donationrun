@@ -28,38 +28,22 @@
 
 	/**
 	 *
-	 * The class for the user role domain model. The user role is a value object and is
-	 * characterized by its name attribute.
+	 * The donation repository class. Provides methods for accessing the donation table.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
-	 * @subpackage Domain_Model
-	 * @version    $Id: Role.php 7 2010-02-22 12:10:02Z helmich $
+	 * @subpackage Domain_Repository
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
-	 * @entity
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Model_Role Extends Tx_Extbase_DomainObject_AbstractValueObject {
-
-		/**
-		 *
-		 * The role name
-		 * @var string
-		 *
-		 */
-	Protected $name;
+Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_Persistence_Repository {
 
 
-	
-		/**
-		 *
-		 * Gets the role name
-		 * @return string The role name
-		 *
-		 */
-	Public Function getName() { Return $this->name; }
+
+
 
 }
 

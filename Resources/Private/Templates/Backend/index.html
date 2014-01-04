@@ -11,8 +11,12 @@
 		<f:be.pageInfo /> - 
 		<f:be.pagePath />
 	</div>
-
-	<h1>Projekte</h1>
-
-	<f:be.tableList tableName="tx_ecdonationrun_domain_model_project" fieldList="{0: 'name', 1: 'parent'}" storagePid="16" levels="2" recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" alternateBackgroundColors="true" />
+	
+	<h1>Donation Run</h1>
+	
+	<h2>Registration</h2>
+	<f:be.tableList tableName="tx_ecdonationrun_domain_model_registration" fieldList="{0: 'name', 1: 'parent'}" storagePid="16" levels="2" recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" alternateBackgroundColors="true" />
+	
+	<h2>Donation</h2>
+	<f:be.tableList tableName="tx_ecdonationrun_domain_model_donation" fieldList="{0: 'name', 1: 'parent'}" storagePid="16" levels="2" recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" alternateBackgroundColors="true" />
 </f:be.container>

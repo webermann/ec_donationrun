@@ -31,10 +31,10 @@
 	 * Controller class for the backend module. Provides actions for listing all projects
 	 * in the TYPO3 backend.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Controller
-	 * @version    $Id: BackendController.php 17 2010-03-03 09:26:45Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
@@ -42,35 +42,25 @@
 
 Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Controller_ActionController {
 
-
-
-
-
 		/*
 		 * ATTRIBUTES
 		 */
 
-
-
-
-
 		 /**
-		  * A project repository.
-		  * @var Tx_EcDonationrun_Domain_Repository_ProjectRepository
+		  * A registration repository.
+		  * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
 		  */
-	Protected $projectRepository;
-
-
-
-
+	Protected $registrationRepository;
+	
+		 /**
+		  * A donatoin repository.
+		  * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
+		  */
+	Protected $donatoinRepository;
 
 		/*
 		 * ACTION METHODS
 		 */
-
-
-
-
 
 		/**
 		 *
@@ -82,21 +72,23 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 		 */
 
 	Protected Function initializeAction() {
-		$this->projectRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_ProjectRepository');
+		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
+		$this->donatoinRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 	}
 
 
 
 		/**
 		 *
-		 * The index action. Displays a list of all available projects.
+		 * The index action. Displays a list of all available registrations.
 		 *
 		 * @return void
 		 *
 		 */
 
 	Public Function indexAction() {
-		$this->view->assign('projects', $this->projectRepository->findAll());
+		$this->view->assign('registrations', $this->registrationRepository->findAll());
+		$this->view->assign('donation', $this->donatoinRepository->findAll());
 	}
 
 }

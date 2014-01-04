@@ -31,10 +31,10 @@
 	 * A ViewHelper for formatting time amounts. In dependence of the time amount, the
 	 * time amount if formatted with a different unit (seconds, minutes, hours, days).
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage ViewHelpers
-	 * @version    $Id: TimeFormatViewHelper.php 8 2010-02-22 12:11:02Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
@@ -50,7 +50,7 @@ Class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper Extends Tx_Fluid_Core_Vi
 		 *
 		 * @param  int    $amount The time amount in seconds
 		 * @return string         The formatted output
-		 * 
+		 *
 		 */
 
 	Public Function render($amount) {

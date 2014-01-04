@@ -28,14 +28,12 @@
 
 If(!defined('TYPO3_MODE')) Die ('Access denied.');
 
-require_once(t3lib_extMgm::extPath('ec_donationrun') . 'Classes/ViewHelpers/dBug.php');
-
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY, 'Pi1',
-	Array ( 'Project' => 'index,show,new,create,delete,edit,update',
-	        'Timeset' => 'index,new,create' ),
-	Array ( 'Project' => 'index,show,new,create,delete,edit,update',
-	        'Timeset' => 'index,new,create' )
+	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
+	        'Donation' => 'index,new,create' ),
+	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
+	        'Donation' => 'index,new,create' )
 );
 
 ?>

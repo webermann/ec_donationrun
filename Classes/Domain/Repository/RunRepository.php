@@ -28,42 +28,17 @@
 
 	/**
 	 *
-	 * The project repository class. Provides methods for accessing the project table.
+	 * The run repository class. Provides methods for accessing the run table.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Domain_Repository
-	 * @version    $Id: ProjectRepository.php 28 2010-09-20 12:26:13Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_ProjectRepository Extends Tx_Extbase_Persistence_Repository {
-
-
-
-		/**
-		 *
-		 * Finds all projects for an index view. The parent project can be specified
-		 * using the $parent parameter (NULL by default). All projects are ordered by the
-		 * project name in ascending order.
-		 *
-		 * @param  Tx_EcDonationrun_Domain_Model_Project $parent The parent project
-		 * @return Array<Tx_EcDonationrun_Domain_Model_Project>  The result list.
-		 *
-		 */
-
-	Public Function findForIndexView ( Tx_EcDonationrun_Domain_Model_Project $parent=NULL ) {
-
-		$query = $this->createQuery();
-		Return $query
-			->matching($query->equals('project', $parent ? $parent : Array(0,NULL) ))
-			->setOrderings(Array('name' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
-			->execute();
-
-	}
-
-}
+Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persistence_Repository { }
 
 ?>

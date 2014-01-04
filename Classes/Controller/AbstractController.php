@@ -35,7 +35,7 @@
 	 * @author     Hauke Webermann <hauke@webermann.net> 
 	 * @package    EcDonationrun
 	 * @subpackage Controller
-	 * @version    $Id: AbstractController.php 27 2010-09-15 07:58:06Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *

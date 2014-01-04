@@ -26,7 +26,7 @@
 
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-Tx_Extbase_Utility_Extension::registerPlugin ( $_EXTKEY, 'Pi1', ' A timetracking extension' );
+Tx_Extbase_Utility_Extension::registerPlugin ( $_EXTKEY, 'Pi1', 'Donation Run Extension' );
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Donation Run');
 
 If ( TYPO3_MODE === 'BE' )
@@ -36,16 +36,37 @@ If ( TYPO3_MODE === 'BE' )
 	                                            '',
 	                                            Array ( 'Backend' => 'index' ),
 	                                            Array ( 'access' => 'user,group',
-	                                                    'icon'   => 'EXT:mittwald_timetrack/ext_icon.gif',
+	                                                    'icon'   => 'EXT:ec_donationrun/ext_icon.gif',
 	                                                    'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml' ) );
 
-t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_project',
-                                          'EXT:mittwald_timetrack/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_project.xml' );
-t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_project');
-$TCA['tx_ecdonationrun_domain_model_project'] = array (
+t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_run',
+                                          'EXT:ec_donationrun/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_run.xml' );
+t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_run' );
+$TCA['tx_ecdonationrun_domain_model_run'] = array (
 	'ctrl' => array (
-		'title'                    => 'LLL:EXT:mittwald_timetrack/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_project',
+		'title'                    => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_run',
 		'label'                    => 'name',
+		'tstamp'                   => 'tstamp',
+		'crdate'                   => 'crdate',
+		'versioningWS'             => 2,
+		'versioning_followPages'   => TRUE,
+		'origUid'                  => 't3_origuid',
+		'delete'                   => 'deleted',
+		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
+		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Run.php',
+		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_run.gif'
+	)
+);
+	                                            
+	                                            
+t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_registration',
+                                          'EXT:ec_donationrun/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_registration.xml' );
+t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_registration');
+$TCA['tx_ecdonationrun_domain_model_registration'] = array (
+	'ctrl' => array (
+		'title'                    => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_registration',
+		'label'                    => 'run',
+		'label_userFunc'           => 'Tx_EcDonationrun_Domain_Model_Registration->getLabel',
 		'tstamp'                   => 'tstamp',
 		'crdate'                   => 'crdate',
 		'versioningWS'             => 2,
@@ -56,60 +77,20 @@ $TCA['tx_ecdonationrun_domain_model_project'] = array (
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
 		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
-		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Project.php',
-		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_project.gif'
-	)
-);
-
-t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_role',
-                                          'EXT:mittwald_timetrack/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_role.xml');
-t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_role' );
-$TCA['tx_ecdonationrun_domain_model_role'] = array (
-	'ctrl' => array (
-		'title'                    => 'LLL:EXT:mittwald_timetrack/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_role',
-		'label'                    => 'name',
-		'tstamp'                   => 'tstamp',
-		'crdate'                   => 'crdate',
-		'versioningWS'             => 2,
-		'versioning_followPages'   => TRUE,
-		'origUid'                  => 't3_origuid',
-		'languageField'            => 'sys_language_uid',
-		'transOrigPointerField'    => 'l18n_parent',
-		'transOrigDiffSourceField' => 'l18n_diffsource',
-		'delete'                   => 'deleted',
-		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
-		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Role.php',
-		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_role.gif'
+		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Registration.php',
+		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_registration.gif'
 	)
 );
 
 
-t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_assignment',
-                                          'EXT:mittwald_timetrack/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_assignment.xml' );
-t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_assignment' );
-$TCA['tx_ecdonationrun_domain_model_assignment'] = array (
-	'ctrl' => array (
-		'title'                    => 'LLL:EXT:mittwald_timetrack/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_assignment',
-		'label'                    => 'role',
-		'tstamp'                   => 'tstamp',
-		'crdate'                   => 'crdate',
-		'versioningWS'             => 2,
-		'versioning_followPages'   => TRUE,
-		'origUid'                  => 't3_origuid',
-		'delete'                   => 'deleted',
-		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
-		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Assignment.php',
-		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_assignment.gif'
-	)
-);
 
-t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_timeset',
-                                          'EXT:mittwald_timetrack/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_timeset.xml' );
-t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_timeset' );
-$TCA['tx_ecdonationrun_domain_model_timeset'] = array (
+t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_donation',
+                                          'EXT:ec_donationrun/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_donation.xml' );
+t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_donation' );
+$TCA['tx_ecdonationrun_domain_model_donation'] = array (
 	'ctrl' => array (
-		'title'                    => 'LLL:EXT:mittwald_timetrack/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_timeset',
-		'label'                    => 'tx_ecdonationrun_starttime',
+		'title'                    => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation',
+		'label'                    => 'registration',
 		'tstamp'                   => 'tstamp',
 		'crdate'                   => 'crdate',
 		'versioningWS'             => 2,
@@ -117,8 +98,8 @@ $TCA['tx_ecdonationrun_domain_model_timeset'] = array (
 		'origUid'                  => 't3_origuid',
 		'delete'                   => 'deleted',
 		'enablecolumns'            => array( 'disabled' => 'hidden' ),
-		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Timeset.php',
-		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_timeset.gif'
+		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Donation.php',
+		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_donation.gif'
 	)
 );
 

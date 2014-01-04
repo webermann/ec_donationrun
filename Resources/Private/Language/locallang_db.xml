@@ -6,21 +6,21 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_ecdonationrun_domain_model_project">Project</label>
-			<label index="tx_ecdonationrun_domain_model_project.name">Name</label>
-			<label index="tx_ecdonationrun_domain_model_project.start">Start</label>
-			<label index="tx_ecdonationrun_domain_model_project.end">End</label>
-			<label index="tx_ecdonationrun_domain_model_project.assignments">Assignments</label>
-			<label index="tx_ecdonationrun_domain_model_project.children">Children</label>
-			<label index="tx_ecdonationrun_domain_model_role">Role</label>
-			<label index="tx_ecdonationrun_domain_model_role.name">Name</label>
-			<label index="tx_ecdonationrun_domain_model_assignment">Assignment</label>
-			<label index="tx_ecdonationrun_domain_model_assignment.role">Role</label>
-			<label index="tx_ecdonationrun_domain_model_assignment.timesets">Timesets</label>
-			<label index="tx_ecdonationrun_domain_model_timeset">Timeset</label>
-			<label index="tx_ecdonationrun_domain_model_timeset.tx_ecdonationrun_starttime">Starttime</label>
-			<label index="tx_ecdonationrun_domain_model_timeset.stoptime">Stoptime</label>
-			<label index="tx_ecdonationrun_domain_model_timeset.comment">Comment</label>
+			<label index="tx_ecdonationrun_domain_model_run">Run</label>
+			<label index="tx_ecdonationrun_domain_model_run.user">User</label>
+			<label index="tx_ecdonationrun_domain_model_run.name">Name</label>
+			<label index="tx_ecdonationrun_domain_model_run.start">Start time</label>
+			<label index="tx_ecdonationrun_domain_model_run.distance">Distance</label>
+			<label index="tx_ecdonationrun_domain_model_registration">Registration</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Runner Number</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runnertime">Runner Time</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runner">End</label>
+			<label index="tx_ecdonationrun_domain_model_donation">Donation</label>
+			<label index="tx_ecdonationrun_domain_model_donation.user">User</label>
+			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Association Group</label>
+			<label index="tx_ecdonationrun_domain_model_donation.value">Donation Value</label>
+			<label index="tx_ecdonationrun_domain_model_donation.maxvalue">Donation max. Value</label>
+			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Is Paid</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -28,52 +28,40 @@
 
 	/**
 	 *
-	 * The timeset repository class. Provides methods for accessing the timeset table.
+	 * The timeset validator class. This class is a service class for validating timeset
+	 * domain objects.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
-	 * @subpackage Domain_Repository
-	 * @version    $Id: TimesetRepository.php 27 2010-09-15 07:58:06Z helmich $
+	 * @subpackage Domain_Validator
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_TimesetRepository Extends Tx_Extbase_Persistence_Repository {
+Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Validation_Validator_AbstractValidator {
 
 
 
 		/**
 		 *
-		 * Returns a container with all timesets for a specific project, ordered by their
-		 * start time. This method does NOT use Extbase's Query Object Model, but rather
-		 * a hardcoded SQL query. Althrough we lose DMBS portability by doing so, this is
-		 * a good example on how to use this method.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Project $project
-		 * @return Array<Tx_EcDonationrun_Domain_Model_Timeset>
+		 * Determines if a timeset object is valid.
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The timeset object that
+		 *                                                           is to be validated.
+		 * @return boolean TRUE, if the donation object is valid, otherwise FALSE.
 		 *
 		 */
+	
+	Public Function isValid($donation) {
 
-	Public Function getTimesetsForProject(Tx_EcDonationrun_Domain_Model_Project $project) {
+		If(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
+			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_Invalid', 'EcDonationrun'), 1265721022);
+		//If($donation->getStarttime() >= $donation->getStoptime())
+			//$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1265721025', 'EcDonationrun'), 1265721025);
 
-		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		$pidList = implode(', ', t3lib_div::intExplode(',', $extbaseFrameworkConfiguration['persistence']['storagePid']));
+		Return count($this->getErrors()) === 0;
 
-		$sql = "SELECT t.*
-		        FROM        tx_ecdonationrun_domain_model_timeset    t
-		               JOIN tx_ecdonationrun_domain_model_assignment a ON t.assignment = a.uid
-		               JOIN tx_ecdonationrun_domain_model_project    p ON a.project = p.uid
-		        WHERE      p.uid={$project->getUid()}
-				       AND p.deleted=0 AND p.pid IN ($pidList)
-				       AND a.deleted=0 AND a.pid IN ($pidList)
-				       AND t.deleted=0 AND t.pid IN ($pidList)
-				ORDER BY t.starttime DESC";
-
-		$query = $this->createQuery();
-		$query->statement($sql);
-		Return $query->execute();
-		
 	}
 
 }

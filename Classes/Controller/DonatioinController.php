@@ -28,49 +28,34 @@
 
 	/**
 	 *
-	 * Timeset controller class for the timetracking extension. This controller provides
+	 * Donation controller class for the timetracking extension. This controller provides
 	 * actiosn for creating new timesets.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Controller
-	 * @version    $Id: TimesetController.php 28 2010-09-20 12:26:13Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
 	 */
 
-Class Tx_EcDonationrun_Controller_TimesetController Extends Tx_EcDonationrun_Controller_AbstractController {
-
-
-
-
+Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Controller_AbstractController {
 
 		/*
 		 * ATTRIBUTES
 		 */
 
-
-
-
-
 		/**
-		 * A project repository instance
-		 * @var Tx_EcDonationrun_Domain_Repository_ProjectRepository
+		 * A registration repository instance
+		 * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
 		 */
-	Protected $projectRepository;
-
-
-
+	Protected $registrationRepository;
 
 
 		/*
 		 * ACTION METHODS
 		 */
-
-
-
-
 
 		/**
 		 *
@@ -80,7 +65,7 @@ Class Tx_EcDonationrun_Controller_TimesetController Extends Tx_EcDonationrun_Con
 		 */
 
 	Public Function initializeAction() {
-		$this->projectRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_ProjectRepository');
+		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 	}
 
 
@@ -88,17 +73,17 @@ Class Tx_EcDonationrun_Controller_TimesetController Extends Tx_EcDonationrun_Con
 		/**
 		 *
 		 * The index action. This method displays a list of all timesets for a specific
-		 * project.
+		 * registration.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Project $project The project for which the timesets are to be
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration for which the timesets are to be
 		 *                                                           displayed for.
 		 * @return void
 		 *
 		 */
-	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Project $project ) {
-		$timesetRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_TimesetRepository');
-		$this->view->assign('project' , $project)
-		           ->assign('timesets', $timesetRepository->getTimesetsForProject($project));
+	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration ) {
+		$timesetRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
+		$this->view->assign('registration' , $registration)
+		           ->assign('timesets', $timesetRepository->getDonationsForRegistration($registration));
 	}
 
 
@@ -107,20 +92,20 @@ Class Tx_EcDonationrun_Controller_TimesetController Extends Tx_EcDonationrun_Con
 		 *
 		 * The new action. This method displays a form for creating a new timeset.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Project $project The project the new timeset is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Timeset $timeset The new timeset
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new timeset is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $timeset The new timeset
 		 * @return void
 		 * @dontvalidate $timeset
 		 *
 		 */
 
-	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Project $project,
-	                            Tx_EcDonationrun_Domain_Model_Timeset $timeset=NULL ) {
+	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
+	                            Tx_EcDonationrun_Domain_Model_Donation $timeset=NULL ) {
 		$user       = $this->getCurrentFeUser();
-		$assignment = $user ? $project->getAssignmentForUser($user) : NULL;
-		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoProjectMemberException();
+		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
+		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
 
-		$this->view->assign('project'   , $project    )
+		$this->view->assign('registration'   , $registration    )
 		           ->assign('timeset'   , $timeset    )
 		           ->assign('user'      , $user       )
 		           ->assign('assignment', $assignment );
@@ -129,33 +114,33 @@ Class Tx_EcDonationrun_Controller_TimesetController Extends Tx_EcDonationrun_Con
 		/**
 		 *
 		 * The create action. Stores a new timeset into the database.
-		 * @param Tx_EcDonationrun_Domain_Model_Project $project The project the new timeset is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Timeset $timeset The new timeset
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new timeset is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $timeset The new timeset
 		 * @return void
 		 *
 		 */
 
-	Public Function createAction ( Tx_EcDonationrun_Domain_Model_Project $project,
-	                               Tx_EcDonationrun_Domain_Model_Timeset $timeset ) {
+	Public Function createAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
+	                               Tx_EcDonationrun_Domain_Model_Donation $timeset ) {
 
 			# Get the user assignment and throw an exception if the current user is not a
-			# member of the selected project.
+			# member of the selected registration.
 		$user       = $this->getCurrentFeUser();
-		$assignment = $user ? $project->getAssignmentForUser($user) : NULL;
-		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoProjectMemberException();
+		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
+		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
 
-			# Add the new timeset to the project assingment. The $assignment property in
+			# Add the new timeset to the registration assingment. The $assignment property in
 			# the timeset object is set automatically.
-		$assignment->addTimeset($timeset);
-		$timeset->getProject()->addAssignment($assignment);
+		$assignment->addDonation($timeset);
+		$timeset->getRegistration()->addAssignment($assignment);
 
-			# Since the project is the aggregate root, update only the project to save
+			# Since the registration is the aggregate root, update only the registration to save
 			# the new timeset.
-		$this->projectRepository->update($timeset->getProject());
+		$this->registrationRepository->update($timeset->getRegistration());
 
-			# Print a success message and return to the project detail view.
+			# Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Zeitbuchung erfolgt.');
-		$this->redirect('show', 'Project', NULL, Array('project' => $timeset->getProject() ));
+		$this->redirect('show', 'Registration', NULL, Array('registration' => $timeset->getRegistration() ));
 	}
 
 

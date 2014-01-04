@@ -3,8 +3,8 @@ CREATE TABLE tx_ecdonationrun_domain_model_run (
 	pid int(11) DEFAULT '0' NOT NULL,
 	
 	name tinytext,
-	startTime int(11) DEFAULT '0' NOT NULL,
-	distance float DEFAULT '0' NOT NULL,
+	start int(11) DEFAULT '0' NOT NULL,
+	distance float(10,3) DEFAULT '0.000' NOT NULL,
 	
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -67,8 +67,12 @@ CREATE TABLE tx_ecdonationrun_domain_model_donation (
 	
 	registration int(11) unsigned DEFAULT '0' NOT NULL,
 	user int(11) unsigned DEFAULT '0',
-	donationValue float unsigned DEFAULT '0' NOT NULL,
-	donatioinMaxValue float unsigned DEFAULT '0',
+	associationGroup int(11) unsigned DEFAULT '0',
+	donationValue float(10,2) unsigned DEFAULT '0.00' NOT NULL,
+	donationMaxValue float(10,2) unsigned DEFAULT '0.00',
+	isPaid tinyint(4) unsigned DEFAULT '0',
+	
+	
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

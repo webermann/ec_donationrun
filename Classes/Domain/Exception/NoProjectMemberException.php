@@ -34,7 +34,7 @@
 	 * @author     Hauke Webermann <hauke@webermann.net> 
 	 * @package    EcDonationrun
 	 * @subpackage Domain_Exception
-	 * @version    $Id: NoProjectMemberException.php 6 2010-02-22 09:33:54Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *

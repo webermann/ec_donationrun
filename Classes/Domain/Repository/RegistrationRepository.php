@@ -28,17 +28,20 @@
 
 	/**
 	 *
-	 * The user role repository class. Provides methods for accessing the user role table.
+	 * The registration repository class. Provides methods for accessing the registration table.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Domain_Repository
-	 * @version    $Id: RoleRepository.php 7 2010-02-22 12:10:02Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_RoleRepository Extends Tx_Extbase_Persistence_Repository { }
+Class Tx_EcDonationrun_Domain_Repository_RegistraionRepository Extends Tx_Extbase_Persistence_Repository {
+
+
+}
 
 ?>

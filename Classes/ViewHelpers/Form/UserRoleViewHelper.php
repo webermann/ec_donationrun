@@ -32,10 +32,10 @@
 	 * SelectViewHelper, this ViewHelper takes a "project" and a "user" argument. The
 	 * "options" argument must contain an array of user role objects.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage ViewHelpers
-	 * @version    $Id: UserRoleViewHelper.php 17 2010-03-03 09:26:45Z helmich $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
