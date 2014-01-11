@@ -94,7 +94,7 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 				'type' => 'input',
 				'size' => 12,
 				'max' => 20,
-				'eval' => 'timesec',
+				'eval' => 'integer',
 			)
 		),
 	),
