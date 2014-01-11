@@ -4,32 +4,32 @@
 
 	<!-- TITLE -->
 <f:section name="title">
-	<f:translate key="Timeset_Index_Title" arguments="{0: project.name}" />
+	<f:translate key="Donation_Index_Title" arguments="{0: project.name}" />
 </f:section>
 
 	<!-- MENU -->
 <f:section name="menu">
 	<ul>
-		<li><f:link.action controller="Project" action="show" arguments="{project : project}"><f:translate key="Timeset_Index_Action_Back" /></f:link.action></li>
+		<li><f:link.action controller="Project" action="show" arguments="{project : project}"><f:translate key="Donation_Index_Action_Back" /></f:link.action></li>
 	</ul>
 </f:section>
 
 <f:section name="content">
 	<table>
 		<tr>
-			<th><f:translate key="Timeset_Index_List_Member" /></th>
-			<th><f:translate key="Timeset_Index_List_Start" /></th>
-			<th><f:translate key="Timeset_Index_List_Stop" /></th>
-			<th><f:translate key="Timeset_Index_List_Diff" /></th>
-			<th><f:translate key="Timeset_Index_List_Comment" /></th>
+			<th><f:translate key="Donation_Index_List_Member" /></th>
+			<th><f:translate key="Donation_Index_List_Start" /></th>
+			<th><f:translate key="Donation_Index_List_Stop" /></th>
+			<th><f:translate key="Donation_Index_List_Diff" /></th>
+			<th><f:translate key="Donation_Index_List_Comment" /></th>
 		</tr>
-		<f:for each="{timesets}" as="timeset">
+		<f:for each="{donations}" as="donation">
 			<tr>
-				<td>{timeset.assignment.user.name} ({timeset.assignment.role.name})</td>
-				<td><f:format.date format="d. m. Y, H:i">{timeset.starttime}</f:format.date></td>
-				<td><f:format.date format="d. m. Y, H:i">{timeset.stoptime}</f:format.date></td>
-				<td><mwt:timeFormat amount="{timeset.workedTime}" /></td>
-				<td>{timeset.comment}</td>
+				<td>{donation.assignment.user.name} ({donation.assignment.role.name})</td>
+				<td><f:format.date format="d. m. Y, H:i">{donation.starttime}</f:format.date></td>
+				<td><f:format.date format="d. m. Y, H:i">{donation.stoptime}</f:format.date></td>
+				<td><mwt:timeFormat amount="{donation.workedTime}" /></td>
+				<td>{donation.comment}</td>
 			</tr>
 		</f:for>
 	</table>

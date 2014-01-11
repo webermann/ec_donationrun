@@ -70,7 +70,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 
 		/**
 		 * The runner time.
-		 * @var timesec
+		 * @var integer
 		 */
 	Protected $runnerTime;
 	

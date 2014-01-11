@@ -4,17 +4,17 @@
 
 	<!-- TITLE -->
 <f:section name="title">
-	<f:translate key="Project_Show_Title" arguments="{0: project.name}" />
+	<f:translate key="Registration_Show_Title" arguments="{0: registration.name}" />
 </f:section>
 
 	<!-- MENU -->
 <f:section name="menu">
 	<ul>
-		<li><f:link.action action="index"><f:translate key="Project_Show_Action_Back" /></f:link.action></li>
-		<li><f:link.action action="edit" arguments="{project : project}"><f:translate key="Project_Show_Action_Edit" /></f:link.action></li>
-		<li><f:link.action action="delete" arguments="{project : project}"><f:translate key="Project_Show_Action_Delete" /></f:link.action></li>
-		<li><f:link.action action="new" controller="Timeset" arguments="{project : project}"><f:translate key="Project_Show_Action_NewTimeset" /></f:link.action></li>
-		<li><f:link.action action="index" controller="Timeset" arguments="{project : project}"><f:translate key="Project_Show_Action_ListTimesets" /></f:link.action></li>
+		<li><f:link.action action="index"><f:translate key="Registration_Show_Action_Back" /></f:link.action></li>
+		<li><f:link.action action="edit" arguments="{registration : registration}"><f:translate key="Registration_Show_Action_Edit" /></f:link.action></li>
+		<li><f:link.action action="delete" arguments="{registration : registration}"><f:translate key="Registration_Show_Action_Delete" /></f:link.action></li>
+		<li><f:link.action action="new" controller="Timeset" arguments="{registration : registration}"><f:translate key="Registration_Show_Action_NewTimeset" /></f:link.action></li>
+		<li><f:link.action action="index" controller="Timeset" arguments="{registration : registration}"><f:translate key="Registration_Show_Action_ListTimesets" /></f:link.action></li>
 	</ul>
 </f:section>
 
@@ -22,27 +22,27 @@
 		<!-- PROJECT INFO -->
 	<table>
 		<tr>
-			<td><f:translate key="Project_Show_StartDate" /></td><td><f:format.date format="d. m. Y">{project.start}</f:format.date></td>
+			<td><f:translate key="Registration_Show_StartDate" /></td><td><f:format.date format="d. m. Y">{registration.start}</f:format.date></td>
 		</tr><tr>
-			<td><f:translate key="Project_Show_EndDate" /></td><td><f:format.date format="d. m. Y">{project.end}</f:format.date></td>
+			<td><f:translate key="Registration_Show_EndDate" /></td><td><f:format.date format="d. m. Y">{registration.end}</f:format.date></td>
 		</tr>
 	</table>
 
 		<!-- SUB PROJECTS -->
-	<f:if condition="{project.children}">
-		<h3><f:translate key="Project_Show_Children" /></h3>
-		<f:render partial="projectList" arguments="{projects : project.children}" />
+	<f:if condition="{registration.children}">
+		<h3><f:translate key="Registration_Show_Children" /></h3>
+		<f:render partial="registrationList" arguments="{registrations : registration.children}" />
 	</f:if>
 
 		<!-- MEMBERS -->
-	<h3><f:translate key="Project_Show_Members" /></h3>
+	<h3><f:translate key="Registration_Show_Members" /></h3>
 	<table>
 		<tr>
-			<th><f:translate key="Project_Show_Members_Name" /></th>
-			<th><f:translate key="Project_Show_Members_Role" /></th>
-			<th><f:translate key="Project_Show_Members_WorkedTime" /></th>
+			<th><f:translate key="Registration_Show_Members_Name" /></th>
+			<th><f:translate key="Registration_Show_Members_Role" /></th>
+			<th><f:translate key="Registration_Show_Members_WorkedTime" /></th>
 		</tr>
-		<f:for each="{project.assignments}" as="assignment">
+		<f:for each="{registration.assignments}" as="assignment">
 			<tr>
 				<td>{assignment.user.name}</td>
 				<td>{assignment.role.name}</td>

@@ -29,7 +29,7 @@
 	/**
 	 *
 	 * Donation controller class for the timetracking extension. This controller provides
-	 * actiosn for creating new timesets.
+	 * actiosn for creating new donations.
 	 *
 	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
@@ -72,56 +72,56 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 
 		/**
 		 *
-		 * The index action. This method displays a list of all timesets for a specific
+		 * The index action. This method displays a list of all donations for a specific
 		 * registration.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration for which the timesets are to be
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration for which the donations are to be
 		 *                                                           displayed for.
 		 * @return void
 		 *
 		 */
 	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration ) {
-		$timesetRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
+		$donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 		$this->view->assign('registration' , $registration)
-		           ->assign('timesets', $timesetRepository->getDonationsForRegistration($registration));
+		           ->assign('donations', $donationRepository->getDonationsForRegistration($registration));
 	}
 
 
 
 		/**
 		 *
-		 * The new action. This method displays a form for creating a new timeset.
+		 * The new action. This method displays a form for creating a new donation.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new timeset is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Donation $timeset The new timeset
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
-		 * @dontvalidate $timeset
+		 * @dontvalidate $donation
 		 *
 		 */
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                            Tx_EcDonationrun_Domain_Model_Donation $timeset=NULL ) {
+	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL ) {
 		$user       = $this->getCurrentFeUser();
 		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
 		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
 
 		$this->view->assign('registration'   , $registration    )
-		           ->assign('timeset'   , $timeset    )
+		           ->assign('donation'   , $donation    )
 		           ->assign('user'      , $user       )
 		           ->assign('assignment', $assignment );
 	}
 
 		/**
 		 *
-		 * The create action. Stores a new timeset into the database.
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new timeset is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Donation $timeset The new timeset
+		 * The create action. Stores a new donation into the database.
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
 		 *
 		 */
 
 	Public Function createAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                               Tx_EcDonationrun_Domain_Model_Donation $timeset ) {
+	                               Tx_EcDonationrun_Domain_Model_Donation $donation ) {
 
 			# Get the user assignment and throw an exception if the current user is not a
 			# member of the selected registration.
@@ -129,18 +129,18 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
 		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
 
-			# Add the new timeset to the registration assingment. The $assignment property in
-			# the timeset object is set automatically.
-		$assignment->addDonation($timeset);
-		$timeset->getRegistration()->addAssignment($assignment);
+			# Add the new donation to the registration assingment. The $assignment property in
+			# the donation object is set automatically.
+		$assignment->addDonation($donation);
+		$donation->getRegistration()->addAssignment($assignment);
 
 			# Since the registration is the aggregate root, update only the registration to save
-			# the new timeset.
-		$this->registrationRepository->update($timeset->getRegistration());
+			# the new donation.
+		$this->registrationRepository->update($donation->getRegistration());
 
 			# Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Zeitbuchung erfolgt.');
-		$this->redirect('show', 'Registration', NULL, Array('registration' => $timeset->getRegistration() ));
+		$this->redirect('show', 'Registration', NULL, Array('registration' => $donation->getRegistration() ));
 	}
 
 

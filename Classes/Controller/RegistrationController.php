@@ -53,20 +53,16 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	Protected $registrationRepository;
 
 		/**
-		 * A user role repository instance
-		 * @var Tx_EcDonationrun_Domain_Repository_RoleRepository
+		 * A run repository instance
+		 * @var Tx_EcDonationrun_Domain_Repository_RunRepository
 		 */
-	Protected $roleRepository;
+	Protected $runRepository;
 
 		/**
 		 * A frontend user repository instance
 		 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
 		 */
 	Protected $userRepository;
-
-
-
-
 
 		/*
 		 * ACTION METHODS
@@ -87,7 +83,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Protected Function initializeAction() {
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
-		$this->roleRepository    =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RoleRepository');
+		$this->runRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
 		$this->userRepository    =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
 	}
 
@@ -135,7 +131,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->view->assign('registration' , $registration)
 		           ->assign('registrations', array_merge(Array(NULL), $this->registrationRepository->findAll()))
 		           ->assign('users'   , $this->userRepository->findAll())
-		           ->assign('roles'   , $this->roleRepository->findAll());
+		           ->assign('runs'   , $this->runRepository->findAll());
 	}
 
 
@@ -146,7 +142,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 * database.
 		 *
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The new registration
-		 * @param array $assignments                                 An array of users and roles that are to be assigned to this registration.
+		 * @param array $assignments                                 An array of users and runs that are to be assigned to this registration.
 		 * @return void
 		 * @dontverifyrequesthash
 		 *
@@ -154,10 +150,10 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function createAction( Tx_EcDonationrun_Domain_Model_Registration $registration, $assignments ) {
 		$registration->removeAllAssignments();
-		ForEach($assignments As $userId => $roleId) {
-			If($roleId == 0) Continue;
+		ForEach($assignments As $userId => $runId) {
+			If($runId == 0) Continue;
 			$registration->assignUser ( $this->userRepository->findByUid((int)$userId),
-			                       $this->roleRepository->findByUid((int)$roleId) );
+			                       $this->runRepository->findByUid((int)$runId) );
 		}
 		$this->registrationRepository->add($registration);
 		$this->flashMessages->add('Das Projekt '.$registration->getName().' wurde erfolgreich angelegt.');
@@ -181,7 +177,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->view->assign('registration' , $registration)
 		           ->assign('registrations', array_merge(Array(NULL), $this->registrationRepository->findAll()))
 		           ->assign('users'   , $this->userRepository->findAll())
-		           ->assign('roles'   , $this->roleRepository->findAll());
+		           ->assign('runs'   , $this->runRepository->findAll());
 	}
 
 
@@ -191,7 +187,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 * The update action. Updates an existing registration in the database.
 		 *
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration
-		 * @param array $assignments                                 An array of users and roles that are to be assigned to this registration.
+		 * @param array $assignments                                 An array of users and runs that are to be assigned to this registration.
 		 * @return void
 		 * @dontverifyrequesthash
 		 *
@@ -199,10 +195,10 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function updateAction( Tx_EcDonationrun_Domain_Model_Registration $registration, $assignments ) {
 		$registration->removeAllAssignments();
-		ForEach($assignments As $userId => $roleId) {
-			If($roleId == 0) Continue;
+		ForEach($assignments As $userId => $runId) {
+			If($runId == 0) Continue;
 			$registration->assignUser ( $this->userRepository->findByUid((int)$userId),
-			                       $this->roleRepository->findByUid((int)$roleId) );
+			                       $this->runRepository->findByUid((int)$runId) );
 		}
 		$this->registrationRepository->update($registration);
 		$this->flashMessages->add("Das Projekt {$registration->getName()} wurde erfolgreich bearbeitet.");

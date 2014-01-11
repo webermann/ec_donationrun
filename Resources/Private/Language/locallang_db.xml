@@ -2,25 +2,40 @@
 <T3locallang>
 	<meta type="array">
 		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'mittwald_timetrack'</description>
+		<description>Language labels for database tables/fields belonging to extension 'ec_donationrun'</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_ecdonationrun_domain_model_run">Run</label>
-			<label index="tx_ecdonationrun_domain_model_run.user">User</label>
 			<label index="tx_ecdonationrun_domain_model_run.name">Name</label>
+			<label index="tx_ecdonationrun_domain_model_run.user">User</label>
 			<label index="tx_ecdonationrun_domain_model_run.start">Start time</label>
 			<label index="tx_ecdonationrun_domain_model_run.distance">Distance</label>
 			<label index="tx_ecdonationrun_domain_model_registration">Registration</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Runner Number</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnertime">Runner Time</label>
-			<label index="tx_ecdonationrun_domain_model_registration.runner">End</label>
 			<label index="tx_ecdonationrun_domain_model_donation">Donation</label>
 			<label index="tx_ecdonationrun_domain_model_donation.user">User</label>
 			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Association Group</label>
 			<label index="tx_ecdonationrun_domain_model_donation.value">Donation Value</label>
 			<label index="tx_ecdonationrun_domain_model_donation.maxvalue">Donation max. Value</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Is Paid</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tx_ecdonationrun_domain_model_run">Lauf</label>
+			<label index="tx_ecdonationrun_domain_model_run.name">Name</label>
+			<label index="tx_ecdonationrun_domain_model_run.user">Läufer</label>
+			<label index="tx_ecdonationrun_domain_model_run.start">Start Zeit</label>
+			<label index="tx_ecdonationrun_domain_model_run.distance">Länge</label>
+			<label index="tx_ecdonationrun_domain_model_registration">Teilname</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Läufernummer</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runnertime">Läuferzeit</label>
+			<label index="tx_ecdonationrun_domain_model_donation">Spende</label>
+			<label index="tx_ecdonationrun_domain_model_donation.user">Spender</label>
+			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Gruppe</label>
+			<label index="tx_ecdonationrun_domain_model_donation.value">Spendenbetrag</label>
+			<label index="tx_ecdonationrun_domain_model_donation.maxvalue">Maximalspende</label>
+			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Ist bezahlt</label>
 		</languageKey>
 	</data>
 </T3locallang>
