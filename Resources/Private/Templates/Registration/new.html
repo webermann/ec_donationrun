@@ -7,5 +7,24 @@
 <f:section name="menu" />
 
 <f:section name="content">
-	<f:render partial="registrationForm" arguments="{action : 'create', registration : registration, registrations : registrations, users : users, roles : roles}" />
+	<f:form object="{registration}" action="create" name="registration">
+			<div>
+				<div> 
+					<label for="run"><f:translate key="Registration_Form_Name" /></label> 
+					<span>{user.name}</span>
+				</div>
+				<div> 
+					<label for="run"><f:translate key="Registration_Form_Run" /></label> 
+					<f:form.select property="run" id="run" options="{runs}" optionValueField="id" optionLabelField="name" />
+				</div>
+				<div> 
+					<label for="runnerNumber"><f:translate key="Registration_Form_Runnernumber" /></label>
+					<f:form.textfield property="runnerNumber" id="runnerNumber" />
+				</div> 
+				<div>
+					<f:form.submit value="{f:translate(key:'Registration_Form_Save')}" />
+				</div>
+			</div>
+	</f:form>
+	
 </f:section>

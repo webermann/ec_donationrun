@@ -44,9 +44,7 @@ $TCA['tx_ecdonationrun_domain_model_run'] = array(
 				'type' => 'input',
 				'size' => 12,
 				'max' => 20,
-				'eval' => 'datetime,required',
-				'checkbox' => '0',
-				'default' => '0'
+				'eval' => 'datetime,required'
 			)
 		),
 		'distance' => array(
@@ -56,9 +54,7 @@ $TCA['tx_ecdonationrun_domain_model_run'] = array(
 				'type' => 'input',
 				'size' => 12,
 				'max' => 20,
-				'eval' => 'float,trim,required',
-				'checkbox' => '0',
-				'default' => '0'
+				'eval' => 'tx_ecdonationrun_double3,required'
 			)
 		),
 	),

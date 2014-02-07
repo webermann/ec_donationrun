@@ -26,19 +26,51 @@
 
 
 
-If(!defined('TYPO3_MODE')) Die ('Access denied.');
+	/**
+	 *
+	 * A ViewHelper for formatting time amounts. In dependence of the time amount, the
+	 * time amount if formatted with a different unit (seconds, minutes, hours, days).
+	 *
+	 * @author     Hauke Webermann <hauke@webermann.net>
+	 * @package    EcDonationrun
+	 * @subpackage Utility
+	 * @version    $Id$
+	 * @license    GNU Public License, version 2
+	 *             http://opensource.org/licenses/gpl-license.php
+	 *
+	 */
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY, 'Pi1',
-	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
-	        'Donation' => 'index,new,create' ),
-	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
-	        'Donation' => 'index,new,create' )
-);
-
-/**
- * Extra evaluation of TCA fields
- */
-$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_ecdonationrun_double3'] = 'EXT:ec_donationrun/Classes/Utility/EvaluateDouble3.php';
+Class tx_ecdonationrun_double3 {
+    function returnFieldJS() {
+        return "
+            var theVal = ''+value;
+            var dec=0;
+            if (!value)    return 0;
+            for (var a=theVal.length; a>0; a--)    {
+                if (theVal.substr(a-1,1)=='.' || theVal.substr(a-1,1)==',')    {
+                    dec = theVal.substr(a);
+                    theVal = theVal.substr(0,a-1);
+                    break;
+                }
+            }
+            dec = evalFunc.getNumChars(dec)+'000';
+            theVal=evalFunc.parseInt(evalFunc.noSpace(theVal))+TS.decimalSign+dec.substr(0,3);
+            return theVal;
+        ";
+    }
+    function evaluateFieldValue($value, $is_in, &$set) {
+        $theDec = 0;
+        for ($a=strlen($value); $a>0; $a--)    {
+            if (substr($value,$a-1,1)=='.' || substr($value,$a-1,1)==',')    {
+                $theDec = substr($value,$a);
+                $value = substr($value,0,$a-1);
+                break;
+            }
+        }
+        $theDec = preg_replace('[^0-9]','',$theDec).'000';
+        $value = intval(str_replace(' ','',$value)).'.'.substr($theDec,0,3);
+        return $value;
+    }
+}
 
 ?>

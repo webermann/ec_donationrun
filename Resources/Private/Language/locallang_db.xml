@@ -18,8 +18,10 @@
 			<label index="tx_ecdonationrun_domain_model_donation.user">User</label>
 			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Association Group</label>
 			<label index="tx_ecdonationrun_domain_model_donation.value">Donation Value</label>
-			<label index="tx_ecdonationrun_domain_model_donation.maxvalue">Donation max. Value</label>
+			<label index="tx_ecdonationrun_domain_model_donation.fixvalue">Donation fix Value</label>
+			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mail Status</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Is Paid</label>
+			<label index="tx_ecdonationrun_domain_model_donation.comment">Comment</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_ecdonationrun_domain_model_run">Lauf</label>
@@ -33,9 +35,11 @@
 			<label index="tx_ecdonationrun_domain_model_donation">Spende</label>
 			<label index="tx_ecdonationrun_domain_model_donation.user">Spender</label>
 			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Gruppe</label>
-			<label index="tx_ecdonationrun_domain_model_donation.value">Spendenbetrag</label>
-			<label index="tx_ecdonationrun_domain_model_donation.maxvalue">Maximalspende</label>
+			<label index="tx_ecdonationrun_domain_model_donation.value">Spende pro km</label>
+			<label index="tx_ecdonationrun_domain_model_donation.fixvalue">Festbetrag</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Ist bezahlt</label>
+			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mailstatus</label>
+			<label index="tx_ecdonationrun_domain_model_donation.comment">Kommentar</label>
 		</languageKey>
 	</data>
 </T3locallang>

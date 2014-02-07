@@ -75,6 +75,7 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_users',
+//				'foreign_table_where' => Usergroup == Läufer
 				'maxitems' => 1
 			)
 		),

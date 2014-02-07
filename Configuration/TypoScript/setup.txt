@@ -1,4 +1,36 @@
+config.tx_ecdonationrun {
+    persistence{
+        enableAutomaticCacheClearing = 1
+        updateReferenceIndex = 0
+        classes {
+            Tx_Extbase_Domain_Model_FrontendUser {
+                mapping {
+                    tableName = fe_users
+                    columns {
+                        usergroup.foreignClass = Tx_Extbase_Domain_Model_FrontendUserGroup
+                        lockToDomain.mapOnProperty = lockToDomain
+                    }
+                }
+            }
+            Tx_Extbase_Domain_Model_FrontendUserGroup {
+                mapping {
+                    tableName = fe_groups
+                    columns {
+                        subgroup.foreignClass = Tx_Extbase_Domain_Model_FrontendUserGroup
+                        lockToDomain.mapOnProperty = lockToDomain
+                    }
+                }
+            }
+        }
+    }
+}
 plugin.tx_ecdonationrun.settings {
+	loginPage = 0
+	registrationPage {
+		runner = 0
+		donator = 0
+		anonymous = 0
+	}
 }
 
 plugin.tx_ecdonationrun._CSS_DEFAULT_STYLE (
@@ -21,4 +53,4 @@ plugin.tx_ecdonationrun._CSS_DEFAULT_STYLE (
 	}
 )
 
-page.includeCSS.mittwald_timetrack = EXT:mittwald_timetrack/Resources/Public/Stylesheets/styles.css
+page.includeCSS.ec_donationrun = EXT:ec_donationrun/Resources/Public/Stylesheets/styles.css

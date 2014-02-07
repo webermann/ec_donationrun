@@ -11,7 +11,7 @@
         </languageKey>
         <languageKey index="de" type="array">
             <label index="mlang_tabs_tab">Spenden Lauf</label>
-            <label index="mlang_labels_tabdescr">EC Spenden Lauf Extension</label>
+            <label index="mlang_labels_tabdescr">EC Spendenlauf Extension</label>
         </languageKey>
     </data>
 </T3locallang>

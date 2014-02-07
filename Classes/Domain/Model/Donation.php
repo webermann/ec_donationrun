@@ -43,13 +43,6 @@
 
 Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_AbstractEntity {
 
-		/*
-		 * ATTRIBUTES
-	donationValue float unsigned DEFAULT '0' NOT NULL,
-	donatioinMaxValue float unsigned DEFAULT '0',
-	isPaid tinyint(4) unsigned DEFAULT '0',
-		 */
-
 		/**
 		 * The registration
 		 * @var Tx_EcDonationrun_Domain_Model_Registration
@@ -71,18 +64,25 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 * @validate NotEmpty
 		 */
 	Protected $donationValue;
-
+	
+	
 		/**
-		 * The maximum value of this donation
+		 * The fix value of this donation
 		 * @var float
 		 */
-	Protected $donationMaxValue;
+	Protected $donationFixValue;
 
 		/**
 		 * A informaiton if the donator has paid the donatoin
 		 * @var boolean
 		 */
 	Protected $isPaid;
+	
+		/**
+		 * A informaiton if the donator has paid the donatoin
+		 * @var string
+		 */
+	Protected $comment;
 
 		/*
 		 * GETTERS
@@ -91,7 +91,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 /**
 		  *
 		  * Gets the registration
-		  * @return Tx_EcDonationrun_Domain_Model_Registration The registration
+		  * @return Tx_EcDonationrun_Domain_Model_Registration
 		  *
 		  */
 
@@ -102,7 +102,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Gets the donator
-		 * @return Tx_Extbase_Domain_Model_FrontendUser The donator
+		 * @return Tx_Extbase_Domain_Model_FrontendUser
 		 *
 		 */
 
@@ -113,7 +113,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Gets the runner
-		 * @return Tx_Extbase_Domain_Model_FrontendUser The runner
+		 * @return Tx_Extbase_Domain_Model_FrontendUser
 		 *
 		 */
 
@@ -124,7 +124,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Gets the donation value
-		 * @return float The donatoin value
+		 * @return float $donationValue
 		 *
 		 */
 
@@ -134,24 +134,35 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 
 		/**
 		 *
-		 * Gets the donation max value
-		 * @return float The max value
+		 * Gets the donation fix value
+		 * @return float $donationFixValue
 		 *
 		 */
 
-	Public Function getDonationMaxValue() {
-		Return $this->donationMaxValue;
+	Public Function getDonationFixValue() {
+		Return $this->donationFixValue;
 	}
 	
 		/**
 		 *
 		 * Gets is paid
-		 * @return boolean Is paid
+		 * @return boolean $isPaid
 		 *
 		 */
 
 	Public Function getIsPaid() {
 		Return $this->isPaid;
+	}
+	
+		/**
+		 *
+		 * Gets comment
+		 * @return string $comment
+		 *
+		 */
+
+	Public Function getComment() {
+		Return $this->comment;
 	}
 
 		/*
@@ -182,34 +193,49 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		$this->user = $user;
 	}
 
-	/**
-		 *
-		 * Sets the maximum value of this donation.
-		 * @param float $value The max donatoin value
-		 * @return void
-		 *
-		 */
-
-	Public Function setDonationMaxValue($value) {
-		$this->donationMaxValue = $value;
-	}
-		
 		/**
 		 *
 		 * Sets value of this donation.
-		 * @param float $value The donatoin value
+		 * @param float $value
 		 * @return void
 		 *
 		 */
 
 	Public Function setDonationValue($value) {
+		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
 		$this->donationValue = $value;
 	}
+
+	/**
+		 *
+		 * Sets the fix value of this donation.
+		 * @param float $value
+		 * @return void
+		 *
+		 */
+
+	Public Function setDonationFixValue($value) {
+		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
+		$this->donationFixValue = $value;
+	}
+		
 		
 		/**
 		 *
 		 * Sets the is paid flag.
-		 * @param boolean $isPaid The is paid flag
+		 * @param boolean $value
+		 * @return void
+		 *
+		 */
+
+	Public Function setComment($value) {
+		$this->comment = $value;
+	}
+	
+		/**
+		 *
+		 * Sets the comment.
+		 * @param string $comment The is paid flag
 		 * @return void
 		 *
 		 */

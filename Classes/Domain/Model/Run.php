@@ -124,7 +124,7 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		 /**
 		  *
 		  * Gets the run distance
-		  * @return DateTime The run distance
+		  * @return double The run distance
 		  *
 		  */
 	Public Function getDistance() {

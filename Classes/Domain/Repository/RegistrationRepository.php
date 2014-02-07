@@ -41,6 +41,9 @@
 
 Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extbase_Persistence_Repository {
 	
+	
+	protected $defaultOrderings = array ('run' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
+	
 		/**
 		 *
 		 * Finds all associations for an index view. The parent association can be specified
@@ -56,11 +59,14 @@ Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extba
 
 		$query = $this->createQuery();
 		Return $query
-			->matching($query->equals('registration', $parent ? $parent : Array(0,NULL) ))
-			->setOrderings(Array('name' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+			//->matching($query->equals('registration', $parent ? $parent : Array(0,NULL) ))
+			->setOrderings(Array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 			->execute();
-
 	}
+
+	
+	
+	
 }
 
 

@@ -1,15 +1,36 @@
 <f:layout name="main" />
 
 <f:section name="title">
-	<f:translate key="Registration_Index_Title">Die Läufer</f:translate>
+	Unsere Läufer
 </f:section>
 
 <f:section name="menu">
 	<ul>
-		<li><f:link.action action="new"><f:translate key="Registration_Index_Action_New" /></f:link.action></li>
+		<li><f:link.action action="new">Als Läufer anmelden</f:link.action></li>
 	</ul>
 </f:section>
 
 <f:section name="content">
-	<f:render partial="registrationList" arguments="{registrations : registrations}" />
+	<f:if condition="{registrations}">
+		<f:then>
+			<f:for each="{registrations}" as="runs" key="title">
+				<h3>{title}</h3>
+				<f:for each="{runs}" as="registration">	
+					<p>
+						<f:comment>
+						<f:link.action action="show" arguments="{registration : registration}">
+							{registration.name}
+						</f:link.action>
+						</f:comment>
+						{registration.name}
+						<f:link.action controller="Donation" action="new" arguments="{registration : registration}" class="ecdonationrun-donate">
+							Spenden
+						</f:link.action>
+					</p>
+				</f:for>
+			</f:for>
+		</f:then><f:else>
+			<p>Keine Läufer gefunden</p>
+		</f:else>
+	</f:if>
 </f:section>

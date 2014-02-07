@@ -51,7 +51,12 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
 		 */
 	Protected $registrationRepository;
-
+		
+		/**
+		 * A donation repository instance
+		 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
+		 */
+	Protected $donationRepository;
 
 		/*
 		 * ACTION METHODS
@@ -66,6 +71,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 
 	Public Function initializeAction() {
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
+		$this->donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 	}
 
 
@@ -81,7 +87,6 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 *
 		 */
 	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration ) {
-		$donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 		$this->view->assign('registration' , $registration)
 		           ->assign('donations', $donationRepository->getDonationsForRegistration($registration));
 	}
@@ -101,14 +106,14 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL ) {
-		$user       = $this->getCurrentFeUser();
-		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
-		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
+		if ($GLOBALS['TSFE']->loginUser == 0) {
+			//TODO Add destination
+			$this->redirectToUri('index.php?id='.$this->settings['loginPage']);
+		}
 
-		$this->view->assign('registration'   , $registration    )
-		           ->assign('donation'   , $donation    )
-		           ->assign('user'      , $user       )
-		           ->assign('assignment', $assignment );
+		$this->view->assign('registration', $registration)
+		           ->assign('donation', $donation)
+		           ->assign('user', $this->getCurrentFeUser());
 	}
 
 		/**
@@ -122,25 +127,19 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 
 	Public Function createAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                               Tx_EcDonationrun_Domain_Model_Donation $donation ) {
-
-			# Get the user assignment and throw an exception if the current user is not a
-			# member of the selected registration.
-		$user       = $this->getCurrentFeUser();
-		$assignment = $user ? $registration->getAssignmentForUser($user) : NULL;
-		If($assignment === NULL) Throw New Tx_EcDonationrun_Domain_Exception_NoRegistrationMemberException();
-
-			# Add the new donation to the registration assingment. The $assignment property in
-			# the donation object is set automatically.
-		$assignment->addDonation($donation);
-		$donation->getRegistration()->addAssignment($assignment);
-
-			# Since the registration is the aggregate root, update only the registration to save
-			# the new donation.
-		$this->registrationRepository->update($donation->getRegistration());
-
+		
+		$user = $this->getCurrentFeUser();
+		$donation->setRegistration($registration);
+		$donation->setUser($user);
+		
+		$this->donationRepository->add($donation);
+		
+		
+		
 			# Print a success message and return to the registration detail view.
-		$this->flashMessages->add('Zeitbuchung erfolgt.');
-		$this->redirect('show', 'Registration', NULL, Array('registration' => $donation->getRegistration() ));
+		$this->flashMessages->add('Spende gespeichert.');
+		
+		$this->redirect('index', 'Registration');
 	}
 
 

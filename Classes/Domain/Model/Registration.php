@@ -96,7 +96,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		  */
 
 	Public Function __construct() {
-		
+		//$this->user = New Tx_Extbase_Persistence_ObjectStorage();
+		$this->donations = New Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 
@@ -134,7 +135,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		  */
 
 	Public Function getName() {
-		Return $this->user->getName();
+		Return $this->getUser()->getName();
 	}
 
 		/**
@@ -166,7 +167,9 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		 *
 		 */
 
-	Public Function getEditDate() { Return $this->tstamp; }
+	Public Function getEditDate() {
+		Return $this->tstamp;
+	}
 
 		/**
 		 *
@@ -176,9 +179,6 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		 */
 
 	Public Function getDonations() {
-		If($this->donations === NULL) {
-			$this->donations = New Tx_Extbase_Persistence_ObjectStorage();
-		}
 		Return $this->donations;
 	}
 
@@ -189,14 +189,16 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		 * Gets the total amount of this registration. This methods
 		 * accumulates the donation amount to this registration.
 		 *
-		 * @return float The total amount of donation of this registration
+		 * @return double The total amount of donation of this registration
 		 *
 		 */
 
 	Public Function getDonation() {
 		$amount = 0.0;
+		/*
 		ForEach($this->getDonations() As $donation)
 			$amount += $donation->getDonationValue();
+			*/
 		Return $amount;
 	}
 
@@ -204,18 +206,6 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		/*
 		 * SETTERS
 		 */
-
-		 /**
-		  *
-		  * Sets the project name
-		  * @param Tx_EcDonationrun_Domain_Model_Run $run The run
-		  * @return void
-		  *
-		  */
-
-	Public Function setName(Tx_EcDonationrun_Domain_Model_Run $run) {
-		$this->run = $run;
-	}
 
 		/**
 		  *

@@ -7,9 +7,16 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-			<label index="tx_ecdonationrun_starttime.description">The start time of this timeset</label>
-			<label index="stoptime.description">The stop time of this timeset</label>
-			<label index="comment.description">A comment for this timeset</label>
+			<label index="comment.description">A comment for this donation</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="donation_value.description">Spendenbetrag pro km</label>
+			<label index="donation_fix_value.description">Festbetrag unabhängig von der Weite</label>
+			<label index="comment.description">Ein Kommentar für diese Spende</label>
+			<label index="mail_status.description">Der Mail-Status für die Spende</label>
+			<label index="is_paid.description">Gibt an ob die Spende schon bezahlt wurde</label>
+			<label index="registration.description">Für welchen Teilnehmer und Lauf ist diese Spende</label>
+			<label index="user.description">Der Frontend User für diese Spende</label>
 		</languageKey>
     </data>
 </T3locallang>

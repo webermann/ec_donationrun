@@ -97,7 +97,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 */
 
 	Public Function indexAction() {
-		$this->view->assign('registrations', $this->registrationRepository->findForIndexView() );
+		$registrations = NULL;
+		foreach ($this->registrationRepository->findAll() as $registration) {
+			$registrations[$registration->getRun()->getName()][] = $registration;
+
+		}
+		$this->view->assign('registrations', $registrations);
 	}
 
 
@@ -128,10 +133,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 */
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration=NULL ) {
-		$this->view->assign('registration' , $registration)
-		           ->assign('registrations', array_merge(Array(NULL), $this->registrationRepository->findAll()))
-		           ->assign('users'   , $this->userRepository->findAll())
-		           ->assign('runs'   , $this->runRepository->findAll());
+		if ($GLOBALS['TSFE']->loginUser == 0) {
+			//TODO Add destination
+			$this->redirectToUri('index.php?id='.$this->settings['loginPage']);
+		}
+		$this->view->assign('runs', $this->runRepository->findAll())
+				   ->assign('user', $this->getCurrentFeUser());
 	}
 
 
@@ -141,22 +148,20 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 * The create action. This method creates a new registration and stores it into the
 		 * database.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The new registration
-		 * @param array $assignments                                 An array of users and runs that are to be assigned to this registration.
+		 * @param Tx_EcDonationrun_Domain_Model_Run $run The new run
 		 * @return void
-		 * @dontverifyrequesthash
 		 *
 		 */
 
-	Public Function createAction( Tx_EcDonationrun_Domain_Model_Registration $registration, $assignments ) {
-		$registration->removeAllAssignments();
-		ForEach($assignments As $userId => $runId) {
-			If($runId == 0) Continue;
-			$registration->assignUser ( $this->userRepository->findByUid((int)$userId),
-			                       $this->runRepository->findByUid((int)$runId) );
-		}
+	Public Function createAction( Tx_EcDonationrun_Domain_Model_Registration $registration,
+								  Tx_EcDonationrun_Domain_Model_Run $run ) {
+		
+		$user = $this->getCurrentFeUser();
+		$registration->setRun($run);
+		$registration->setUser($user);
+		
 		$this->registrationRepository->add($registration);
-		$this->flashMessages->add('Das Projekt '.$registration->getName().' wurde erfolgreich angelegt.');
+		$this->flashMessages->add('Du bist für den Lauf '.$registration->getName().' angemeldet.');
 
 		$this->redirect('index');
 	}
@@ -223,7 +228,28 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 		$this->redirect('index');
 	}
-
+		
+		/*
+		 * HELPER METHODS
+		 */
+	
+	
+		/**
+		 *
+		 * Gets the currently logged in frontend user.
+		 * @return Tx_Extbase_Domain_Model_FrontendUser The currently logged in frontend
+		 *                                              user, or NULL if no user is
+		 *                                              logged in.
+		 *
+		 */
+	
+	Protected Function getCurrentFeUser() {
+		$userRepository = New Tx_Extbase_Domain_Repository_FrontendUserRepository();
+		Return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
+			? $userRepository->findByUid( intval($GLOBALS['TSFE']->fe_user->user['uid']) )
+			: NULL;
+	}
+	
 }
 
 ?>
