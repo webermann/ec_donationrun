@@ -21,29 +21,31 @@
 			</div>
 		</f:form.errors>
 		
-
-		<table>
-			<tr>
-				<td><f:translate key="Donation_New_User" /></td>
-				<td>{user.name}</td>
-			</tr><tr>
-				<td><f:translate key="Donation_New_Registration" /></td>
-				<td>{registration.name} ({registration.run.name} {registration.run.distance} km)</td>
-			</tr><tr>
-				<td><f:translate key="Donation_New_DonationValue" /></td>
-				<td><f:form.textfield  property="donationValue" id="donationValue" /> Euro</td>
-			</tr><tr>
-				<td><f:translate key="Donation_New_DonationFixValue" /></td>
-				<td><f:form.textfield property="donationFixValue" id="donationFixValue" /> Euro</td>
-			</tr>
-			
-			<tr>
-				<td><f:translate key="Donation_New_Comment" /></td>
-				<td><f:form.textarea property="comment" rows="5" cols="40" /></td>
-			</tr>
-		</table>
-
-		<f:form.submit value="{f:translate(key:'Donation_New_Save')}" />
-		<f:form.hidden name="registration" value="{registration}" />
+		<div>
+			<div> 
+				<label for="name"><f:translate key="Donation_New_User" /></label> 
+				<span>{user.name}</span>
+			</div>
+			<div> 
+				<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
+				<span>{registration.name} ({registration.run.name} {registration.run.distance} km)</span>
+			</div>
+			<div> 
+				<label for="donationValue"><f:translate key="Donation_New_DonationValue" /></label>
+				<f:form.textfield  property="donationValue" id="donationValue" /> Euro
+			</div> 
+			<div> 
+				<label for="donationFixValue"><f:translate key="Donation_New_DonationFixValue" /></label>
+				<f:form.textfield  property="donationFixValue" id="donationFixValue" /> Euro
+			</div> 
+			<div> 
+				<label for="donationFixValue"><f:translate key="Donation_New_Comment" /></label>
+				<f:form.textarea property="comment" rows="5" cols="40" />
+			</div> 
+			<div>
+				<f:form.submit value="{f:translate(key:'Donation_New_Save')}" />
+				<f:form.hidden name="registration" value="{registration}" />
+			</div>
+		</div>
 	</f:form>
 </f:section>

@@ -39,6 +39,9 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persistence_Repository { }
+Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persistence_Repository {
+	protected $defaultOrderings = array ('distance' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING);
+	
+}
 
 ?>

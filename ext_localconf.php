@@ -41,4 +41,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
  */
 $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_ecdonationrun_double3'] = 'EXT:ec_donationrun/Classes/Utility/EvaluateDouble3.php';
 
+if (TYPO3_MODE=='FE'){
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['sr_feuser_register']['extendingTCA'][] = 'extbase';
+}
+
 ?>

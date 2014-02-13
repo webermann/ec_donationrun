@@ -40,29 +40,7 @@
 	 */
 
 Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extbase_Persistence_Repository {
-	
-	
 	protected $defaultOrderings = array ('run' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
-	
-		/**
-		 *
-		 * Finds all associations for an index view. The parent association can be specified
-		 * using the $parent parameter (NULL by default). All associations are ordered by the
-		 * association name in ascending order.
-		 *
-		 * @param  Tx_EcAssociation_Domain_Model_Registration $parent The parent association
-		 * @return Array<Tx_EcAssociation_Domain_Model_Registration>  The result list.
-		 *
-		 */
-
-	Public Function findForIndexView ( Tx_EcAssociation_Domain_Model_Registration $parent=NULL ) {
-
-		$query = $this->createQuery();
-		Return $query
-			//->matching($query->equals('registration', $parent ? $parent : Array(0,NULL) ))
-			->setOrderings(Array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
-			->execute();
-	}
 
 	
 	

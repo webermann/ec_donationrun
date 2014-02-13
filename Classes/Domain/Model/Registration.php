@@ -96,7 +96,6 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		  */
 
 	Public Function __construct() {
-		//$this->user = New Tx_Extbase_Persistence_ObjectStorage();
 		$this->donations = New Tx_Extbase_Persistence_ObjectStorage();
 	}
 
@@ -206,7 +205,17 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		/*
 		 * SETTERS
 		 */
+		/**
+		  *
+		  * Sets the run.
+		  * @param Tx_EcDonationrun_Domain_Model_Run $run The run
+		  * @return void
+		  *
+		  */
 
+	Public Function setRun(Tx_EcDonationrun_Domain_Model_Run $run) {
+		$this->run = $run;
+	}
 		/**
 		  *
 		  * Sets the user.
