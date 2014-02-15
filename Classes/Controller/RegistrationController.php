@@ -99,10 +99,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	Public Function indexAction() {
 		$registrations = NULL;
 		$userHasNoRegistration = true;
-		// TODO fildAllInFuture
 		foreach ($this->registrationRepository->findAll() as $registration) {
+			if ($registration->getRun()->getStart()->getTimestamp() < time()) {
+				continue;
+			}
 			$registrations[$registration->getRun()->getName()][] = $registration;
-			if ($registration->isCurrentFeUserEqualUser() && ($registration->getRun()->getStart()->getTimestamp() > time())) {
+			if ($registration->isCurrentFeUserEqualUser()) {
 				$userHasNoRegistration = false;
 			}
 		}

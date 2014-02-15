@@ -1,0 +1,32 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>Konfiguration</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <switchableControllerActions>
+            <TCEforms>
+              <label>Standardaktion des Plugins</label>
+              <config>
+                <type>select</type>
+                <items>
+                   <numIndex index="0">
+                     <numIndex index="0">Übersicht Teilnehmer</numIndex>
+                     <numIndex index="1">Registration->index</numIndex>
+                   </numIndex>
+                   <numIndex index="1">
+                     <numIndex index="0">Spenderübersicht für Läufer</numIndex>
+                     <numIndex index="1">Donation->index;Donation->new;Donation->create</numIndex>
+                   </numIndex>
+                 </items>
+              </config>
+            </TCEforms>
+          </switchableControllerActions>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

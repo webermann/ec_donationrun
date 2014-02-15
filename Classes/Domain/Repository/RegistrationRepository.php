@@ -43,7 +43,23 @@ Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extba
 	protected $defaultOrderings = array ('run' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
 
 	
-	
+		/**
+		 *
+		 * Find Registrations from User
+		 *
+		 * @param  Tx_Extbase_Domain_Model_FrontendUser $user The parent user
+		 * @return Array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
+		 *
+		 */
+
+	Public Function findRegistrationsFromUser($user) {
+		$query = $this->createQuery();
+		Return $query
+			->matching($query->equals('user', $user->getUid()))
+			->setOrderings(Array('crdate' => Tx_Extbase_Persistence_Query::ORDER_DESCENDING))
+			->execute();
+
+	}
 	
 }
 

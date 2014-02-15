@@ -117,13 +117,13 @@
 			<label index="Registration_Error_name_1238108067">Der Projektname muss mindestens 3 Zeichen lang sein.</label>
 
 				<!-- Donation: INDEX ACTION -->
-			<label index="Donation_Index_Title">Spende anzeigen: %s</label>
+			<label index="Donation_Index_Title">Spenden anzeigen: %s</label>
 			<label index="Donation_Index_Action_Back">Zurück</label>
-			<label index="Donation_Index_List_Member">Benutzer</label>
-			<label index="Donation_Index_List_Start">Startzeit</label>
-			<label index="Donation_Index_List_Stop">Stoppzeit</label>
-			<label index="Donation_Index_List_Diff">Aufgewendete Zeit</label>
+			<label index="Donation_Index_List_Donator">Spender</label>
+			<label index="Donation_Index_List_Donation">Spende pro km</label>
+			<label index="Donation_Index_List_FixDonation">Festbetrag</label>
 			<label index="Donation_Index_List_Comment">Kommentar</label>
+			<label index="Donation_Index_List_Options">Optionen</label>
 
 				<!-- Donation: NEW ACTION -->
 			<label index="Donation_New_Title">Neue Spende: %s</label>
@@ -136,7 +136,7 @@
 
 				<!-- Donation ERRORS -->
 			<label index="Donation_Error_comment_1221560718">Bitte geben Sie einen Kommentar für dieses Zeitpaar an.</label>
-			<label index="Donation_Error_1265721025">Die Stoppzeit muss hinter der Startzeit liegen.</label>
+			<label index="Donation_Error_1265721025">Es muss eine Spende pro km oder eine Festbetrag eingetragen sein.</label>
 
 				<!-- VIEWHELPERS: TIME UNITS -->
 			<label index="ViewHelper_Unit_Hours">Stunden</label>

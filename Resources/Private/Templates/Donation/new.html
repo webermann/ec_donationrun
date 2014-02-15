@@ -22,10 +22,26 @@
 		</f:form.errors>
 		
 		<div>
-			<div> 
-				<label for="name"><f:translate key="Donation_New_User" /></label> 
-				<span>{user.name}</span>
-			</div>
+			
+			<f:if condition="{isOwnRegistration}">
+				<f:then>
+					<div> 
+						<label for="firstName">Vorname</label>
+						<f:form.textfield  property="user.firstName" id="firstName" />
+					</div>
+					<div>
+						<label for="lastName">Nachname</label>
+						<f:form.textfield  property="user.lastName" id="lastName" />
+					</div>
+				</f:then>
+				<f:else>
+					<div> 
+						<label for="name"><f:translate key="Donation_New_User" /></label> 
+						<span>{user.name}</span>
+					</div>
+				</f:else>
+			</f:if>
+			
 			<div> 
 				<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
 				<span>{registration.name} ({registration.run.name} {registration.run.distance} km)</span>

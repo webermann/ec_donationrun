@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_donation'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_donation']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'donation_value, donation_fix_value ,mail_status, is_paid, comment, registration, user'
+		'showRecordFieldList' => 'donation_value, donation_fix_value, notification_via, mail_status, is_paid, comment, registration, user'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'donation_value, donation_fix_value, mail_status, is_paid, comment, registration, user')
+		'1' => array('showitem' => 'donation_value, donation_fix_value, notification_via, mail_status, is_paid, comment, registration, user')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -86,6 +86,17 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array(
 				'cols' => '40',
 		        'rows' => '5',
 				'eval' => 'trim'
+			)
+		),
+		'notification_via' => array(
+			'exclude' => 0,
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation.notification_via',
+			'config'  => array(
+				'type' => 'select',
+				'items' => array(
+				    array('E-Mail', 0),
+				    array('Brief', 1)
+				)
 			)
 		),
 		'mail_status' => array(

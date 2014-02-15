@@ -57,7 +57,13 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
 		 */
 	Protected $donationRepository;
-
+		
+	/**
+     * A FE User repository instance
+     * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+     */
+    protected $frontendUserRepository;
+    
 		/*
 		 * ACTION METHODS
 		 */
@@ -72,6 +78,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	Public Function initializeAction() {
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
+		$this->frontendUserRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
 	}
 
 
@@ -86,9 +93,18 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @return void
 		 *
 		 */
-	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration ) {
+	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration = NULL) {
+		// Check parameter and if null registration load from current user
+		if ($registration == NULL) {
+			$registrations = $this->registrationRepository->findRegistrationsFromUser($this->getCurrentFeUser());
+			$registration = $registrations->getFirst();
+		}
+		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
+		
 		$this->view->assign('registration' , $registration)
-		           ->assign('donations', $donationRepository->getDonationsForRegistration($registration));
+				   ->assign('donations', $donations)
+				   ->assign('donation_amount', Tx_EcDonationrun_Domain_Model_Registration::getDonationAmount($donations));
+		// TODO Add List with Registrations from previous years
 	}
 
 
@@ -105,14 +121,17 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 */
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL ) {
+	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
 			$this->redirectToUri('index.php?id='.$this->settings['loginPage'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
 
 		$this->view->assign('registration', $registration)
 		           ->assign('donation', $donation)
-		           ->assign('user', $this->getCurrentFeUser());
+		           ->assign('user', $this->getCurrentFeUser())
+		           // TODO ->assign('isOwnRegistration', $registration->isCurrentFeUserEqualUser());
+		           ->assign('isOwnRegistration', false);
+			
 	}
 
 		/**
@@ -124,10 +143,16 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 *
 		 */
 
-	Public Function createAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                               Tx_EcDonationrun_Domain_Model_Donation $donation ) {
+	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
+	                             Tx_EcDonationrun_Domain_Model_Donation $donation) {
+        $isOfflineDonation = false;
+		//if ($donation->getUser() == NULL) { TODO
+			//$isOfflineDonation = false;
+			$user = $this->getCurrentFeUser();
+		//}
+		//$user->add usergroup Donator
+		$this->frontendUserRepository->add($user);
 		
-		$user = $this->getCurrentFeUser();
 		$donation->setRegistration($registration);
 		$donation->setUser($user);
 		
@@ -137,8 +162,11 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		
 			# Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Spende gespeichert.');
-		
-		$this->redirect('index', 'Registration');
+		if ($isOfflineDonation) {
+			$this->redirect('index', 'Donation');
+		} else {
+			$this->redirect('index', 'Registration');
+		}
 	}
 
 
@@ -168,6 +196,9 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 			? $userRepository->findByUid( intval($GLOBALS['TSFE']->fe_user->user['uid']) )
 			: NULL;
 	}
+	
+
+	
 
 }
 

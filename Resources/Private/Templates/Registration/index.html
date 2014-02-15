@@ -6,9 +6,9 @@
 
 <f:section name="menu">
 	<f:if condition="{userHasNoRegistration}">
-	<ul>
-		<li><f:link.action action="new">Als Läufer anmelden</f:link.action></li>
-	</ul>
+		<ul>
+			<li><f:link.action action="new">Als Läufer anmelden</f:link.action></li>
+		</ul>
 	</f:if>
 </f:section>
 
@@ -20,9 +20,10 @@
 				<f:for each="{runs}" as="registration">	
 					<p>
 						<f:comment>
-						<f:link.action action="show" arguments="{registration : registration}">
-							{registration.name}
-						</f:link.action>
+							For Admin View
+							<f:link.action action="show" arguments="{registration : registration}">
+								{registration.name}
+							</f:link.action>
 						</f:comment>
 						{registration.name}
 						<f:link.action controller="Donation" action="new" arguments="{registration : registration}" class="ecdonationrun-donate">

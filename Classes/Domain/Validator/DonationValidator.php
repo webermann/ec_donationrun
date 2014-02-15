@@ -55,14 +55,12 @@ Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Val
 	
 	Public Function isValid($donation) {
 		
-		debug("hey ho");
-
-		If(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
+		if(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
 			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_Invalid', 'EcDonationrun'), 1265721022);
-		//If($donation->getStarttime() >= $donation->getStoptime())
-			//$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1265721025', 'EcDonationrun'), 1265721025);
+		if (($donation->getDonationValue() == 0) && ($donation->getDonationFixValue() == 0))
+			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1265721025', 'EcDonationrun'), 1265721025);
 
-		Return count($this->getErrors()) === 0;
+		return count($this->getErrors()) === 0;
 
 	}
 

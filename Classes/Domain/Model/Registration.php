@@ -74,12 +74,6 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		 */
 	Protected $runnerTime;
 	
-		/**
-		 * A list of all donations that are assigned to this registration
-		 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-		 * @lazy
-		 */
-	Protected $donations = NULL;
 
 		/*
 		 * CONSTRUCTORS
@@ -96,7 +90,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		  */
 
 	Public Function __construct() {
-		$this->donations = New Tx_Extbase_Persistence_ObjectStorage();
+		
 	}
 
 
@@ -170,38 +164,6 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		Return $this->tstamp;
 	}
 
-		/**
-		 *
-		 * Gets all donations for this registration.
-		 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-		 *
-		 */
-
-	Public Function getDonations() {
-		Return $this->donations;
-	}
-
-
-
-		/**
-		 *
-		 * Gets the total amount of this registration. This methods
-		 * accumulates the donation amount to this registration.
-		 *
-		 * @return double The total amount of donation of this registration
-		 *
-		 */
-
-	Public Function getDonation() {
-		$amount = 0.0;
-		/*
-		ForEach($this->getDonations() As $donation)
-			$amount += $donation->getDonationValue();
-			*/
-		Return $amount;
-	}
-
-
 		/*
 		 * SETTERS
 		 */
@@ -271,6 +233,30 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	}
 	
 	
+		/**
+		 *
+		 * Gets the total amount of this registration. This methods
+		 * accumulates the donation amount to this registration.
+		 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
+		 * @return double The total amount of donation of this registration
+		 *
+		 */
+
+	static public function getDonationAmount($donations) {
+		$amount = 0.0;
+		
+		ForEach($donations As $donation) {
+			if ($donation->getDonationFixValue() == 0) {
+				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+			} else {
+				$amount += $donation->getDonationFixValue();
+			}
+		}
+		
+		Return $amount;
+	}
+	
+	
 	/**
 	 * Load title for TCA label_userFunc
 	 *
@@ -283,6 +269,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
         
         $parameters['title'] = $user['first_name'].' '.$user['last_name'].' @ '.$run['name'];
 	}
+	
+	
 	
 }
 

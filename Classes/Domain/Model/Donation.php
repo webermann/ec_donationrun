@@ -51,7 +51,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	Protected $registration;
 	
 		/**
-		 * The user of this assignment.
+		 * The user of this donation.
 		 * @var Tx_Extbase_Domain_Model_FrontendUser
 		 * @lazy
 		 */

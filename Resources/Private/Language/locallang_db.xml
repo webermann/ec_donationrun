@@ -19,6 +19,7 @@
 			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Association Group</label>
 			<label index="tx_ecdonationrun_domain_model_donation.value">Donation Value</label>
 			<label index="tx_ecdonationrun_domain_model_donation.fixvalue">Donation fix Value</label>
+			<label index="tx_ecdonationrun_domain_model_donation.notification_via">Notification Via</label>
 			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mail Status</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Is Paid</label>
 			<label index="tx_ecdonationrun_domain_model_donation.comment">Comment</label>
@@ -37,8 +38,9 @@
 			<label index="tx_ecdonationrun_domain_model_donation.associationgroup">Gruppe</label>
 			<label index="tx_ecdonationrun_domain_model_donation.value">Spende pro km</label>
 			<label index="tx_ecdonationrun_domain_model_donation.fixvalue">Festbetrag</label>
-			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Ist bezahlt</label>
+			<label index="tx_ecdonationrun_domain_model_donation.notification_via">Benachrichtigung per</label>
 			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mailstatus</label>
+			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Ist bezahlt</label>
 			<label index="tx_ecdonationrun_domain_model_donation.comment">Kommentar</label>
 		</languageKey>
 	</data>
