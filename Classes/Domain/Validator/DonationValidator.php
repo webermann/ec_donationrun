@@ -47,13 +47,15 @@ Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Val
 		/**
 		 *
 		 * Determines if a timeset object is valid.
-		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The timeset object that
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The donation object that
 		 *                                                           is to be validated.
 		 * @return boolean TRUE, if the donation object is valid, otherwise FALSE.
 		 *
 		 */
 	
 	Public Function isValid($donation) {
+		
+		debug("hey ho");
 
 		If(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
 			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_Invalid', 'EcDonationrun'), 1265721022);

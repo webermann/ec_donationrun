@@ -107,8 +107,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL ) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			//TODO Add destination
-			$this->redirectToUri('index.php?id='.$this->settings['loginPage']);
+			$this->redirectToUri('index.php?id='.$this->settings['loginPage'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
 
 		$this->view->assign('registration', $registration)

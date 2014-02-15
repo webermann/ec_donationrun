@@ -98,10 +98,16 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function indexAction() {
 		$registrations = NULL;
+		$userHasNoRegistration = true;
+		// TODO fildAllInFuture
 		foreach ($this->registrationRepository->findAll() as $registration) {
 			$registrations[$registration->getRun()->getName()][] = $registration;
+			if ($registration->isCurrentFeUserEqualUser() && ($registration->getRun()->getStart()->getTimestamp() > time())) {
+				$userHasNoRegistration = false;
+			}
 		}
 		$this->view->assign('registrations', $registrations);
+		$this->view->assign('userHasNoRegistration', $userHasNoRegistration);
 	}
 
 
@@ -133,8 +139,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			//TODO Add destination
-			$this->redirectToUri('index.php?id='.$this->settings['loginPage']);
+			$this->redirectToUri('index.php?id='.$this->settings['loginPage'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
 		$this->view->assign('runs', $this->runRepository->findAll())
 				   ->assign('user', $this->getCurrentFeUser());
@@ -152,14 +157,11 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 */
 
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
-		debug($registration);
-		
 		$user = $this->getCurrentFeUser();
-		//$registration->setRun($run);
 		$registration->setUser($user);
 		
 		$this->registrationRepository->add($registration);
-		$this->flashMessages->add('Du bist für den Lauf '.$registration->getName().' angemeldet.');
+		$this->flashMessages->add('Du bist für den Lauf '.$registration->getRun()->getName().' angemeldet.');
 
 		$this->redirect('index', 'Registration');
 	}

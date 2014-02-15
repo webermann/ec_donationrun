@@ -252,6 +252,24 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 		$this->runnerTime = $runnerTime;
 	}
 	
+		/**
+		 *
+		 * Is login user equal registration user.
+		 * @return boolan
+		 *
+		 */
+
+	Public Function isCurrentFeUserEqualUser() {
+		if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 0) {
+			return false;
+		}
+		if (intval($GLOBALS['TSFE']->fe_user->user['uid']) == $this->getUser()->getUid()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	
 	/**
 	 * Load title for TCA label_userFunc
