@@ -63,6 +63,11 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
      * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
      */
     protected $frontendUserRepository;
+    /**
+     * A FE User Group repository instance
+     * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+     */
+    protected $frontendUserGroupRepository;
     
 		/*
 		 * ACTION METHODS
@@ -79,6 +84,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 		$this->frontendUserRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		$this->frontendUserGroupRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserGroupRepository');
 	}
 
 
@@ -116,22 +122,45 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
-		 * @dontvalidate $donation
 		 *
 		 */
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			$this->redirectToUri('index.php?id='.$this->settings['loginPage'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
+			if (isset($this->settings['loginPageDonator'])) {
+				$this->redirectToUri('index.php?id='.$this->settings['loginPageDonator'].
+					'&tx_ecdonationrun_pi1[registration]='.$registration->getUid().
+					'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
+			} else {
+				$this->redirectToUri('index.php');
+			}
 		}
-
+		
 		$this->view->assign('registration', $registration)
 		           ->assign('donation', $donation)
 		           ->assign('user', $this->getCurrentFeUser())
-		           // TODO ->assign('isOwnRegistration', $registration->isCurrentFeUserEqualUser());
-		           ->assign('isOwnRegistration', false);
-			
+		           ->assign('isOwnRegistration', $registration->isCurrentFeUserEqualUser());
+	}
+	
+		/**
+		 *
+		 * The new action. This method displays a form for creating a new donation.
+		 *
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @return void
+		 *
+		 */
+
+	Public Function newOfflineAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
+	                                 Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
+		if ($GLOBALS['TSFE']->loginUser != 0) {
+			// TODO
+		}
+		
+		$this->view->assign('registration', $registration)
+		           ->assign('donation', $donation);
 	}
 
 		/**
@@ -139,37 +168,120 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * The create action. Stores a new donation into the database.
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @param string $isOffline
 		 * @return void
 		 *
 		 */
 
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                             Tx_EcDonationrun_Domain_Model_Donation $donation) {
-        $isOfflineDonation = false;
-		//if ($donation->getUser() == NULL) { TODO
-			//$isOfflineDonation = false;
-			$user = $this->getCurrentFeUser();
-		//}
-		//$user->add usergroup Donator
-		$this->frontendUserRepository->add($user);
+	                             Tx_EcDonationrun_Domain_Model_Donation $donation,
+	                             $isOffline = '') {
+        
+	    if ($isOffline == 'isOffline' || $registration->isCurrentFeUserEqualUser()) {
+	    	$isOfflineDonation = true;
+			$user = $donation->getUser();
+		    $user->setName($user->getFirstName().' '.$user->getLastName());
+		    if ($user->getEmail() != '') {
+			    $user->setUsername($user->getEmail());
+		    } else {
+		    	$user->setUsername($user->getName());
+		    }
+		    $user->setPassword('NO_PASSWORT_SET_'.mt_rand());
+		    if (isset($this->settings['pidOfflineUser'])) {
+	    		$user->setPid($this->settings['pidOfflineUser']);
+		    } else {
+		    	$user->setPid($registration->getUser()->getPid());
+		    }
+	    } else {
+	    	$isOfflineDonation = false;
+	    	$user = $this->getCurrentFeUser();
+	    }
+	    
+		
+	    if (isset($this->settings['userGroupDonator'])) {
+	    	$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupDonator']);
+	    	if ($userGroup) {
+				$user->addUsergroup($userGroup);
+	    	}
+		}
+		
+        if ($user->_isNew()) {
+			$this->frontendUserRepository->add($user);
+		}
 		
 		$donation->setRegistration($registration);
 		$donation->setUser($user);
 		
+		
+		if ($isOffline == 'isOffline') {
+			$this->donationRepository->add($donation);
+			// TODO Send Mail
+			/*
+			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri('confirm','Donation',$donation);
+			debug($confirmLink);
+			$message = "Hallo " .$user->getName().",\n".
+				"bitte bestätige deine Spende über ".
+			
+			"für den Lauf von ".$donation->getRegistration()->getUser()->getName()." über foldenden Link\n\n".
+			$confirmLink
+			."\n\nVielen Dank\Running for Jesus";
+			
+			
+			mail($user->getEmail(), 'Bestätigung der Spende für Running for Jesus', $message);
+			*/
+			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
+
+			if (isset($this->settings['registrationIndex'])) {
+				$this->redirectToUri('index.php?id='.$this->settings['registrationIndex']);
+			} else {
+				$this->redirectToUri('index.php');
+			}
+		}
+		
+		$donation->setNotificationStatus(1);//TODO
 		$this->donationRepository->add($donation);
 		
-		
-		
-			# Print a success message and return to the registration detail view.
+		// Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Spende gespeichert.');
 		if ($isOfflineDonation) {
 			$this->redirect('index', 'Donation');
 		} else {
 			$this->redirect('index', 'Registration');
 		}
+		
 	}
-
-
+	
+	/**
+		 *
+		 * The create offline finish action.
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @return void
+		 *
+		 */
+	Public Function createOfflineFinishedAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
+	                             Tx_EcDonationrun_Domain_Model_Donation $donation) {
+		
+		$this->view->assign('registration', $registration)
+		           ->assign('donation', $donation);
+	}
+	
+	
+	/**
+		 *
+		 * The generate link action. generates a link for
+		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @param string $isOffline
+		 * @return void
+		 *
+		 */
+	Public Function generateOfflineDonationLinkAction() {
+		$formValues = t3lib_div::_GP('tx_ecdonationrun_pi1');
+		$registration = $this->registrationRepository->findByUid($formValues['registration']);
+		$this->view->assign('registration', $registration)
+		           ->assign('pageUid', $this->settings['registerOffline']);
+	}
 
 
 
@@ -177,7 +289,9 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * HELPER METHODS
 		 */
 
-
+		protected function getErrorFlashMessage() {
+		    return false;
+		}
 
 
 

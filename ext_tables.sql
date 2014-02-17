@@ -70,7 +70,7 @@ CREATE TABLE tx_ecdonationrun_domain_model_donation (
 	donation_value double(10,2) unsigned DEFAULT '0.00' NOT NULL,
 	donation_fix_value double(10,2) unsigned DEFAULT '0.00',
 	notification_via tinyint(4) unsigned DEFAULT '0',
-	mail_status tinyint(4) unsigned DEFAULT '0',
+	notification_status tinyint(4) unsigned DEFAULT '0',
 	is_paid tinyint(4) unsigned DEFAULT '0',
 	comment text,
 

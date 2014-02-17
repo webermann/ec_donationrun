@@ -9,28 +9,39 @@
 
 	<!-- MENU -->
 <f:section name="menu">
-	<f:comment>
 	<ul>
 		<li><f:link.action controller="Donation" action="new" arguments="{registration : registration}">Neue Spende hinzufügen</f:link.action></li>
 	</ul>
-	</f:comment>
 </f:section>
 
 <f:section name="content">
-	<table>
-		<tr>
-			<th><f:translate key="Donation_Index_List_Donator" /></th>
-			<th><f:translate key="Donation_Index_List_Donation" /></th>
-			<th><f:translate key="Donation_Index_List_FixDonation" /></th>
-			<th><f:translate key="Donation_Index_List_Comment" /></th>
-		</tr>
-		<f:for each="{donations}" as="donation">
+	<div class="donation_index">
+		<table>
 			<tr>
-				<td>{donation.user.name}</td>
-				<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency></td>
-				<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency></td>
-				<td>{donation.comment}</td>
+				<th><f:translate key="Donation_Index_List_Donator" /></th>
+				<th><f:translate key="Donation_Index_List_Donation" /></th>
+				<th><f:translate key="Donation_Index_List_Comment" /></th>
+				<f:comment>
+					<th><f:translate key="Donation_Index_List_Options" /></th>
+				</f:comment>
 			</tr>
-		</f:for>
-	</table>
+			<f:for each="{donations}" as="donation">
+				<tr>
+					<td>{donation.user.name}</td>
+					<f:if condition="{donation.donationfixvalue} == 0">
+						<f:then>
+							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km</td>
+						</f:then>
+						<f:else>
+							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
+						</f:else>
+					</f:if>
+					<td>{donation.comment}</td>
+					<f:comment>
+						<td>Bearbeiten, Löschen, Mail, Bezahlt, Erinnerung</td>
+					</f:comment>
+				</tr>
+			</f:for>
+		</table>
+	</div>
 </f:section>

@@ -141,7 +141,11 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			$this->redirectToUri('index.php?id='.$this->settings['loginPage'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
+			if (isset($this->settings['loginPageRunner'])) {
+				$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
+			} else {
+				$this->redirectToUri('index.php');
+			}
 		}
 		$this->view->assign('runs', $this->runRepository->findAll())
 				   ->assign('user', $this->getCurrentFeUser());
@@ -161,6 +165,9 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$user = $this->getCurrentFeUser();
 		$registration->setUser($user);
+		if (isset($this->settings['userGroupRunner'])) {
+			$user->addUsergroup($this->settings['userGroupRunner']);
+		}
 		
 		$this->registrationRepository->add($registration);
 		$this->flashMessages->add('Du bist für den Lauf '.$registration->getRun()->getName().' angemeldet.');

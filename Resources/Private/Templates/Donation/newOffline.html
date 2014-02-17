@@ -23,55 +23,45 @@
 			</f:form.errors>
 			
 			<div>
+				<div> 
+					<label for="firstName">Vorname</label>
+					<f:form.textfield property="user.firstName" id="firstName" />
+				</div>
+				<div>
+					<label for="lastName">Nachname</label>
+					<f:form.textfield property="user.lastName" id="lastName" />
+				</div>
+				<div> 
+					<label for="address">Adresse</label>
+					<f:form.textfield property="user.address" id="address" />
+				</div>
+				<div> 
+					<label for="city">Wohnort</label>
+					<f:form.textfield property="user.city" id="city" />
+				</div>
+				<div> 
+					<label for="zip">Postleitzahl</label>
+					<f:form.textfield property="user.zip" id="zip" />
+				</div>
+				<div> 
+					<label for="email">E-Mail</label>
+					<f:form.textfield property="user.email" id="email" />
+				</div>
 				
-				<f:if condition="{isOwnRegistration}">
-					<f:then>
-						<div> 
-							<label for="firstName">Vorname</label>
-							<f:form.textfield property="user.firstName" id="firstName" />
-						</div>
-						<div>
-							<label for="lastName">Nachname</label>
-							<f:form.textfield property="user.lastName" id="lastName" />
-						</div>
-						<div> 
-							<label for="address">Adresse</label>
-							<f:form.textfield property="user.address" id="address" />
-						</div>
-						<div> 
-							<label for="city">Wohnort</label>
-							<f:form.textfield property="user.city" id="city" />
-						</div>
-						<div> 
-							<label for="zip">Postleitzahl</label>
-							<f:form.textfield property="user.zip" id="zip" />
-						</div>
-						<div> 
-							<label for="email">E-Mail</label>
-							<f:form.textfield property="user.email" id="email" />
-						</div>
-						<f:comment>
-						<div> 
-							<label for="tx_ecassociation_group">EC-Gruppe</label>
-							<f:form.select property="user.tx_ecassociation_group" id="tx_ecassociation_group" 
-								options="{0:'tbd', 2:'tbd'}"/>
-						</div>
-						</f:comment>
-						
-						<div> 
-							<label for="notificationVia">Benachrichtigung per</label>
-							<f:form.select property="notificationVia" id="notificationVia" 
-								options="{0: 'E-Mail', 1: 'Brief'}"/>
-						</div>
-						
-					</f:then>
-					<f:else>
-						<div> 
-							<label for="name"><f:translate key="Donation_New_User" /></label> 
-							<span>{user.name}</span>
-						</div>
-					</f:else>
-				</f:if>
+<f:comment>
+	<div> 
+		<label for="tx_ecassociation_group">EC-Gruppe</label>
+		<f:form.select property="user.tx_ecassociation_group" id="tx_ecassociation_group" 
+			options="{0:'tbd', 2:'tbd'}"/>
+	</div>
+</f:comment>
+				
+				<div> 
+					<label for="notificationVia">Benachrichtigung per</label>
+					<f:form.select property="notificationVia" id="notificationVia" 
+						options="{0: 'E-Mail', 1: 'Brief'}"/>
+				</div>
+
 				
 				<div> 
 					<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
@@ -92,8 +82,10 @@
 				<div>
 					<f:form.submit value="{f:translate(key:'Donation_New_Save')}" />
 					<f:form.hidden name="registration" value="{registration}" />
+					<f:form.hidden name="isOffline" value="isOffline" />
 				</div>
 			</div>
+			
 		</f:form>
 	</div>
 </f:section>

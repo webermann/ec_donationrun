@@ -7,35 +7,36 @@
 <f:section name="menu" />
 
 <f:section name="content">
-	<f:form object="{registration}" action="create" name="registration">
-		<f:form.errors for="registration">
-			<div style="background-color: #fdd; padding: 12px;">
-				<f:if condition="{error.errors}"><f:then>
-					<f:for each="{error.errors}" as="fieldError">
-						<div><f:translate key="Registration_Error_{error.propertyName}_{fieldError.code}" default="{error.propertyName}_{fieldError.code}" /></div>
-					</f:for>
-				</f:then><f:else>
-					<div><f:translate key="Registration_Error_{error.code}" default="{error.code}" /></div>
-				</f:else></f:if>
-			</div>
-		</f:form.errors>
-		<div>
-			<div> 
-				<label for="name"><f:translate key="Registration_Form_Name" /></label> 
-				<span>{user.name}</span>
-			</div>
-			<div> 
-				<label for="run"><f:translate key="Registration_Form_Run" /></label> 
-				<f:form.select property="run" id="run" options="{runs}" optionLabelField="name" />
-			</div>
-			<div> 
-				<label for="runnerNumber"><f:translate key="Registration_Form_Runnernumber" /></label>
-				<f:form.textfield property="runnerNumber" id="runnerNumber" />
-			</div> 
+	<div class="registration_new">
+		<f:form object="{registration}" action="create" name="registration">
+			<f:form.errors for="registration">
+				<div style="background-color: #fdd; padding: 12px;">
+					<f:if condition="{error.errors}"><f:then>
+						<f:for each="{error.errors}" as="fieldError">
+							<div><f:translate key="Registration_Error_{error.propertyName}_{fieldError.code}" default="{error.propertyName}_{fieldError.code}" /></div>
+						</f:for>
+					</f:then><f:else>
+						<div><f:translate key="Registration_Error_{error.code}" default="{error.code}" /></div>
+					</f:else></f:if>
+				</div>
+			</f:form.errors>
 			<div>
-				<f:form.submit value="{f:translate(key:'Registration_Form_Save')}" />
+				<div> 
+					<label for="name"><f:translate key="Registration_Form_Name" /></label> 
+					<span>{user.name}</span>
+				</div>
+				<div> 
+					<label for="run"><f:translate key="Registration_Form_Run" /></label> 
+					<f:form.select property="run" id="run" options="{runs}" optionLabelField="name" />
+				</div>
+				<div> 
+					<label for="runnerNumber"><f:translate key="Registration_Form_Runnernumber" /></label>
+					<f:form.textfield property="runnerNumber" id="runnerNumber" />
+				</div> 
+				<div>
+					<f:form.submit value="{f:translate(key:'Registration_Form_Save')}" />
+				</div>
 			</div>
-		</div>
-	</f:form>
-	
+		</f:form>
+	</div>
 </f:section>

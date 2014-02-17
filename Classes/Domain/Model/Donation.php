@@ -71,7 +71,29 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 * @var float
 		 */
 	Protected $donationFixValue;
-
+	
+	
+		/**
+		 * A informaiton if the donator gets notification via E-Mail or Letter
+		 * 'items' => array(
+				    'E-Mail',
+				    'Brief')
+		 * @var int
+		 */
+	Protected $notificationVia;
+		
+		/**
+		 * A informaiton about the Notification Status
+		 * 'items' => array(
+				    'Bestätigungs Mail verschickt',
+				    'Spende bestätigt',
+				    'Zahlungsaufforderung',
+				    'Erinnerung',
+				    'Danke')
+		 * @var int
+		 */
+	Protected $notificationStatus;
+	
 		/**
 		 * A informaiton if the donator has paid the donatoin
 		 * @var boolean
@@ -92,7 +114,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		  *
 		  * Gets the registration
 		  * @return Tx_EcDonationrun_Domain_Model_Registration
-		  *
 		  */
 
 	Public Function getRegistration() {
@@ -103,7 +124,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 *
 		 * Gets the donator
 		 * @return Tx_Extbase_Domain_Model_FrontendUser
-		 *
 		 */
 
 	Public Function getUser() {
@@ -114,7 +134,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 *
 		 * Gets the runner
 		 * @return Tx_Extbase_Domain_Model_FrontendUser
-		 *
 		 */
 
 	Public Function getRunner() {
@@ -125,7 +144,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 *
 		 * Gets the donation value
 		 * @return float $donationValue
-		 *
 		 */
 
 	Public Function getDonationValue() {
@@ -136,7 +154,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 *
 		 * Gets the donation fix value
 		 * @return float $donationFixValue
-		 *
 		 */
 
 	Public Function getDonationFixValue() {
@@ -145,9 +162,28 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	
 		/**
 		 *
+		 * Gets notification via
+		 * @return int $notificationVia
+		 */
+
+	Public Function getNotificationVia() {
+		Return $this->notificationVia;
+	}
+	
+		/**
+		 *
+		 * Gets notification status
+		 * @return int $notificationStatus
+		 */
+
+	Public Function getNotificationStatus() {
+		Return $this->notificationStatus;
+	}
+	
+		/**
+		 *
 		 * Gets is paid
 		 * @return boolean $isPaid
-		 *
 		 */
 
 	Public Function getIsPaid() {
@@ -158,7 +194,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 *
 		 * Gets comment
 		 * @return string $comment
-		 *
 		 */
 
 	Public Function getComment() {
@@ -174,7 +209,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		  * Sets the registration of this donation.
 		  * @param Tx_EcDonationrun_Domain_Model_Registration $registration The assignment
 		  * @return void
-		  *
 		  */
 
 	Public Function setRegistration(Tx_EcDonationrun_Domain_Model_Registration $registration) {
@@ -186,7 +220,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 * Sets the donator of this donation.
 		 * @param Tx_Extbase_Domain_Model_FrontendUser $user The start time
 		 * @return void
-		 *
 		 */
 
 	Public Function setUser(Tx_Extbase_Domain_Model_FrontendUser $user) {
@@ -198,7 +231,6 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 * Sets value of this donation.
 		 * @param float $value
 		 * @return void
-		 *
 		 */
 
 	Public Function setDonationValue($value) {
@@ -211,39 +243,57 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 * Sets the fix value of this donation.
 		 * @param float $value
 		 * @return void
-		 *
 		 */
 
 	Public Function setDonationFixValue($value) {
 		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
 		$this->donationFixValue = $value;
 	}
-		
+
+		/**
+		 *
+		 * Sets notification via
+		 * @param int $value
+		 * @return void
+		 */
+
+	Public Function setNotificationVia($value) {
+		$this->notificationVia = $value;
+	}
+	
+		/**
+		 *
+		 * Gets notification status
+		 * @param int $value
+		 * @return void
+		 */
+
+	Public Function setNotificationStatus($value) {
+		$this->notificationStatus = $value;
+	}
 		
 		/**
 		 *
 		 * Sets the is paid flag.
 		 * @param boolean $value
 		 * @return void
-		 *
-		 */
-
-	Public Function setComment($value) {
-		$this->comment = $value;
-	}
-	
-		/**
-		 *
-		 * Sets the comment.
-		 * @param string $comment The is paid flag
-		 * @return void
-		 *
 		 */
 
 	Public Function setIsPaid($isPaid) {
 		$this->isPaid = $isPaid;
 	}
 
+		/**
+		 *
+		 * Sets the comment.
+		 * @param string $comment
+		 * @return void
+		 */
+
+	Public Function setComment($value) {
+		$this->comment = $value;
+	}
+	
 }
 
 ?>

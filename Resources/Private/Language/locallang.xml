@@ -120,8 +120,7 @@
 			<label index="Donation_Index_Title">Spenden anzeigen: %s</label>
 			<label index="Donation_Index_Action_Back">Zurück</label>
 			<label index="Donation_Index_List_Donator">Spender</label>
-			<label index="Donation_Index_List_Donation">Spende pro km</label>
-			<label index="Donation_Index_List_FixDonation">Festbetrag</label>
+			<label index="Donation_Index_List_Donation">Spende</label>
 			<label index="Donation_Index_List_Comment">Kommentar</label>
 			<label index="Donation_Index_List_Options">Optionen</label>
 
@@ -136,7 +135,15 @@
 
 				<!-- Donation ERRORS -->
 			<label index="Donation_Error_comment_1221560718">Bitte geben Sie einen Kommentar für dieses Zeitpaar an.</label>
-			<label index="Donation_Error_1265721025">Es muss eine Spende pro km oder eine Festbetrag eingetragen sein.</label>
+			<label index="Donation_Error_1392464794">Es muss eine Spende pro km oder eine Festbetrag eingetragen sein.</label>
+			
+			<label index="Donation_Error_1392551500">Bitte gib einen Vornamen ein!</label>
+			<label index="Donation_Error_1392551501">Bitte gib einen Nachnamen ein!</label>
+			<label index="Donation_Error_1392551502">Bitte gib eine Adresse ein!</label>
+			<label index="Donation_Error_1392551503">Bitte gib einen Wohnort ein!</label>
+			<label index="Donation_Error_1392551504">Bitte gib eine Postleitzahl ein!</label>
+			<label index="Donation_Error_1392551505">Bitte gib eine E-Mail Adresse ein!</label>
+			
 
 				<!-- VIEWHELPERS: TIME UNITS -->
 			<label index="ViewHelper_Unit_Hours">Stunden</label>

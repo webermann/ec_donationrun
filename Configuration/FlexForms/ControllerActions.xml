@@ -15,11 +15,15 @@
                 <items>
                    <numIndex index="0">
                      <numIndex index="0">Übersicht Teilnehmer</numIndex>
-                     <numIndex index="1">Registration->index</numIndex>
+                     <numIndex index="1">Registration->index;Registration->new;Registration->create;Donation->new;Donation->create</numIndex>
                    </numIndex>
                    <numIndex index="1">
                      <numIndex index="0">Spenderübersicht für Läufer</numIndex>
                      <numIndex index="1">Donation->index;Donation->new;Donation->create</numIndex>
+                   </numIndex>
+                   <numIndex index="2">
+                     <numIndex index="0">Spenden ohne Login</numIndex>
+                     <numIndex index="1">Donation->generateOfflineDonationLink;Donation->new;Donation->newOffline;Donation->create</numIndex>
                    </numIndex>
                  </items>
               </config>

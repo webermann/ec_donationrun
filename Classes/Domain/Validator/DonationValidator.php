@@ -58,12 +58,27 @@ Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Val
 		if(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
 			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_Invalid', 'EcDonationrun'), 1265721022);
 		if (($donation->getDonationValue() == 0) && ($donation->getDonationFixValue() == 0))
-			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1265721025', 'EcDonationrun'), 1265721025);
-
+			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392464794', 'EcDonationrun'), 1392464794);
+		
+		if ($donation->getUser() != NULL) {
+			if (!is_string($donation->getUser()->getFirstName()) || (strlen($donation->getUser()->getFirstName()) < 2))
+				$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551500', 'EcDonationrun'), 1392551500);
+			if (!is_string($donation->getUser()->getLastName()) || (strlen($donation->getUser()->getLastName()) < 2))
+				$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551501', 'EcDonationrun'), 1392551501);
+			if (!is_string($donation->getUser()->getAddress()) || (strlen($donation->getUser()->getAddress()) < 5))
+				$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551502', 'EcDonationrun'), 1392551502);
+			if (!is_string($donation->getUser()->getCity()) || (strlen($donation->getUser()->getCity()) < 2))
+				$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551503', 'EcDonationrun'), 1392551503);
+			if (!is_string($donation->getUser()->getZip()) || (strlen($donation->getUser()->getZip()) != 5))
+				$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551504', 'EcDonationrun'), 1392551504);
+			if ($donation->getNotificationVia() == 0 || ($donation->getUser()->getEmail() != '')) { // E-Mail
+				$emailValidator = new Tx_Extbase_Validation_Validator_EmailAddressValidator();
+				if (!$emailValidator->isValid($donation->getUser()->getEmail()))
+					$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_1392551505', 'EcDonationrun'), 1392551505);
+			}
+		}
 		return count($this->getErrors()) === 0;
-
 	}
-
 }
 
 ?>

@@ -31,9 +31,9 @@ If(!defined('TYPO3_MODE')) Die ('Access denied.');
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY, 'Pi1',
 	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
-	        'Donation' => 'index,new,create' ),
+	        'Donation' => 'index,new,create,generateOfflineDonationLink' ),
 	Array ( 'Registration' => 'index,show,new,create,delete,edit,update',
-	        'Donation' => 'index,new,create' )
+	        'Donation' => 'index,new,create,generateOfflineDonationLink' )
 );
 
 /**

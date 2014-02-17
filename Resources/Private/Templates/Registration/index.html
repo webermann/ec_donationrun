@@ -13,27 +13,29 @@
 </f:section>
 
 <f:section name="content">
-	<f:if condition="{registrations}">
-		<f:then>
-			<f:for each="{registrations}" as="runs" key="title">
-				<h3>{title}</h3>
-				<f:for each="{runs}" as="registration">	
-					<p>
-						<f:comment>
-							For Admin View
-							<f:link.action action="show" arguments="{registration : registration}">
-								{registration.name}
+	<div class="registration_new">
+		<f:if condition="{registrations}">
+			<f:then>
+				<f:for each="{registrations}" as="runs" key="title">
+					<h3>{title}</h3>
+					<f:for each="{runs}" as="registration">	
+						<p>
+							<f:comment>
+								For Admin View
+								<f:link.action action="show" arguments="{registration : registration}">
+									{registration.name}
+								</f:link.action>
+							</f:comment>
+							{registration.name}
+							<f:link.action controller="Donation" action="new" arguments="{registration : registration}" class="ecdonationrun-donate">
+								Spenden
 							</f:link.action>
-						</f:comment>
-						{registration.name}
-						<f:link.action controller="Donation" action="new" arguments="{registration : registration}" class="ecdonationrun-donate">
-							Spenden
-						</f:link.action>
-					</p>
+						</p>
+					</f:for>
 				</f:for>
-			</f:for>
-		</f:then><f:else>
-			<p>Keine Läufer gefunden</p>
-		</f:else>
-	</f:if>
+			</f:then><f:else>
+				<p>Keine Läufer gefunden</p>
+			</f:else>
+		</f:if>
+	</div>
 </f:section>
