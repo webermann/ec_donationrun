@@ -97,13 +97,17 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration for which the donations are to be
 		 *                                                           displayed for.
 		 * @return void
-		 *
+		 * @dontvalidate $registration
 		 */
 	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration = NULL) {
 		// Check parameter and if null registration load from current user
 		if ($registration == NULL) {
 			$registrations = $this->registrationRepository->findRegistrationsFromUser($this->getCurrentFeUser());
 			$registration = $registrations->getFirst();
+			if ($registration == NULL) {
+				$this->flashMessages->add('Bitte erst für einen Lauf anmelden.');
+				$this->redirect('index', 'Registration', 'ecdonationrun', NULL, $this->settings['registrationIndex']);
+			}
 		}
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
 		
@@ -122,7 +126,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
-		 *
+		 * @dontvalidate $donation
 		 */
 
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
@@ -150,7 +154,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
-		 *
+		 * @dontvalidate $donation
 		 */
 
 	Public Function newOfflineAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
@@ -170,7 +174,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @param string $isOffline
 		 * @return void
-		 *
+		 * @dontvalidate $isOffline
 		 */
 
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
@@ -181,11 +185,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	    	$isOfflineDonation = true;
 			$user = $donation->getUser();
 		    $user->setName($user->getFirstName().' '.$user->getLastName());
-		    if ($user->getEmail() != '') {
-			    $user->setUsername($user->getEmail());
-		    } else {
-		    	$user->setUsername($user->getName());
-		    }
+		    $user->setUsername($user->getName().'-anonymous');
 		    $user->setPassword('NO_PASSWORT_SET_'.mt_rand());
 		    if (isset($this->settings['pidOfflineUser'])) {
 	    		$user->setPid($this->settings['pidOfflineUser']);
@@ -196,41 +196,65 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	    	$isOfflineDonation = false;
 	    	$user = $this->getCurrentFeUser();
 	    }
-	    
-		
 	    if (isset($this->settings['userGroupDonator'])) {
 	    	$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupDonator']);
 	    	if ($userGroup) {
 				$user->addUsergroup($userGroup);
 	    	}
 		}
-		
         if ($user->_isNew()) {
 			$this->frontendUserRepository->add($user);
 		}
-		
 		$donation->setRegistration($registration);
 		$donation->setUser($user);
-		
 		
 		if ($isOffline == 'isOffline') {
 			$this->donationRepository->add($donation);
 			// TODO Send Mail
-			/*
+			
 			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri('confirm','Donation',$donation);
+			
+			debug($this->settings['cryptKey']);
+			
+			$key = hash('sha256', $this->settings['cryptKey'], true);
+			$key_size =  strlen($key);
+			
+   			debug("Key size: " . $key_size);
+   			
+   			
+			if (!defined('MCRYPT_RIJNDAEL_128')) throw new Exception('The MCRYPT_RIJNDAEL_128 algorithm is required (PHP 5.3).');
+			
+			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+    		
+    		debug($iv);
+			
+			$ciphertext =  mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, "Hallo dies ist ein Test",MCRYPT_MODE_CBC, $iv);
+			$ciphertext = $iv.$ciphertext;
+			$ciphertext_base64 = base64_encode($ciphertext);
+			debug($ciphertext_base64);
+			
+			$ciphertext_dec = base64_decode($ciphertext_base64);
+			$iv_dec = substr($ciphertext_dec, 0, $iv_size);
+			$ciphertext_dec = substr($ciphertext_dec, $iv_size);
+			
+			$plaintext = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $ciphertext_dec,MCRYPT_MODE_CBC, $iv_dec);
+			debug($plaintext);
+			
 			debug($confirmLink);
 			$message = "Hallo " .$user->getName().",\n".
 				"bitte bestätige deine Spende über ".
 			
-			"für den Lauf von ".$donation->getRegistration()->getUser()->getName()." über foldenden Link\n\n".
-			$confirmLink
-			."\n\nVielen Dank\Running for Jesus";
+				"für den Lauf von ".$donation->getRegistration()->getUser()->getName()." über foldenden Link\n\n".
+				$confirmLink
+				."\n\nVielen Dank\Running for Jesus";
 			
 			
 			mail($user->getEmail(), 'Bestätigung der Spende für Running for Jesus', $message);
-			*/
-			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
 
+			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
+return;
+//TODO
 			if (isset($this->settings['registrationIndex'])) {
 				$this->redirectToUri('index.php?id='.$this->settings['registrationIndex']);
 			} else {
@@ -254,16 +278,18 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	/**
 		 *
 		 * The create offline finish action.
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
 		 *
 		 */
-	Public Function createOfflineFinishedAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
-	                             Tx_EcDonationrun_Domain_Model_Donation $donation) {
+	Public Function confirmAction() {
 		
-		$this->view->assign('registration', $registration)
-		           ->assign('donation', $donation);
+		
+		debug($_GET);
+		
+		
+		
+		
+		$this->view->assign('donation', $donation);
 	}
 	
 	

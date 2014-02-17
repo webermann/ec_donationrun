@@ -63,7 +63,11 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
 		 */
 	Protected $userRepository;
-
+	/**
+     * A FE User Group repository instance
+     * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+     */
+    protected $frontendUserGroupRepository;
 		/*
 		 * ACTION METHODS
 		 */
@@ -85,6 +89,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->runRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
 		$this->userRepository    =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		$this->frontendUserGroupRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserGroupRepository');
 	}
 
 
@@ -103,6 +108,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			if ($registration->getRun()->getStart()->getTimestamp() < time()) {
 				continue;
 			}
+			if ($registration->getUser()->getName() == NULL) {
+				continue;
+			}
+			
+			debug($registration->getUser());
+			
 			$registrations[$registration->getRun()->getName()][] = $registration;
 			if ($registration->isCurrentFeUserEqualUser()) {
 				$userHasNoRegistration = false;
@@ -112,7 +123,31 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->view->assign('userHasNoRegistration', $userHasNoRegistration);
 	}
 
+		/**
+		 *
+		 * The generateNewLink action. Displays a link to new registration.
+		 * @return void
+		 *
+		 */
 
+	Public Function generateNewLinkAction() {
+		$registrations = NULL;
+		$userHasNoRegistration = true;
+		foreach ($this->registrationRepository->findAll() as $registration) {
+			if ($registration->getRun()->getStart()->getTimestamp() < time()) {
+				continue;
+			}
+			if ($registration->getUser()->getName() == NULL) {
+				continue;
+			}
+			$registrations[$registration->getRun()->getName()][] = $registration;
+			if ($registration->isCurrentFeUserEqualUser()) {
+				$userHasNoRegistration = false;
+			}
+		}
+		$this->view->assign('userHasNoRegistration', $userHasNoRegistration)
+				   ->assign('pageUid', $this->settings['registrationIndex']);
+	}
 
 		/**
 		 *
@@ -166,11 +201,14 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$user = $this->getCurrentFeUser();
 		$registration->setUser($user);
 		if (isset($this->settings['userGroupRunner'])) {
-			$user->addUsergroup($this->settings['userGroupRunner']);
+			$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupRunner']);
+	    	if ($userGroup) {
+				$user->addUsergroup($userGroup);
+	    	}
 		}
 		
 		$this->registrationRepository->add($registration);
-		$this->flashMessages->add('Du bist für den Lauf '.$registration->getRun()->getName().' angemeldet.');
+		$this->flashMessages->add('Du bist für den Lauf "'.$registration->getRun()->getName().'" angemeldet.');
 
 		$this->redirect('index', 'Registration');
 	}

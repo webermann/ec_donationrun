@@ -11,7 +11,7 @@
 		<f:form object="{donation}" action="create" name="donation">
 	
 			<f:form.errors for="donation">
-				<div style="background-color: #fdd; padding: 12px;">
+				<div class="ecdonationrun-exception">
 					<f:if condition="{error.errors}"><f:then>
 						<f:for each="{error.errors}" as="fieldError">
 							<div><f:translate key="Donation_Error_{error.propertyName}_{fieldError.code}" default="{error.propertyName}_{fieldError.code}" /></div>
@@ -80,7 +80,11 @@
 				<div> 
 					<label for="donationValue"><f:translate key="Donation_New_DonationValue" /></label>
 					<f:form.textfield  property="donationValue" id="donationValue" /> Euro
-				</div> 
+				</div>
+				<div> 
+					<span>oder</span>
+				</div>
+				 
 				<div> 
 					<label for="donationFixValue"><f:translate key="Donation_New_DonationFixValue" /></label>
 					<f:form.textfield  property="donationFixValue" id="donationFixValue" /> Euro

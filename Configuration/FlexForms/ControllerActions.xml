@@ -25,6 +25,14 @@
                      <numIndex index="0">Spenden ohne Login</numIndex>
                      <numIndex index="1">Donation->generateOfflineDonationLink;Donation->new;Donation->newOffline;Donation->create</numIndex>
                    </numIndex>
+                   <numIndex index="3">
+                     <numIndex index="0">Bestätigung ohne Login</numIndex>
+                     <numIndex index="1">Donation->confirm</numIndex>
+                   </numIndex>
+                   <numIndex index="4">
+                     <numIndex index="0">Link zur Registrierung</numIndex>
+                     <numIndex index="1">Registration->generateNewLink</numIndex>
+                   </numIndex>
                  </items>
               </config>
             </TCEforms>

@@ -131,7 +131,7 @@
 			<label index="Donation_New_DonationValue">Spende pro km</label>
 			<label index="Donation_New_DonationFixValue">Festbetrag</label>
 			<label index="Donation_New_Comment">Kommentar</label>
-			<label index="Donation_New_Save">Speichern</label>
+			<label index="Donation_New_Save">Jetzt verbindlich Spenden</label>
 
 				<!-- Donation ERRORS -->
 			<label index="Donation_Error_comment_1221560718">Bitte geben Sie einen Kommentar für dieses Zeitpaar an.</label>
