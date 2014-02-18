@@ -110,7 +110,6 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 			}
 		}
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
-		
 		$this->view->assign('registration' , $registration)
 				   ->assign('donations', $donations)
 				   ->assign('donation_amount', Tx_EcDonationrun_Domain_Model_Registration::getDonationAmount($donations));
@@ -209,7 +208,20 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		$donation->setUser($user);
 		
 		if ($isOffline == 'isOffline') {
+			$donation->
 			$this->donationRepository->add($donation);
+			
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				// TODO Set Admin Address
+				array('hauke@webermann.net'=>'Hauke Webermann'),
+				"Info Spendenzusage (Ohne Login)",
+				"Hallo,".
+				"\nes ist eine neue Spende (ohne Login) eingegangen.".
+				"\nSpender: ".$donation->getUser()->getName().
+				"\nSpende:  ".$this->getRealDonation($donation).
+				"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
+				"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+			
 			// TODO Send Mail
 			
 			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri('confirm','Donation',$donation);
@@ -249,8 +261,18 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 				$confirmLink
 				."\n\nVielen Dank\Running for Jesus";
 			
-			
-			mail($user->getEmail(), 'Bestätigung der Spende für Running for Jesus', $message);
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				array($donation->getUser()->getEmail() => $donation->getUser()->getName()),
+				"Spendenzusage",
+				"Hallo ".$donation->getUser()->getName().",\n".
+				
+				"herzlichen Dank für deine Spendenzusage bei Running for Jesus in Höhe von ".$this->getRealDonation($donation)." .\n".
+				$donation->getRegistration()->getUser()->getName()." läuft/skatet/walkt am ".
+				date("d.m.Y", $donation->getRegistration()->getRun()->getStart()->getTimestamp())." ".
+				$donation->getRegistration()->getRun()->getDistance()." km für ".
+				"die sozial-diakonischen Stadtteilarbeit 'Die PLiNKe' in Hannover und den niedersächsischen EC-Jugendverband.\n\n".
+				"Bitte klicke folgenden Link, um Deine Spendenzusage zu bestätigen:\n".$confirmLink.
+				"\n\nNach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!");
 
 			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
 return;
@@ -264,6 +286,37 @@ return;
 		
 		$donation->setNotificationStatus(1);//TODO
 		$this->donationRepository->add($donation);
+		if (!$isOfflineDonation) {
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				array($donation->getUser()->getEmail() => $donation->getUser()->getName()),
+				"Spendenzusage",
+				"Hallo ".$donation->getUser()->getName().",\n".
+				
+				"herzlichen Dank für deine Spendenzusage bei Running for Jesus in Höhe von ".$this->getRealDonation($donation)." .\n".
+				$donation->getRegistration()->getUser()->getName()." läuft/skatet/walkt am ".
+				date("d.m.Y", $donation->getRegistration()->getRun()->getStart()->getTimestamp())." ".
+				$donation->getRegistration()->getRun()->getDistance()." km für ".
+				"die sozial-diakonischen Stadtteilarbeit 'Die PLiNKe' in Hannover und den niedersächsischen EC-Jugendverband.\n".
+				"Nach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!");
+		}
+			
+		Tx_EcDonationrun_Utility_SendMail::sendMail(
+			array($donation->getRegistration()->getUser()->getEmail() => $donation->getRegistration()->getUser()->getName()),
+			"Info Spendenzusage",
+			"Hallo ".$donation->getRegistration()->getUser()->getName().",\n".
+			$donation->getUser()->getName(). " wird dich bei Running for Jesus mit ".
+			$this->getRealDonation($donation)." unterstützen.");
+		
+		Tx_EcDonationrun_Utility_SendMail::sendMail(
+			// TODO Set Admin Address
+			array('hauke@webermann.net'=>'Hauke Webermann'),
+			"Info Spendenzusage",
+			"Hallo,".
+			"\nes ist eine neue Spende eingegangen.".
+			"\nSpender: ".$donation->getUser()->getName().
+			"\nSpende:  ".$this->getRealDonation($donation).
+			"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
+			"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
 		
 		// Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Spende gespeichert.');
@@ -296,9 +349,6 @@ return;
 	/**
 		 *
 		 * The generate link action. generates a link for
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
-		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
-		 * @param string $isOffline
 		 * @return void
 		 *
 		 */
@@ -318,8 +368,22 @@ return;
 		protected function getErrorFlashMessage() {
 		    return false;
 		}
-
-
+		
+		/**
+		 *
+		 * Returns the real Donation as String
+		 *
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @return String
+		 */
+		protected function getRealDonation(Tx_EcDonationrun_Domain_Model_Donation $donation) {
+			if ($donation->getDonationFixValue() == 0) {
+				return number_format($donation->getDonationValue(), 2, ',', '.')." Euro pro km";
+			} else {
+				return number_format($donation->getDonationFixValue(), 2, ',', '.')." Euro Festbetrag";
+			}
+			
+		}
 
 		/**
 		 *

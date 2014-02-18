@@ -203,8 +203,30 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				$user->addUsergroup($userGroup);
 	    	}
 		}
-		
 		$this->registrationRepository->add($registration);
+		
+		Tx_EcDonationrun_Utility_SendMail::sendMail(
+			array($registration->getUser()->getEmail() => $registration->getUser()->getName()),
+			"Anmeldung für einen Lauf",
+			"Hallo ".$registration->getUser()->getName().",\n".
+			"hiermit bestätigen wir, dass du dich für den ".
+			$registration->getRun()->getName()." am ".
+			date("d.m.Y", $registration->getRun()->getStart()->getTimestamp()).
+			" angemeldet hast.\n".
+			"Wir freuen uns sehr, dass du Running for Jesus durch deinen sportlichen Einsatz unterstützt.\n".
+			"Im internen Bereich der Homepage bekommst du wertvolle Tipps für dein Training und deine Sponsorensuche. ".
+			"Dort hast du auch unter 'Meine Spender' die Möglichkeit, deine Spenderliste zu verwalten.");
+		
+		
+		Tx_EcDonationrun_Utility_SendMail::sendMail(
+			// TODO Set Admin Address
+			array('hauke@webermann.net'=>'Hauke Webermann'),
+			"Info Registrierung",
+			"Hallo,".
+			"\nes hat sich ein neuer Läufer angemeldet.".
+			"\nLäufer: ".$registration->getUser()->getName().
+			"\nLauf:   ".$registration->getRun()->getName());
+		
 		$this->flashMessages->add('Du bist für den Lauf "'.$registration->getRun()->getName().'" angemeldet.');
 
 		$this->redirect('index', 'Registration');
