@@ -23,7 +23,10 @@
 							<f:comment>
 								For Admin View
 								<f:link.action action="show" arguments="{registration : registration}">
-									{registration.name} ({registration.user.associationGroup})
+									{registration.name} 
+									<f:comment>
+									({registration.user.associationGroup})
+									</f:comment>
 								</f:link.action>
 							</f:comment>
 							{registration.name}

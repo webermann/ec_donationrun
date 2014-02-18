@@ -111,9 +111,6 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
-			
-			debug($registration->getUser());
-			
 			$registrations[$registration->getRun()->getName()][] = $registration;
 			if ($registration->isCurrentFeUserEqualUser()) {
 				$userHasNoRegistration = false;

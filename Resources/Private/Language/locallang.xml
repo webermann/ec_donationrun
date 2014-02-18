@@ -111,7 +111,7 @@
 			<label index="Registration_Form_Name">Läufer</label>
 			<label index="Registration_Form_Runnernumber">Läufernummer</label>
 			<label index="Registration_Form_Runnertime">Läuferzeit</label>
-			<label index="Registration_Form_Save">Speichern</label>
+			<label index="Registration_Form_Save">Jetzt Anmelden</label>
 
 				<!-- Registration ERRORS -->
 			<label index="Registration_Error_name_1238108067">Der Projektname muss mindestens 3 Zeichen lang sein.</label>
