@@ -220,7 +220,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		
 		Tx_EcDonationrun_Utility_SendMail::sendMail(
 			// TODO Set Admin Address
-			array('hauke@webermann.net'=>'Hauke Webermann'),
+			array('verwaltung@runningforjesus.de'),
 			"Info Registrierung",
 			"Hallo,".
 			"\nes hat sich ein neuer Läufer angemeldet.".

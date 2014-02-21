@@ -213,7 +213,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 			
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
 				// TODO Set Admin Address
-				array('hauke@webermann.net'=>'Hauke Webermann'),
+				array('verwaltung@runningforjesus.de'),
 				"Info Spendenzusage (Ohne Login)",
 				"Hallo,".
 				"\nes ist eine neue Spende (ohne Login) eingegangen.".
@@ -309,7 +309,7 @@ return;
 		
 		Tx_EcDonationrun_Utility_SendMail::sendMail(
 			// TODO Set Admin Address
-			array('hauke@webermann.net'=>'Hauke Webermann'),
+			array('verwaltung@runningforjesus.de'),
 			"Info Spendenzusage",
 			"Hallo,".
 			"\nes ist eine neue Spende eingegangen.".
