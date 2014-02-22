@@ -34,7 +34,7 @@
 	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Utility
-	 * @version    $Id: EvaluateDouble3.php 16 2014-02-07 08:29:59Z hauke $
+	 * @version    $Id$
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
