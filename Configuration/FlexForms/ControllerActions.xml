@@ -15,24 +15,33 @@
                 <items>
                    <numIndex index="0">
                      <numIndex index="0">Übersicht Teilnehmer</numIndex>
-                     <numIndex index="1">Registration->index;Registration->new;Registration->create;Donation->new;Donation->create</numIndex>
+                     <numIndex index="1">Registration->index</numIndex>
                    </numIndex>
                    <numIndex index="1">
-                     <numIndex index="0">Spenderübersicht für Läufer</numIndex>
-                     <numIndex index="1">Donation->index;Donation->new;Donation->create</numIndex>
-                   </numIndex>
-                   <numIndex index="2">
-                     <numIndex index="0">Spenden ohne Login</numIndex>
-                     <numIndex index="1">Donation->generateOfflineDonationLink;Donation->new;Donation->newOffline;Donation->create</numIndex>
-                   </numIndex>
-                   <numIndex index="3">
-                     <numIndex index="0">Bestätigung ohne Login</numIndex>
-                     <numIndex index="1">Donation->confirm</numIndex>
-                   </numIndex>
-                   <numIndex index="4">
                      <numIndex index="0">Link zur Registrierung</numIndex>
                      <numIndex index="1">Registration->generateNewLink</numIndex>
                    </numIndex>
+                   <numIndex index="2">
+                     <numIndex index="0">Teilnehmer Registrierung</numIndex>
+                     <numIndex index="1">Registration->new;Registration->create</numIndex>
+                   </numIndex>
+                   <numIndex index="3">
+                     <numIndex index="0">Spenderübersicht für Läufer</numIndex>
+                     <numIndex index="1">Donation->index;</numIndex>
+                   </numIndex>
+                   <numIndex index="4">
+                     <numIndex index="0">Spenden ohne Login</numIndex>
+                     <numIndex index="1">Donation->generateNoLoginLink;Donation->newNoLogin;Donation->create</numIndex>
+                   </numIndex>
+                   <numIndex index="5">
+                     <numIndex index="0">Bestätigung ohne Login</numIndex>
+                     <numIndex index="1">Donation->confirmNoLogin</numIndex>
+                   </numIndex>
+                   <numIndex index="6">
+                     <numIndex index="0">Neue Spende</numIndex>
+                     <numIndex index="1">Donation->new;Donation->create</numIndex>
+                   </numIndex>
+                   
                  </items>
               </config>
             </TCEforms>

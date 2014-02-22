@@ -1,0 +1,24 @@
+<f:layout name="main" />
+
+	<!-- TITLE -->
+<f:section name="title"> 
+</f:section>
+
+	<!-- MENU -->
+<f:section name="menu">
+	
+</f:section>
+
+<f:section name="content">
+	<div class="donation_confirm">
+		<f:if condition="{confirmStatus}">
+			<f:then>
+				Deine Spende wurde erfolgreich bestätigt.
+			</f:then>
+			<f:else>
+				Es ist ein Fehler beim Bestätigen der Spende aufgetreten. Bitte wende dich an: 
+				<f:link.email email="verwaltung@runningforjesus.de" />
+			</f:else>
+		</f:if>
+	</div>
+</f:section>

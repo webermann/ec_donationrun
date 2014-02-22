@@ -1,0 +1,9 @@
+<f:if condition="{registration}">
+	<f:then>
+		<f:link.action pageUid="{pageUid}" action="newNoLogin" controller="Donation" 
+			arguments="{registration:registration}">Spenden ohne Login</f:link.action>
+	</f:then>
+	<f:else>
+		<f:link.action pageUid="{pageUid}" action="newNoLogin" controller="Donation">Spenden ohne Login</f:link.action>
+	</f:else>
+</f:if>

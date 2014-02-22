@@ -112,7 +112,8 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
 		$this->view->assign('registration' , $registration)
 				   ->assign('donations', $donations)
-				   ->assign('donation_amount', Tx_EcDonationrun_Domain_Model_Registration::getDonationAmount($donations));
+				   ->assign('donation_amount', Tx_EcDonationrun_Domain_Model_Registration::getDonationAmount($donations))
+				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 		// TODO Add List with Registrations from previous years
 	}
 
@@ -131,13 +132,11 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			if (isset($this->settings['loginPageDonator'])) {
-				$this->redirectToUri('index.php?id='.$this->settings['loginPageDonator'].
-					'&tx_ecdonationrun_pi1[registration]='.$registration->getUid().
-					'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
-			} else {
-				$this->redirectToUri('index.php');
-			}
+			if (!isset($this->settings['loginPageDonator'])) throw new Exception('loginPageDonator not set');
+			$this->redirectToUri('index.php?id='.$this->settings['loginPageDonator'].
+				'&tx_ecdonationrun_pi1[registration]='.$registration->getUid().'&no_cache=1'. // For Registration with No Login
+				//'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix)); TODO
+				'&return_url=index.php?id='.$this->settings['registrationIndex']);
 		}
 		
 		$this->view->assign('registration', $registration)
@@ -153,15 +152,20 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration the new donation is to be assigned to
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @return void
+		 * @dontvalidate $registration
 		 * @dontvalidate $donation
 		 */
 
-	Public Function newOfflineAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
+	Public Function newNoLoginAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL,
 	                                 Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser != 0) {
-			// TODO
+			// TODO wenn doch eingeloggt...
 		}
 		
+		if ($registration == NULL) {
+			$this->flashMessages->add('Wähle bitte zuerst für wen du Spenden möchtest.');
+			$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
+		}
 		$this->view->assign('registration', $registration)
 		           ->assign('donation', $donation);
 	}
@@ -173,18 +177,17 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
 		 * @param string $isOffline
 		 * @return void
-		 * @dontvalidate $isOffline
+		 * @dontvalidate $isNoLogin
 		 */
 
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                             Tx_EcDonationrun_Domain_Model_Donation $donation,
-	                             $isOffline = '') {
-        
-	    if ($isOffline == 'isOffline' || $registration->isCurrentFeUserEqualUser()) {
+	                             $isNoLogin = '') {
+	    if ($isNoLogin == 'isNoLogin' || $registration->isCurrentFeUserEqualUser()) {
 	    	$isOfflineDonation = true;
 			$user = $donation->getUser();
 		    $user->setName($user->getFirstName().' '.$user->getLastName());
-		    $user->setUsername($user->getName().'-anonymous');
+		    $user->setUsername($user->getName().' - Anonymous');
 		    $user->setPassword('NO_PASSWORT_SET_'.mt_rand());
 		    if (isset($this->settings['pidOfflineUser'])) {
 	    		$user->setPid($this->settings['pidOfflineUser']);
@@ -195,71 +198,48 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	    	$isOfflineDonation = false;
 	    	$user = $this->getCurrentFeUser();
 	    }
-	    if (isset($this->settings['userGroupDonator'])) {
-	    	$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupDonator']);
-	    	if ($userGroup) {
-				$user->addUsergroup($userGroup);
-	    	}
-		}
+	    if (!isset($this->settings['userGroupDonator'])) throw new Exception('userGroupDonator not set');
+    	$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupDonator']);
+    	if ($userGroup) {
+			$user->addUsergroup($userGroup);
+    	}
         if ($user->_isNew()) {
 			$this->frontendUserRepository->add($user);
 		}
 		$donation->setRegistration($registration);
 		$donation->setUser($user);
 		
-		if ($isOffline == 'isOffline') {
-			$donation->
+		if ($isNoLogin == 'isNoLogin') {
+			$donation->setHidden(TRUE);
 			$this->donationRepository->add($donation);
+		    $persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
+    		$persistenceManager->persistAll();
+			$addedDonation = $this->donationRepository->getAddedObjects()->toArray();
 			
-			Tx_EcDonationrun_Utility_SendMail::sendMail(
-				// TODO Set Admin Address
-				array('verwaltung@runningforjesus.de'),
-				"Info Spendenzusage (Ohne Login)",
-				"Hallo,".
-				"\nes ist eine neue Spende (ohne Login) eingegangen.".
-				"\nSpender: ".$donation->getUser()->getName().
-				"\nSpende:  ".$this->getRealDonation($donation).
-				"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
-				"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
-			
-			// TODO Send Mail
-			
-			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri('confirm','Donation',$donation);
-			
-			debug($this->settings['cryptKey']);
-			
-			$key = hash('sha256', $this->settings['cryptKey'], true);
-			$key_size =  strlen($key);
-			
-   			debug("Key size: " . $key_size);
-   			
-   			
+			if (isset($this->settings['mail']['adminAddress'])) {
+				Tx_EcDonationrun_Utility_SendMail::sendMail(
+					array($this->settings['mail']['adminAddress']),
+					"Info Spendenzusage (Ohne Login)",
+					"Hallo,".
+					"\nes ist eine neue Spende (ohne Login) eingegangen.".
+					"\nSpender: ".$donation->getUser()->getName().
+					"\nSpende:  ".$this->getRealDonation($donation).
+					"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
+					"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+			}
 			if (!defined('MCRYPT_RIJNDAEL_128')) throw new Exception('The MCRYPT_RIJNDAEL_128 algorithm is required (PHP 5.3).');
-			
+			$key = hash('sha256', $this->settings['cryptKey'], true);
 			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
     		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-    		
-    		debug($iv);
-			
-			$ciphertext =  mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, "Hallo dies ist ein Test",MCRYPT_MODE_CBC, $iv);
+			$ciphertext =  mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $addedDonation[0]->getUid(), MCRYPT_MODE_CBC, $iv);
 			$ciphertext = $iv.$ciphertext;
 			$ciphertext_base64 = base64_encode($ciphertext);
-			debug($ciphertext_base64);
-			
-			$ciphertext_dec = base64_decode($ciphertext_base64);
-			$iv_dec = substr($ciphertext_dec, 0, $iv_size);
-			$ciphertext_dec = substr($ciphertext_dec, $iv_size);
-			
-			$plaintext = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $ciphertext_dec,MCRYPT_MODE_CBC, $iv_dec);
-			debug($plaintext);
-			
-			debug($confirmLink);
-			$message = "Hallo " .$user->getName().",\n".
-				"bitte bestätige deine Spende über ".
-			
-				"für den Lauf von ".$donation->getRegistration()->getUser()->getName()." über foldenden Link\n\n".
-				$confirmLink
-				."\n\nVielen Dank\Running for Jesus";
+
+			if (!isset($this->settings['confirmNoLogin'])) throw new Exception('confirmNoLogin not set');
+			$this->controllerContext->getUriBuilder()->setTargetPageUid($this->settings['confirmNoLogin']);
+			$this->controllerContext->getUriBuilder()->setArguments(array('tx_ecdonationrun_pi1[donationToConfirm]' => $ciphertext_base64));
+			$this->controllerContext->getUriBuilder()->setCreateAbsoluteUri(true);
+			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri();
 			
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
 				array($donation->getUser()->getEmail() => $donation->getUser()->getName()),
@@ -275,13 +255,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 				"\n\nNach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!");
 
 			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
-return;
-//TODO
-			if (isset($this->settings['registrationIndex'])) {
-				$this->redirectToUri('index.php?id='.$this->settings['registrationIndex']);
-			} else {
-				$this->redirectToUri('index.php');
-			}
+			$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
 		}
 		
 		$donation->setNotificationStatus(1);//TODO
@@ -307,23 +281,25 @@ return;
 			$donation->getUser()->getName(). " wird dich bei Running for Jesus mit ".
 			$this->getRealDonation($donation)." unterstützen.");
 		
-		Tx_EcDonationrun_Utility_SendMail::sendMail(
-			// TODO Set Admin Address
-			array('verwaltung@runningforjesus.de'),
-			"Info Spendenzusage",
-			"Hallo,".
-			"\nes ist eine neue Spende eingegangen.".
-			"\nSpender: ".$donation->getUser()->getName().
-			"\nSpende:  ".$this->getRealDonation($donation).
-			"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
-			"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+		if (isset($this->settings['mail']['adminAddress'])) {
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				array($this->settings['mail']['adminAddress']),
+				"Info Spendenzusage",
+				"Hallo,".
+				"\nes ist eine neue Spende eingegangen.".
+				"\nSpender: ".$donation->getUser()->getName().
+				"\nSpende:  ".$this->getRealDonation($donation).
+				"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
+				"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+		}
 		
 		// Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Spende gespeichert.');
 		if ($isOfflineDonation) {
-			$this->redirect('index', 'Donation');
+			if (!isset($this->settings['donationIndex'])) throw new Exception('donationIndex not set');
+			$this->redirect('index', 'Donation', NULL, NULL, $this->settings['donationIndex']);
 		} else {
-			$this->redirect('index', 'Registration');
+			$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
 		}
 		
 	}
@@ -334,15 +310,37 @@ return;
 		 * @return void
 		 *
 		 */
-	Public Function confirmAction() {
-		
-		
-		debug($_GET);
-		
-		
-		
-		
-		$this->view->assign('donation', $donation);
+	Public Function confirmNoLoginAction() {
+		$formValues = t3lib_div::_GP('tx_ecdonationrun_pi1');
+		if (!isset($formValues['donationToConfirm'])) {
+			$this->view->assign('confirmStatus', FALSE);
+		} else {
+			$key = hash('sha256', $this->settings['cryptKey'], true);
+			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+			$ciphertext_dec = base64_decode($formValues['donationToConfirm']);
+			$iv_dec = substr($ciphertext_dec, 0, $iv_size);
+			$ciphertext_dec = substr($ciphertext_dec, $iv_size);
+			$donationUid = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+			$donationUid = rtrim($donationUid, "\0");
+			$donation = $this->donationRepository->findByUid(intval($donationUid));
+			if ($donation) {
+				$donation->setHidden(FALSE);
+				if (isset($this->settings['mail']['adminAddress'])) {
+					Tx_EcDonationrun_Utility_SendMail::sendMail(
+						array($this->settings['mail']['adminAddress']),
+						"Info Bestätigung Spendenzusage (Ohne Login)",
+						"Hallo,".
+						"\ndie Spende (ohne Login) wurde bestätigt.".
+						"\nSpender: ".$donation->getUser()->getName().
+						"\nSpende:  ".$this->getRealDonation($donation).
+						"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
+						"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+				}
+				$this->view->assign('confirmStatus', TRUE);
+			} else {
+				$this->view->assign('confirmStatus', FALSE);
+			}
+		}
 	}
 	
 	
@@ -352,11 +350,15 @@ return;
 		 * @return void
 		 *
 		 */
-	Public Function generateOfflineDonationLinkAction() {
+	Public Function generateNoLoginLinkAction() {
 		$formValues = t3lib_div::_GP('tx_ecdonationrun_pi1');
 		$registration = $this->registrationRepository->findByUid($formValues['registration']);
+		if (!isset($this->settings['donationNoLogin'])) throw new Exception('donationNoLogin not set');
+		if ($registration == NULL) {
+			$this->view->assign('pageUid', $this->settings['donationNoLogin']);
+		}
 		$this->view->assign('registration', $registration)
-		           ->assign('pageUid', $this->settings['registerOffline']);
+		           ->assign('pageUid', $this->settings['donationNoLogin']);
 	}
 
 

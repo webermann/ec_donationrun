@@ -7,7 +7,7 @@
 <f:section name="menu">
 	<f:if condition="{userHasNoRegistration}">
 		<ul>
-			<li><f:link.action action="new">Als Läufer anmelden</f:link.action></li>
+			<li><f:link.action action="new" controller="Registration" pageUid="{registrationNewPageUid}">Als Läufer anmelden</f:link.action></li>
 		</ul>
 	</f:if>
 </f:section>
@@ -30,7 +30,7 @@
 								</f:link.action>
 							</f:comment>
 							{registration.name}
-							<f:link.action controller="Donation" action="new" arguments="{registration : registration}" class="ecdonationrun-donate">
+							<f:link.action controller="Donation" action="new" arguments="{registration : registration}" pageUid="{donationNewPageUid}" class="ecdonationrun-donate">
 								Spenden
 							</f:link.action>
 						</p>

@@ -59,6 +59,30 @@ Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_P
 			->execute();
 
 	}
+	
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param int $uid The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 */
+	public function findByUid($uid) {
+		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
+			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
+		} else {
+			$query = $this->createQuery();
+			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+			$query->getQuerySettings()->setRespectStoragePage(FALSE);
+			$query->getQuerySettings()->setRespectEnableFields(FALSE); // because of this line hidden objects can be retrieved
+			$object = $query
+					->matching(
+						$query->equals('uid', $uid)
+					)
+					->execute()
+					->getFirst();
+		}
+		return $object;
+	}
 
 
 }

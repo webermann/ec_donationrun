@@ -106,6 +106,14 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 */
 	Protected $comment;
 
+	/**
+	* hidden
+	*
+	* @var boolean
+	*/
+	protected $hidden = FALSE;
+	
+
 		/*
 		 * GETTERS
 		 */
@@ -198,6 +206,15 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 
 	Public Function getComment() {
 		Return $this->comment;
+	}
+	
+	/**
+	* Returns hidden
+	*
+	* @return boolean $hidden
+	*/
+	public function getHidden() {
+	    return $this->hidden;
 	}
 
 		/*
@@ -292,6 +309,26 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 
 	Public Function setComment($value) {
 		$this->comment = $value;
+	}
+	
+	/**
+	* Sets hidden
+	*
+	* @param boolean $hidden
+	* @return void
+	*/
+	public function setHidden($hidden) {
+	    $this->hidden = $hidden;
+	}
+	
+	
+	/**
+	* Returns the boolean state of hidden
+	*
+	* @return boolean
+	*/
+	public function isHidden() {
+	    return $this->getHidden();
 	}
 	
 }

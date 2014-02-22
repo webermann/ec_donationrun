@@ -24,27 +24,27 @@
 			
 			<div>
 				<div> 
-					<label for="firstName">Vorname</label>
+					<label for="firstName">Vorname*</label>
 					<f:form.textfield property="user.firstName" id="firstName" />
 				</div>
 				<div>
-					<label for="lastName">Nachname</label>
+					<label for="lastName">Nachname*</label>
 					<f:form.textfield property="user.lastName" id="lastName" />
 				</div>
 				<div> 
-					<label for="address">Adresse</label>
+					<label for="address">Adresse*</label>
 					<f:form.textfield property="user.address" id="address" />
 				</div>
 				<div> 
-					<label for="city">Wohnort</label>
+					<label for="city">Wohnort*</label>
 					<f:form.textfield property="user.city" id="city" />
 				</div>
 				<div> 
-					<label for="zip">Postleitzahl</label>
+					<label for="zip">Postleitzahl*</label>
 					<f:form.textfield property="user.zip" id="zip" />
 				</div>
 				<div> 
-					<label for="email">E-Mail</label>
+					<label for="email">E-Mail*</label>
 					<f:form.textfield property="user.email" id="email" />
 				</div>
 				
@@ -55,14 +55,6 @@
 			options="{0:'tbd', 2:'tbd'}"/>
 	</div>
 </f:comment>
-				
-				<div> 
-					<label for="notificationVia">Benachrichtigung per</label>
-					<f:form.select property="notificationVia" id="notificationVia" 
-						options="{0: 'E-Mail', 1: 'Brief'}"/>
-				</div>
-
-				
 				<div> 
 					<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
 					<span>{registration.name} ({registration.run.name} {registration.run.distance} km)</span>
@@ -82,7 +74,7 @@
 				<div>
 					<f:form.submit value="{f:translate(key:'Donation_New_Save')}" />
 					<f:form.hidden name="registration" value="{registration}" />
-					<f:form.hidden name="isOffline" value="isOffline" />
+					<f:form.hidden name="isNoLogin" value="isNoLogin" />
 				</div>
 			</div>
 			

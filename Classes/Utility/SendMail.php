@@ -42,6 +42,12 @@
 
 Class Tx_EcDonationrun_Utility_SendMail {
     
+	/*
+	 * http://swiftmailer.org/docs/messages.html
+	 * http://api.typo3.org/typo3cms/47/html/classt3lib__mail___message.html
+	 *
+	 * */
+	
 	static public function sendMail($email, $subjectText, $mailText, $replyTo=NULL, $cc=NULL, $bcc=NULL, $from=NULL) {
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		//Adressen festlegen
@@ -73,7 +79,7 @@ Class Tx_EcDonationrun_Utility_SendMail {
 				"Dein Running for Jesus - Team\n\n".
 				"Weiter Infos findest Du unter www.runningforjesus.de.\n".
 				"Bei Fragen zu Running for Jesus, kannst Du Dich gerne an Carsten Müller wenden: \n".
-				"carsten.mueller@ec-niedersachsen.de\n";
+				"info@runningforjesus.de\n";
 		
 		//$mail->setBody($text, 'text/html');
 		$mail->setBody(strip_tags(preg_replace('/(<br*)(>)/', "\n", $text)), 'text/plain');

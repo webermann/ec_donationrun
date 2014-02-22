@@ -116,8 +116,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				$userHasNoRegistration = false;
 			}
 		}
-		$this->view->assign('registrations', $registrations);
-		$this->view->assign('userHasNoRegistration', $userHasNoRegistration);
+		if (!isset($this->settings['registrationNew'])) throw new Exception('registrationNew not set');
+		if (!isset($this->settings['donationNew'])) throw new Exception('donationNew not set');
+		$this->view->assign('registrations', $registrations)
+		 	  	   ->assign('userHasNoRegistration', $userHasNoRegistration)
+				   ->assign('registrationNewPageUid', $this->settings['registrationNew'])
+				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 	}
 
 		/**
@@ -142,8 +146,9 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				$userHasNoRegistration = false;
 			}
 		}
+		if (!isset($this->settings['registrationNew'])) throw new Exception('registrationNew not set');
 		$this->view->assign('userHasNoRegistration', $userHasNoRegistration)
-				   ->assign('pageUid', $this->settings['registrationIndex']);
+				   ->assign('pageUid', $this->settings['registrationNew']);
 	}
 
 		/**
@@ -173,11 +178,9 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			if (isset($this->settings['loginPageRunner'])) {
-				$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
-			} else {
-				$this->redirectToUri('index.php');
-			}
+			if (!isset($this->settings['loginPageRunner'])) throw new Exception('loginPageRunner not set');
+			$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].
+				'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
 		$this->view->assign('runs', $this->runRepository->findAll())
 				   ->assign('user', $this->getCurrentFeUser());
@@ -217,19 +220,18 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			"Im internen Bereich der Homepage bekommst du wertvolle Tipps für dein Training und deine Sponsorensuche. ".
 			"Dort hast du auch unter 'Meine Spender' die Möglichkeit, deine Spenderliste zu verwalten.");
 		
-		
-		Tx_EcDonationrun_Utility_SendMail::sendMail(
-			// TODO Set Admin Address
-			array('verwaltung@runningforjesus.de'),
-			"Info Registrierung",
-			"Hallo,".
-			"\nes hat sich ein neuer Läufer angemeldet.".
-			"\nLäufer: ".$registration->getUser()->getName().
-			"\nLauf:   ".$registration->getRun()->getName());
-		
+		if (isset($this->settings['mail']['adminAddress'])) {
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				array($this->settings['mail']['adminAddress']),
+				"Info Registrierung",
+				"Hallo,".
+				"\nes hat sich ein neuer Läufer angemeldet.".
+				"\nLäufer: ".$registration->getUser()->getName().
+				"\nLauf:   ".$registration->getRun()->getName());
+		}
 		$this->flashMessages->add('Du bist für den Lauf "'.$registration->getRun()->getName().'" angemeldet.');
-
-		$this->redirect('index', 'Registration');
+		if (!isset($this->settings['registrationIndex'])) throw new Exception('registrationIndex not set');
+		$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
 	}
 
 
