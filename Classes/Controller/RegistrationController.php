@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*                                                                      *
  *  COPYRIGHT NOTICE                                                    *
@@ -116,8 +116,8 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				$userHasNoRegistration = false;
 			}
 		}
-		if (!isset($this->settings['registrationNew'])) throw new Exception('registrationNew not set');
-		if (!isset($this->settings['donationNew'])) throw new Exception('donationNew not set');
+		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
+		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
 		$this->view->assign('registrations', $registrations)
 		 	  	   ->assign('userHasNoRegistration', $userHasNoRegistration)
 				   ->assign('registrationNewPageUid', $this->settings['registrationNew'])
@@ -146,7 +146,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				$userHasNoRegistration = false;
 			}
 		}
-		if (!isset($this->settings['registrationNew'])) throw new Exception('registrationNew not set');
+		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
 		$this->view->assign('userHasNoRegistration', $userHasNoRegistration)
 				   ->assign('pageUid', $this->settings['registrationNew']);
 	}
@@ -178,7 +178,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
-			if (!isset($this->settings['loginPageRunner'])) throw new Exception('loginPageRunner not set');
+			if (!isset($this->settings['loginPageRunner'])) throw new Exception('EC Donationrun: loginPageRunner not set');
 			$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].
 				'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
@@ -230,7 +230,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 				"\nLauf:   ".$registration->getRun()->getName());
 		}
 		$this->flashMessages->add('Du bist für den Lauf "'.$registration->getRun()->getName().'" angemeldet.');
-		if (!isset($this->settings['registrationIndex'])) throw new Exception('registrationIndex not set');
+		if (!isset($this->settings['registrationIndex'])) throw new Exception('EC Donationrun: registrationIndex not set');
 		$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
 	}
 

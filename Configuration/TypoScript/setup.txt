@@ -1,4 +1,4 @@
-config.tx_ecdonationrun {
+﻿config.tx_ecdonationrun {
     persistence{
         enableAutomaticCacheClearing = 1
         updateReferenceIndex = 0
