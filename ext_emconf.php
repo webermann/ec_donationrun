@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /***************************************************************
  * Extension Manager/Repository config file for ext "ec_donationrun".
