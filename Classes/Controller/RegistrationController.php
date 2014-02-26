@@ -182,6 +182,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].
 				'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
 		}
+		// TODO check if user has a registration
 		$this->view->assign('runs', $this->runRepository->findAll())
 				   ->assign('user', $this->getCurrentFeUser());
 	}
