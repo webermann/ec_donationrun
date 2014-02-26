@@ -1,4 +1,4 @@
-﻿#
+#
 # Table structure for table 'tx_ecdonationrun_domain_model_run'
 #
 CREATE TABLE tx_ecdonationrun_domain_model_run (
