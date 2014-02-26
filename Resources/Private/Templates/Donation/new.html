@@ -27,23 +27,23 @@
 				<f:if condition="{isOwnRegistration}">
 					<f:then>
 						<div> 
-							<label for="firstName">Vorname</label>
+							<label for="firstName">Vorname*</label>
 							<f:form.textfield property="user.firstName" id="firstName" />
 						</div>
 						<div>
-							<label for="lastName">Nachname</label>
+							<label for="lastName">Nachname*</label>
 							<f:form.textfield property="user.lastName" id="lastName" />
 						</div>
 						<div> 
-							<label for="address">Adresse</label>
+							<label for="address">Adresse*</label>
 							<f:form.textfield property="user.address" id="address" />
 						</div>
 						<div> 
-							<label for="city">Wohnort</label>
+							<label for="city">Wohnort*</label>
 							<f:form.textfield property="user.city" id="city" />
 						</div>
 						<div> 
-							<label for="zip">Postleitzahl</label>
+							<label for="zip">Postleitzahl*</label>
 							<f:form.textfield property="user.zip" id="zip" />
 						</div>
 						<div> 
@@ -52,14 +52,14 @@
 						</div>
 						<f:comment>
 						<div> 
-							<label for="tx_ecassociation_group">EC-Gruppe</label>
+							<label for="tx_ecassociation_group">EC-Gruppe*</label>
 							<f:form.select property="user.tx_ecassociation_group" id="tx_ecassociation_group" 
 								options="{0:'tbd', 2:'tbd'}"/>
 						</div>
 						</f:comment>
 						
 						<div> 
-							<label for="notificationVia">Benachrichtigung per</label>
+							<label for="notificationVia">Benachrichtigung per*</label>
 							<f:form.select property="notificationVia" id="notificationVia" 
 								options="{0: 'E-Mail', 1: 'Brief'}"/>
 						</div>
