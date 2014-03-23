@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_registration']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'run,user,runnerNumber,runnerTime'
+		'showRecordFieldList' => 'run,user,runnerNumber,runnerTime,donations'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'run,user,runnerNumber,runnerTime')
+		'1' => array('showitem' => 'run,user,runnerNumber,runnerTime,donations')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -96,6 +96,17 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 				'size' => 12,
 				'max' => 20,
 				'eval' => 'integer',
+			)
+		),
+		'donations' => array(
+			'exclude' => 0,
+			'label'   => 'Spenden',
+			'config'  => array(
+				'type' => 'inline',
+				'foreign_class' => 'Tx_EcAssociation_Domain_Model_Donation',
+				'foreign_table' => 'tx_ecdonationrun_domain_model_donation',
+				'foreign_field' => 'registration',
+				'maxitems'      => 9999
 			)
 		),
 	),
