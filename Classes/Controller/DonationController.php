@@ -111,8 +111,8 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		}
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
 		$this->view->assign('registration' , $registration)
-				   ->assign('donations', $donations)
-				   ->assign('donation_amount', Tx_EcDonationrun_Domain_Model_Registration::getDonationAmount($donations))
+				   ->assign('donations', $registration->getDonations())
+				   ->assign('donation_amount', $registration->getDonationAmount())
 				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 		// TODO Add List with Registrations from previous years
 	}
@@ -196,7 +196,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		    }
 	    } else {
 	    	$isOfflineDonation = false;
-	    	$user = $this->getCurrentFeUser();
+	    	$user = $this->frontendUserRepository->findByUid($this->getCurrentFeUser()->getUid());
 	    }
 	    if (!isset($this->settings['userGroupDonator'])) throw new Exception('EC Donationrun: userGroupDonator not set');
     	$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupDonator']);

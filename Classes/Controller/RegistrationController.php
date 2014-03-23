@@ -199,7 +199,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		 */
 
 	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
-		$user = $this->getCurrentFeUser();
+		$user = $this->userRepository->findByUid($this->getCurrentFeUser()->getUid());
 		$registration->setUser($user);
 		if (isset($this->settings['userGroupRunner'])) {
 			$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupRunner']);
