@@ -99,6 +99,7 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array (
 	'ctrl' => array (
 		'title'                    => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation',
 		'label'                    => 'registration',
+		'label_userFunc'           => 'Tx_EcDonationrun_Domain_Model_Donation->getLabel',
 		'tstamp'                   => 'tstamp',
 		'crdate'                   => 'crdate',
 		'versioningWS'             => 2,
