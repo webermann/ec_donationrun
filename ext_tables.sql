@@ -5,6 +5,7 @@ CREATE TABLE tx_ecdonationrun_domain_model_run (
 	name tinytext,
 	start int(11) DEFAULT '0' NOT NULL,
 	distance double(10,3) DEFAULT '0.000' NOT NULL,
+	registrations int(11) unsigned DEFAULT '0', 
 	
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -37,6 +38,7 @@ CREATE TABLE tx_ecdonationrun_domain_model_registration (
 	user int(11) unsigned DEFAULT '0' NOT NULL,
 	runnerNumber tinytext,
 	runnerTime int(11) unsigned DEFAULT '0',
+	donations int(11) unsigned DEFAULT '0', 
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
