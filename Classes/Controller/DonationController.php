@@ -60,12 +60,12 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		
 	/**
      * A FE User repository instance
-     * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+     * @var Tx_EcAssociation_Domain_Repository_UserRepository
      */
     protected $frontendUserRepository;
     /**
      * A FE User Group repository instance
-     * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+     * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
      */
     protected $frontendUserGroupRepository;
     
@@ -81,9 +81,9 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 */
 
 	Public Function initializeAction() {
-		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
-		$this->donationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
-		$this->frontendUserRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		$this->registrationRepository      =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
+		$this->donationRepository          =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
+		$this->frontendUserRepository      =& t3lib_div::makeInstance('Tx_EcAssociation_Domain_Repository_UserRepository');
 		$this->frontendUserGroupRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserGroupRepository');
 	}
 
