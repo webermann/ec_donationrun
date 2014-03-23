@@ -42,6 +42,19 @@
                      <numIndex index="1">Donation->new;Donation->create</numIndex>
                    </numIndex>
                    
+                   <numIndex index="7">
+                     <numIndex index="0">Ranking Läufer</numIndex>
+                     <numIndex index="1">Registration->showRankingRunner</numIndex>
+                   </numIndex>
+                   <numIndex index="8">
+                     <numIndex index="0">Ranking KV</numIndex>
+                     <numIndex index="1">Registration->showRankingKv</numIndex>
+                   </numIndex>
+                   <numIndex index="9">
+                     <numIndex index="0">Spendenstand</numIndex>
+                     <numIndex index="1">Registration->showDonationAmount</numIndex>
+                   </numIndex>
+                   
                  </items>
               </config>
             </TCEforms>
