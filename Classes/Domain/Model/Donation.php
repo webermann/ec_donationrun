@@ -52,7 +52,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	
 		/**
 		 * The user of this donation.
-		 * @var Tx_Extbase_Domain_Model_FrontendUser
+		 * @var Tx_EcAssociation_Domain_Model_User
 		 * @lazy
 		 */
 	Protected $user;
@@ -131,7 +131,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Gets the donator
-		 * @return Tx_Extbase_Domain_Model_FrontendUser
+		 * @return Tx_EcAssociation_Domain_Model_User
 		 */
 
 	Public Function getUser() {
@@ -141,7 +141,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Gets the runner
-		 * @return Tx_Extbase_Domain_Model_FrontendUser
+		 * @return Tx_EcAssociation_Domain_Model_User
 		 */
 
 	Public Function getRunner() {
@@ -235,11 +235,11 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		/**
 		 *
 		 * Sets the donator of this donation.
-		 * @param Tx_Extbase_Domain_Model_FrontendUser $user The start time
+		 * @param Tx_EcAssociation_Domain_Model_User $user
 		 * @return void
 		 */
 
-	Public Function setUser(Tx_Extbase_Domain_Model_FrontendUser $user) {
+	Public Function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
@@ -330,7 +330,21 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	public function isHidden() {
 	    return $this->getHidden();
 	}
-	
+	/**
+	 * Load title for TCA label_userFunc
+	 *
+	 */
+	public function getLabel(&$parameters, $parentObject) {
+		$donation = t3lib_BEfunc::getRecord($parameters['table'], $parameters['row']['uid']);
+        $user = t3lib_BEfunc::getRecord("fe_users", $donation['user']);
+        
+		if ($donation['donation_fix_value'] == 0) {
+			$realDonation = number_format($donation['donation_value'], 2, ',', '.')." € pro km";
+		} else {
+			$realDonation = number_format($donation['donation_fix_value'], 2, ',', '.')." € Festbetrag";
+		}
+        $parameters['title'] = $user['first_name'].' '.$user['last_name'].': '.$realDonation;
+	}
 }
 
 ?>
