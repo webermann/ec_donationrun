@@ -3,7 +3,7 @@ config.tx_ecdonationrun {
         enableAutomaticCacheClearing = 1
         updateReferenceIndex = 0
         classes {
-            Tx_Extbase_Domain_Model_FrontendUser {
+            Tx_Ecdonationrun_Domain_Model_FrontendUser {
                 mapping {
                     tableName = fe_users
                     columns {
@@ -24,13 +24,29 @@ config.tx_ecdonationrun {
         }
     }
 }
+
+config.tx_extbase.persistence.classes {
+    Tx_EcAssociation_Domain_Model_User {
+        mapping {
+            tableName = fe_users
+        }
+    }
+}
+
 plugin.tx_ecdonationrun.settings {
-	loginPage = 0
-	registrationPage {
-		runner = 0
-		donator = 0
-		anonymous = 0
-	}
+  loginPageRunner = 304
+  loginPageDonator = 304
+  userGroupRunner = 2
+  userGroupDonator = 3
+  pidOfflineUser = 319
+  registrationIndex = 289
+  registrationNew = 326
+  donationIndex = 310
+  donationNoLogin = 327
+  confirmNoLogin = 328
+  donationNew = 325
+  cryptKey = G8DL2311z4h779976tT3
+  mail.adminAddress = rfj@webermann.net
 }
 
 plugin.tx_ecdonationrun._CSS_DEFAULT_STYLE (
