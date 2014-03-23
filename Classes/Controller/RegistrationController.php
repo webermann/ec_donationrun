@@ -60,12 +60,17 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 		/**
 		 * A frontend user repository instance
-		 * @var Tx_Extbase_Domain_Repository_FrontendUserRepository
+		 * @var Tx_EcAssociation_Domain_Repository_UserRepository
 		 */
 	Protected $userRepository;
+		/**
+		 * A donation repository instance
+		 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
+		 */
+	Protected $donationRepository;
 	/**
      * A FE User Group repository instance
-     * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+     * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
      */
     protected $frontendUserGroupRepository;
 		/*
@@ -87,8 +92,9 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Protected Function initializeAction() {
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
-		$this->runRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
-		$this->userRepository    =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		$this->donationRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
+		$this->runRepository          =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
+		$this->userRepository         =& t3lib_div::makeInstance('Tx_EcAssociation_Domain_Repository_UserRepository');
 		$this->frontendUserGroupRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserGroupRepository');
 	}
 
@@ -104,10 +110,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	Public Function indexAction() {
 		$registrations = NULL;
 		$userHasNoRegistration = true;
-		foreach ($this->registrationRepository->findAll() as $registration) {
-			if ($registration->getRun()->getStart()->getTimestamp() < time()) {
-				continue;
-			}
+		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
@@ -134,10 +137,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	Public Function generateNewLinkAction() {
 		$registrations = NULL;
 		$userHasNoRegistration = true;
-		foreach ($this->registrationRepository->findAll() as $registration) {
-			if ($registration->getRun()->getStart()->getTimestamp() < time()) {
-				continue;
-			}
+		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
@@ -297,19 +297,54 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 		$this->redirect('index');
 	}
+	
+	
+	/**
+	 * The ranking action
+	 * @return void
+	 */
+	Public Function showRankingRunnerAction() {
+		$registrations = $this->registrationRepository->findAllActive();
+		$ranking = array();
+		foreach ($registrations as $registration) {
+			$ranking[] = $registration;
+		}
+		usort($ranking,'cmpDonationAmount');
+		array_splice($ranking,5);
+		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
+		$this->view->assign('registrations', $ranking)
+				   ->assign('donationNewPageUid', $this->settings['donationNew']);
+	}
+	
+	/**
+	 * The ranking action
+	 * @return void
+	 */
+	Public Function showRankingKvAction() {
+		
+	}
+	
+	/**
+	 * The donation global amount action
+	 * @return void
+	 */
+	Public Function showDonationAmountAction() {
+		$registrations = $this->registrationRepository->findAllActive();
+		$amount = 0.0;
+		foreach ($registrations as $registration) {
+			$amount += $registration->getDonationAmount();
+		}
+		$this->view->assign('amount', $amount);
+	}
 		
 		/*
 		 * HELPER METHODS
 		 */
-	
-	
 		/**
-		 *
 		 * Gets the currently logged in frontend user.
 		 * @return Tx_Extbase_Domain_Model_FrontendUser The currently logged in frontend
 		 *                                              user, or NULL if no user is
 		 *                                              logged in.
-		 *
 		 */
 	
 	Protected Function getCurrentFeUser() {
@@ -320,5 +355,13 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	}
 	
 }
+/* Compare Function for Ranking */
+function cmpDonationAmount($a, $b) {
+	if ($a->getDonationAmount() == $b->getDonationAmount()) {
+        return 0;
+    }
+    return ($a->getDonationAmount() < $b->getDonationAmount()) ? 1 : -1;
+}
+	
 
 ?>
