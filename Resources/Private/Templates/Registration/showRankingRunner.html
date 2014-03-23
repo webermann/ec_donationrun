@@ -1,0 +1,15 @@
+<div class="registration_ranking">
+	<f:if condition="{registrations}">
+		<f:then>
+			<f:for each="{registrations}" as="registration">
+				<p>
+					{registration.name}
+					<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{registration.donationAmount}</f:format.currency>					
+				</p>
+			</f:for>
+		</f:then>
+		<f:else>
+			<p>Keine Läufer gefunden</p>
+		</f:else>
+	</f:if>
+</div>
