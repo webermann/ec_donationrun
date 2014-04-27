@@ -21,9 +21,7 @@
 				<th><f:translate key="Donation_Index_List_Donator" /></th>
 				<th><f:translate key="Donation_Index_List_Donation" /></th>
 				<th><f:translate key="Donation_Index_List_Comment" /></th>
-				<f:comment>
-					<th><f:translate key="Donation_Index_List_Options" /></th>
-				</f:comment>
+				<th><f:translate key="Donation_Index_List_Options" /></th>
 			</tr>
 			<f:for each="{donations}" as="donation">
 				<tr>
@@ -37,8 +35,9 @@
 						</f:else>
 					</f:if>
 					<td>{donation.comment}</td>
+					<td><f:link.action controller="Donation" action="edit" arguments="{donation : donation}" pageUid="{donationEditPageUid}" >Bearbeiten</f:link.action></td>
 					<f:comment>
-						<td>Bearbeiten, Löschen, Mail, Bezahlt, Erinnerung</td>
+						<td>Löschen</td>
 					</f:comment>
 				</tr>
 			</f:for>

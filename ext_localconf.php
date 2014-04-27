@@ -32,10 +32,10 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY, 'Pi1',
 	/* controllerActions */
 	Array ( 'Registration' => 'index,show,new,create,delete,edit,update,showRankingRunner,showRankingKv,showDonationAmount',
-	        'Donation' => 'index,new,create,generateOfflineDonationLink,confirm' ),
+	        'Donation' => 'index,new,create,delete,edit,update,generateOfflineDonationLink,confirm' ),
 	/* nonCacheableControllerActions */
-	Array ( 'Registration' => 'index,show,showRankingRunner,showRankingKv,showDonationAmount',
-	        'Donation' => 'index' )
+	Array ( 'Registration' => 'index,show,new,create,delete,edit,update,',
+	        'Donation' => 'index,new,create,delete,edit,update,generateOfflineDonationLink,confirm' )
 );
 
 /**

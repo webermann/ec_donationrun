@@ -1,0 +1,90 @@
+<f:layout name="main" />
+
+<f:section name="title">
+	Spende bearbeiten
+</f:section>
+
+<f:section name="menu" />
+
+<f:section name="content">
+	<div class="donation_edit">
+		<f:form object="{donation}" action="update" name="donation">
+	
+			<f:form.errors for="donation">
+				<div class="ecdonationrun-exception">
+					<f:if condition="{error.errors}"><f:then>
+						<f:for each="{error.errors}" as="fieldError">
+							<div><f:translate key="Donation_Error_{error.propertyName}_{fieldError.code}" default="{error.propertyName}_{fieldError.code}" /></div>
+						</f:for>
+					</f:then><f:else>
+						<div><f:translate key="Donation_Error_{error.code}" default="{error.code}" /></div>
+					</f:else></f:if>
+				</div>
+			</f:form.errors>
+			
+			<div>
+				<div> 
+					<label for="firstName">Vorname*</label>
+					<f:form.textfield property="user.firstName" id="firstName" />
+				</div>
+				<div>
+					<label for="lastName">Nachname*</label>
+					<f:form.textfield property="user.lastName" id="lastName" />
+				</div>
+				<div> 
+					<label for="address">Adresse*</label>
+					<f:form.textfield property="user.address" id="address" />
+				</div>
+				<div> 
+					<label for="city">Wohnort*</label>
+					<f:form.textfield property="user.city" id="city" />
+				</div>
+				<div> 
+					<label for="zip">Postleitzahl*</label>
+					<f:form.textfield property="user.zip" id="zip" />
+				</div>
+				<div> 
+					<label for="email">E-Mail</label>
+					<f:form.textfield property="user.email" id="email" />
+				</div>
+				<f:comment>
+					<div> 
+						<label for="tx_ecassociation_group">EC-Gruppe*</label>
+						<f:form.select property="user.tx_ecassociation_group" id="tx_ecassociation_group" 
+							options="{0:'tbd', 2:'tbd'}"/>
+					</div>
+				</f:comment>
+				
+				<div> 
+					<label for="notificationVia">Benachrichtigung per*</label>
+					<f:form.select property="notificationVia" id="notificationVia" 
+						options="{0: 'E-Mail', 1: 'Brief'}"/>
+				</div>
+
+				<div> 
+					<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
+					<span>{registration.name} ({registration.run.name} {registration.run.distance} km)</span>
+				</div>
+				<div> 
+					<label for="donationValue"><f:translate key="Donation_New_DonationValue" /></label>
+					<f:form.textfield  property="donationValue" id="donationValue" /> Euro
+				</div>
+				<div> 
+					<span>oder</span>
+				</div>
+				 
+				<div> 
+					<label for="donationFixValue"><f:translate key="Donation_New_DonationFixValue" /></label>
+					<f:form.textfield  property="donationFixValue" id="donationFixValue" /> Euro
+				</div> 
+				<div> 
+					<label for="donationFixValue"><f:translate key="Donation_New_Comment" /></label>
+					<f:form.textarea property="comment" rows="5" cols="40" />
+				</div> 
+				<div>
+					<f:form.submit value="{f:translate(key:'Donation_Edit_Save')}" />
+				</div>
+			</div>
+		</f:form>
+	</div>
+</f:section>

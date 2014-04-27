@@ -109,11 +109,14 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 				$this->redirect('index', 'Registration', 'ecdonationrun', NULL, $this->settings['registrationIndex']);
 			}
 		}
+		if (!isset($this->settings['donationEdit'])) throw new Exception('EC Donationrun: donationEdit not set');
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
 		$this->view->assign('registration' , $registration)
 				   ->assign('donations', $registration->getDonations())
 				   ->assign('donation_amount', $registration->getDonationAmount())
-				   ->assign('donationNewPageUid', $this->settings['donationNew']);
+				   ->assign('donationNewPageUid', $this->settings['donationNew'])
+				   ->assign('donationEditPageUid', $this->settings['donationEdit']);
+				   
 		// TODO Add List with Registrations from previous years
 	}
 
@@ -143,6 +146,23 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		           ->assign('donation', $donation)
 		           ->assign('user', $this->getCurrentFeUser())
 		           ->assign('isOwnRegistration', $registration->isCurrentFeUserEqualUser());
+	}
+	
+		/**
+		 *
+		 * The edit action. This method displays a form for editing a donation.
+		 *
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The donation
+		 * @return void
+		 *
+		 */
+
+	Public Function editAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
+		
+		
+		
+		$this->view->assign('registration', $donation->getRegistration())
+		           ->assign('donation', $donation);
 	}
 	
 		/**
@@ -308,6 +328,34 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 	
 	/**
 		 *
+		 * The update action. Updates a donation into the database.
+		 * @param Tx_EcDonationrun_Domain_Model_Donation $donation The new donation
+		 * @return void
+		 */
+
+	Public Function updateAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
+		$this->donationRepository->update($donation);
+		
+		if (isset($this->settings['mail']['adminAddress'])) {
+			Tx_EcDonationrun_Utility_SendMail::sendMail(
+				array($this->settings['mail']['adminAddress']),
+				"Spende aktualisiert",
+				"Hallo,".
+				"\nes eine Spende wurde bearbeitet.".
+				"\nSpender:  ".$donation->getUser()->getName().
+				"\nSpende:   ".$this->getRealDonation($donation).
+				"\nLäufer:   ".$donation->getRegistration()->getUser()->getName().
+				"\nLauf:     ".$donation->getRegistration()->getRun()->getName().
+				"\nKomentar: ".$donation->getComment().
+				"\nBearbeiter: ".$this->getCurrentFeUser()->getName());
+		}
+		// Print a success message and return to the registration detail view.
+		$this->flashMessages->add('Spende gespeichert.');
+		$this->redirect('index', 'Donation', NULL, NULL, $this->settings['donationIndex']);
+	}
+	
+	/**
+		 *
 		 * The create offline finish action.
 		 * @return void
 		 *
@@ -340,6 +388,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 				}
 				$this->view->assign('confirmStatus', TRUE);
 			} else {
+				/* TODO Manchmal können die Spenden nicht bestätigt werden evtl + Zeichen??? */
 				$this->view->assign('confirmStatus', FALSE);
 			}
 		}

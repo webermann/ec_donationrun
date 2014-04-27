@@ -55,6 +55,11 @@
                      <numIndex index="1">Registration->showDonationAmount</numIndex>
                    </numIndex>
                    
+                   <numIndex index="10">
+                     <numIndex index="0">Spende bearbeiten</numIndex>
+                     <numIndex index="1">Donation->edit;Donation->update;Donation->delete</numIndex>
+                   </numIndex>
+                   
                  </items>
               </config>
             </TCEforms>
