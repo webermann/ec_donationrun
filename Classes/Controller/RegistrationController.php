@@ -109,20 +109,16 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function indexAction() {
 		$registrations = NULL;
-		$userHasNoRegistration = true;
 		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
 			$registrations[$registration->getRun()->getName()][] = $registration;
-			if ($registration->isCurrentFeUserEqualUser()) {
-				$userHasNoRegistration = false;
-			}
 		}
 		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
 		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
 		$this->view->assign('registrations', $registrations)
-		 	  	   ->assign('userHasNoRegistration', $userHasNoRegistration)
+		 	  	   ->assign('userHasNoRegistration', !$this->hasUserRegistration())
 				   ->assign('registrationNewPageUid', $this->settings['registrationNew'])
 				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 	}
@@ -136,18 +132,14 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 
 	Public Function generateNewLinkAction() {
 		$registrations = NULL;
-		$userHasNoRegistration = true;
 		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
 			$registrations[$registration->getRun()->getName()][] = $registration;
-			if ($registration->isCurrentFeUserEqualUser()) {
-				$userHasNoRegistration = false;
-			}
 		}
 		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
-		$this->view->assign('userHasNoRegistration', $userHasNoRegistration)
+		$this->view->assign('userHasNoRegistration', !$this->hasUserRegistration())
 				   ->assign('pageUid', $this->settings['registrationNew']);
 	}
 
@@ -181,8 +173,13 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			if (!isset($this->settings['loginPageRunner'])) throw new Exception('EC Donationrun: loginPageRunner not set');
 			$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].
 				'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
+		} else {
+			// Check if user has a registration
+			if ($this->hasUserRegistration()) {
+				$this->flashMessages->add('Du bist bereits für einen Lauf angemeldet.');
+				$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
+			}
 		}
-		// TODO check if user has a registration
 		$this->view->assign('runs', $this->runRepository->findAll())
 				   ->assign('user', $this->getCurrentFeUser());
 	}
@@ -352,6 +349,23 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		Return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
 			? $userRepository->findByUid( intval($GLOBALS['TSFE']->fe_user->user['uid']))
 			: NULL;
+	}
+	/**
+		 * Has the current fe user already a registration?
+		 * @return boolean
+		 */
+	Protected Function hasUserRegistration() {
+		$userHasRegistration = false;
+		foreach ($this->registrationRepository->findAllActive() as $registration) {
+			if ($registration->getUser()->getName() == NULL) {
+				continue;
+			}
+			if ($registration->isCurrentFeUserEqualUser()) {
+				$userHasRegistration = true;
+				break;
+			}
+		}
+		return $userHasRegistration;
 	}
 	
 }
