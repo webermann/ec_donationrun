@@ -48,7 +48,7 @@ Class Tx_EcDonationrun_Utility_SendMail {
 	 *
 	 * */
 	
-	static public function sendMail($email, $subjectText, $mailText, $replyTo=NULL, $cc=NULL, $bcc=NULL, $from=NULL) {
+	static public function sendMail($email, $subjectText, $mailText, $attachment = NULL, $cc=NULL, $bcc=NULL, $replyTo=NULL, $from=NULL) {
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		//Adressen festlegen
 		if ($from == NULL) {
@@ -84,6 +84,9 @@ Class Tx_EcDonationrun_Utility_SendMail {
 		//$mail->setBody($text, 'text/html');
 		$mail->setBody(strip_tags(preg_replace('/(<br*)(>)/', "\n", $text)), 'text/plain');
 		
+		if ($attachment != NULL) {
+			$mail->attach(Swift_Attachment::fromPath($attachment));
+		}
 		$mail->Send();
 
 		return $mail->isSent();
