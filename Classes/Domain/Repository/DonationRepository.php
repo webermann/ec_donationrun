@@ -41,15 +41,31 @@
 
 Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_Persistence_Repository {
 
-
-		/**
-		 *
-		 * Find Donation from Registration
-		 *
-		 * @param  Tx_EcDonationrun_Domain_Model_Registration $registration The parent registration
-		 * @return Array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
-		 *
-		 */
+	/**
+	 * Returns all objects with no invoice number of this repository.
+	 *
+	 * @return Array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
+	 */
+	public function findAllNoInvoice() {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectStoragePage(FALSE); // to get functionality in BE Module
+		$result = $query
+			->matching($query->equals('invoiceNumber', NULL))
+			->setOrderings(Array('user' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+			->execute();
+		return $result;
+	}
+	
+	
+	
+	/**
+	 *
+	 * Find Donation from Registration
+	 *
+	 * @param  Tx_EcDonationrun_Domain_Model_Registration $registration The parent registration
+	 * @return Array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
+	 *
+	 */
 
 	Public Function findDonationsFromRegistration($registration) {
 		$query = $this->createQuery();
