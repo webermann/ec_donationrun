@@ -26,229 +26,246 @@
 
 
 
-	/**
-	 *
-	 * The class for the timeset domain model. Models a single timeset with a start and a
-	 * stop time. Each timeset is associated with an assignment.
-	 *
-	 * @author     Hauke Webermann <hauke@webermann.net>
-	 * @package    EcDonationrun
-	 * @subpackage Domain_Model
-	 * @version    $Id$
-	 * @license    GNU Public License, version 2
-	 *             http://opensource.org/licenses/gpl-license.php
-	 * @entity
-	 *
-	 */
+/**
+ *
+ * The class for the timeset domain model. Models a single timeset with a start and a
+ * stop time. Each timeset is associated with an assignment.
+ *
+ * @author     Hauke Webermann <hauke@webermann.net>
+ * @package    EcDonationrun
+ * @subpackage Domain_Model
+ * @version    $Id$
+ * @license    GNU Public License, version 2
+ *             http://opensource.org/licenses/gpl-license.php
+ * @entity
+ *
+ */
 
 Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_AbstractEntity {
 
-		/**
-		 * The registration
-		 * @var Tx_EcDonationrun_Domain_Model_Registration
-		 * @lazy
-		 */
+	/**
+	 * The registration
+	 * @var Tx_EcDonationrun_Domain_Model_Registration
+	 * @lazy
+	 */
 	Protected $registration;
-	
-		/**
-		 * The user of this donation.
-		 * @var Tx_EcAssociation_Domain_Model_User
-		 * @lazy
-		 */
-	Protected $user;
-	
 
-		/**
-		 * The value of this donation
-		 * @var float
-		 * @validate NotEmpty
-		 */
+	/**
+	 * The user of this donation.
+	 * @var Tx_EcAssociation_Domain_Model_User
+	 * @lazy
+	 */
+	Protected $user;
+
+
+	/**
+	 * The value of this donation
+	 * @var float
+	 * @validate NotEmpty
+	 */
 	Protected $donationValue;
-	
-	
-		/**
-		 * The fix value of this donation
-		 * @var float
-		 */
+
+
+	/**
+	 * The fix value of this donation
+	 * @var float
+	 */
 	Protected $donationFixValue;
-	
-	
-		/**
-		 * A informaiton if the donator gets notification via E-Mail or Letter
-		 * 'items' => array(
-				    'E-Mail',
-				    'Brief')
-		 * @var int
-		 */
+
+
+	/**
+	 * A informaiton if the donator gets notification via E-Mail or Letter
+	 * 'items' => array(
+		 'E-Mail',
+		 'Brief',
+		 'Läufer')
+	 * @var int
+	 */
 	Protected $notificationVia;
-		
-		/**
-		 * A informaiton about the Notification Status
-		 * 'items' => array(
-				    'Bestätigungs Mail verschickt',
-				    'Spende bestätigt',
-				    'Zahlungsaufforderung',
-				    'Erinnerung',
-				    'Danke')
-		 * @var int
-		 */
+
+	/**
+	 * A informaiton about the Notification Status
+	 * 'items' => array(
+		 'Bestätigungs Mail verschickt',
+		 'Spende bestätigt',
+		 'Zahlungsaufforderung',
+		 'Erinnerung',
+		 'Danke')
+	 * @var int
+	 */
 	Protected $notificationStatus;
-	
-		/**
-		 * A informaiton if the donator has paid the donatoin
-		 * @var boolean
-		 */
-	Protected $isPaid;
-	
-		/**
-		 * A informaiton if the donator has paid the donatoin
-		 * @var string
-		 */
+
+	/**
+	 * A informaiton if the donator has paid the donatoin
+	 * @var string
+	 */
 	Protected $comment;
 
 	/**
-	* hidden
-	*
-	* @var boolean
-	*/
-	protected $hidden = FALSE;
+	 * A informaiton if the donator wants a contribution receipt
+	 * @var boolean
+	 */
+	Protected $contributionReceipt;
+
+	/**
+	 * A informaiton of the invoice number
+	 * @var string
+	 */
+	Protected $invoiceNumber;
 	
+	/**
+	 * hidden
+	 *
+	 * @var boolean
+	 */
+	protected $hidden = FALSE;
 
-		/*
-		 * GETTERS
-		 */
 
-		 /**
-		  *
-		  * Gets the registration
-		  * @return Tx_EcDonationrun_Domain_Model_Registration
-		  */
+	/*
+	 * GETTERS
+	 */
+
+	/**
+	 *
+	 * Gets the registration
+	 * @return Tx_EcDonationrun_Domain_Model_Registration
+	 */
 
 	Public Function getRegistration() {
 		Return $this->registration;
 	}
 
-		/**
-		 *
-		 * Gets the donator
-		 * @return Tx_EcAssociation_Domain_Model_User
-		 */
+	/**
+	 *
+	 * Gets the donator
+	 * @return Tx_EcAssociation_Domain_Model_User
+	 */
 
 	Public Function getUser() {
 		Return $this->user;
 	}
 
-		/**
-		 *
-		 * Gets the runner
-		 * @return Tx_EcAssociation_Domain_Model_User
-		 */
+	/**
+	 *
+	 * Gets the runner
+	 * @return Tx_EcAssociation_Domain_Model_User
+	 */
 
 	Public Function getRunner() {
 		Return $this->getRegistration()->getUser();
 	}
 
-		/**
-		 *
-		 * Gets the donation value
-		 * @return float $donationValue
-		 */
+	/**
+	 *
+	 * Gets the donation value
+	 * @return float $donationValue
+	 */
 
 	Public Function getDonationValue() {
 		Return $this->donationValue;
 	}
 
-		/**
-		 *
-		 * Gets the donation fix value
-		 * @return float $donationFixValue
-		 */
+	/**
+	 *
+	 * Gets the donation fix value
+	 * @return float $donationFixValue
+	 */
 
 	Public Function getDonationFixValue() {
 		Return $this->donationFixValue;
 	}
-	
-		/**
-		 *
-		 * Gets notification via
-		 * @return int $notificationVia
-		 */
+
+	/**
+	 *
+	 * Gets notification via
+	 * @return int $notificationVia
+	 */
 
 	Public Function getNotificationVia() {
 		Return $this->notificationVia;
 	}
-	
-		/**
-		 *
-		 * Gets notification status
-		 * @return int $notificationStatus
-		 */
+
+	/**
+	 *
+	 * Gets notification status
+	 * @return int $notificationStatus
+	 */
 
 	Public Function getNotificationStatus() {
 		Return $this->notificationStatus;
 	}
-	
-		/**
-		 *
-		 * Gets is paid
-		 * @return boolean $isPaid
-		 */
 
-	Public Function getIsPaid() {
-		Return $this->isPaid;
-	}
-	
-		/**
-		 *
-		 * Gets comment
-		 * @return string $comment
-		 */
+	/**
+	 *
+	 * Gets comment
+	 * @return string $comment
+	 */
 
 	Public Function getComment() {
 		Return $this->comment;
 	}
-	
+
 	/**
-	* Returns hidden
-	*
-	* @return boolean $hidden
-	*/
-	public function getHidden() {
-	    return $this->hidden;
+	 *
+	 * Gets contribution receipt
+	 * @return boolean $contributionReceipt
+	 */
+
+	Public Function getContributionReceipt() {
+		Return $this->contributionReceipt;
 	}
 
-		/*
-		 * SETTERS
-		 */
+/**
+	 *
+	 * Gets invoice number
+	 * @return string $invoiceNumber
+	 */
 
-		 /**
-		  *
-		  * Sets the registration of this donation.
-		  * @param Tx_EcDonationrun_Domain_Model_Registration $registration The assignment
-		  * @return void
-		  */
+	Public Function getInvoiceNumber() {
+		Return $this->invoiceNumber;
+	}
+
+	/**
+	 * Returns hidden
+	 *
+	 * @return boolean $hidden
+	 */
+	public function getHidden() {
+		return $this->hidden;
+	}
+
+	/*
+	 * SETTERS
+	 */
+
+	/**
+	 *
+	 * Sets the registration of this donation.
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The assignment
+	 * @return void
+	 */
 
 	Public Function setRegistration(Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$this->registration = $registration;
 	}
 
-		/**
-		 *
-		 * Sets the donator of this donation.
-		 * @param Tx_EcAssociation_Domain_Model_User $user
-		 * @return void
-		 */
+	/**
+	 *
+	 * Sets the donator of this donation.
+	 * @param Tx_EcAssociation_Domain_Model_User $user
+	 * @return void
+	 */
 
 	Public Function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
-		/**
-		 *
-		 * Sets value of this donation.
-		 * @param float $value
-		 * @return void
-		 */
+	/**
+	 *
+	 * Sets value of this donation.
+	 * @param float $value
+	 * @return void
+	 */
 
 	Public Function setDonationValue($value) {
 		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
@@ -256,79 +273,90 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	}
 
 	/**
-		 *
-		 * Sets the fix value of this donation.
-		 * @param float $value
-		 * @return void
-		 */
+	 *
+	 * Sets the fix value of this donation.
+	 * @param float $value
+	 * @return void
+	 */
 
 	Public Function setDonationFixValue($value) {
 		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
 		$this->donationFixValue = $value;
 	}
 
-		/**
-		 *
-		 * Sets notification via
-		 * @param int $value
-		 * @return void
-		 */
+	/**
+	 *
+	 * Sets notification via
+	 * @param int $value
+	 * @return void
+	 */
 
 	Public Function setNotificationVia($value) {
 		$this->notificationVia = $value;
 	}
-	
-		/**
-		 *
-		 * Gets notification status
-		 * @param int $value
-		 * @return void
-		 */
+
+	/**
+	 *
+	 * Gets notification status
+	 * @param int $value
+	 * @return void
+	 */
 
 	Public Function setNotificationStatus($value) {
 		$this->notificationStatus = $value;
 	}
-		
-		/**
-		 *
-		 * Sets the is paid flag.
-		 * @param boolean $value
-		 * @return void
-		 */
 
-	Public Function setIsPaid($isPaid) {
-		$this->isPaid = $isPaid;
-	}
-
-		/**
-		 *
-		 * Sets the comment.
-		 * @param string $comment
-		 * @return void
-		 */
+	/**
+	 *
+	 * Sets the comment.
+	 * @param string $comment
+	 * @return void
+	 */
 
 	Public Function setComment($value) {
 		$this->comment = $value;
 	}
-	
+
 	/**
-	* Sets hidden
-	*
-	* @param boolean $hidden
-	* @return void
-	*/
-	public function setHidden($hidden) {
-	    $this->hidden = $hidden;
+	 *
+	 * Sets the contribution receipt flag.
+	 * @param boolean $value
+	 * @return void
+	 */
+
+	Public Function setContributionReceipt($value) {
+		$this->contributionReceipt = $value;
 	}
 	
-	
 	/**
-	* Returns the boolean state of hidden
-	*
-	* @return boolean
-	*/
+	 *
+	 * Sets the invoice number.
+	 * @param string $invoiceNumber
+	 * @return void
+	 */
+
+	Public Function setInvoiceNumber($value) {
+		$this->invoiceNumber = $value;
+	}
+
+	/**
+	 * Sets hidden
+	 *
+	 * @param boolean $hidden
+	 * @return void
+	 */
+	public function setHidden($hidden) {
+		$this->hidden = $hidden;
+	}
+
+
+	/**
+	 * Returns the boolean state of hidden
+	 *
+	 * @return boolean
+	 */
 	public function isHidden() {
-	    return $this->getHidden();
+		return $this->getHidden();
 	}
 	/**
 	 * Load title for TCA label_userFunc
@@ -336,14 +364,14 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 */
 	public function getLabel(&$parameters, $parentObject) {
 		$donation = t3lib_BEfunc::getRecord($parameters['table'], $parameters['row']['uid']);
-        $user = t3lib_BEfunc::getRecord("fe_users", $donation['user']);
-        
+		$user = t3lib_BEfunc::getRecord("fe_users", $donation['user']);
+
 		if ($donation['donation_fix_value'] == 0) {
 			$realDonation = number_format($donation['donation_value'], 2, ',', '.')." € pro km";
 		} else {
 			$realDonation = number_format($donation['donation_fix_value'], 2, ',', '.')." € Festbetrag";
 		}
-        $parameters['title'] = $user['first_name'].' '.$user['last_name'].': '.$realDonation;
+		$parameters['title'] = $user['first_name'].' '.$user['last_name'].': '.$realDonation;
 	}
 }
 
