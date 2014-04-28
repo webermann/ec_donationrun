@@ -23,6 +23,8 @@
 			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mail Status</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Is Paid</label>
 			<label index="tx_ecdonationrun_domain_model_donation.comment">Comment</label>
+			<label index="tx_ecdonationrun_domain_model_donation.invoice_number">Invoice Number</label>
+			<label index="tx_ecdonationrun_domain_model_donation.contribution_receipt">Contribution Receipt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_ecdonationrun_domain_model_run">Lauf</label>
@@ -42,6 +44,8 @@
 			<label index="tx_ecdonationrun_domain_model_donation.mailstatus">Mailstatus</label>
 			<label index="tx_ecdonationrun_domain_model_donation.ispaid">Ist bezahlt</label>
 			<label index="tx_ecdonationrun_domain_model_donation.comment">Kommentar</label>
+			<label index="tx_ecdonationrun_domain_model_donation.invoice_number">Rechnungsnummer</label>
+			<label index="tx_ecdonationrun_domain_model_donation.contribution_receipt">Spendenquittung</label>
 		</languageKey>
 	</data>
 </T3locallang>
