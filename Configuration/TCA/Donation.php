@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_donation'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_donation']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'donation_value, donation_fix_value, notification_via, notification_status, is_paid, comment, registration, user'
+		'showRecordFieldList' => 'donation_value, donation_fix_value, notification_via, notification_status, comment, invoice_number, contribution_receipt, registration, user'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'donation_value, donation_fix_value, notification_via, notification_status, is_paid, comment, registration, user')
+		'1' => array('showitem' => 'donation_value, donation_fix_value, notification_via, notification_status, comment, invoice_number, contribution_receipt, registration, user')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -93,10 +93,10 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array(
 			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation.notification_via',
 			'config'  => array(
 				'type' => 'select',
-				'readOnly' => true,
 				'items' => array(
 				    array('E-Mail', 0),
-				    array('Brief', 1)
+				    array('Brief', 1),
+				    array('Läufer', 2)
 				)
 			)
 		),
@@ -115,9 +115,19 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array(
 				)
 			)
 		),
-		'is_paid' => array(
+		'invoice_number' => array(
 			'exclude' => 0,
-			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation.ispaid',
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation.invoice_number',
+			'config'  => array(
+				'type' => 'input',
+				'readOnly' => true,
+				'size' => 12,
+				'eval' => 'trim'
+			)
+		),
+		'contribution_receipt' => array(
+			'exclude' => 0,
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_donation.contribution_receipt',
 			'config'  => array(
 				'type' => 'check',
 				'default' => 0

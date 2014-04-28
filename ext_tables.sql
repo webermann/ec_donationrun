@@ -71,10 +71,11 @@ CREATE TABLE tx_ecdonationrun_domain_model_donation (
 	user int(11) unsigned DEFAULT '0',
 	donation_value double(10,2) unsigned DEFAULT '0.00' NOT NULL,
 	donation_fix_value double(10,2) unsigned DEFAULT '0.00',
+	comment text,
 	notification_via tinyint(4) unsigned DEFAULT '0',
 	notification_status tinyint(4) unsigned DEFAULT '0',
-	is_paid tinyint(4) unsigned DEFAULT '0',
-	comment text,
+	invoice_number text,
+	contribution_receipt tinyint(4) unsigned DEFAULT '0',
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
