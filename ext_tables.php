@@ -39,7 +39,7 @@ If ( TYPO3_MODE === 'BE' )
 	                                            'web',
 	                                            'tx_ecdonationrun_m1',
 	                                            '',
-	                                            Array ( 'Backend' => 'index' ),
+	                                            Array ( 'Backend' => 'index,sendDonationRequest' ),
 	                                            Array ( 'access' => 'user,group',
 	                                                    'icon'   => 'EXT:ec_donationrun/ext_icon.gif',
 	                                                    'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml' ) );
