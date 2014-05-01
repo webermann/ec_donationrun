@@ -7,7 +7,7 @@
 <f:section name="menu" />
 
 <f:section name="content">
-	<div class="donation_edit">
+	<div class="donation_edit donation_new">
 		<f:form object="{donation}" action="update" name="donation">
 	
 			<f:form.errors for="donation">
@@ -67,7 +67,7 @@
 				</div>
 				<div> 
 					<label for="donationValue"><f:translate key="Donation_New_DonationValue" /></label>
-					<f:form.textfield  property="donationValue" id="donationValue" /> Euro
+					<f:form.textfield  property="donationValue" id="donationValue" value="{donation.donationValue -> f:format.number(decimalSeparator: ',')}" /> Euro
 				</div>
 				<div> 
 					<span>oder</span>
@@ -75,7 +75,7 @@
 				 
 				<div> 
 					<label for="donationFixValue"><f:translate key="Donation_New_DonationFixValue" /></label>
-					<f:form.textfield  property="donationFixValue" id="donationFixValue" /> Euro
+					<f:form.textfield  property="donationFixValue" id="donationFixValue" value="{donation.donationFixValue -> f:format.number(decimalSeparator: ',')}" /> Euro
 				</div> 
 				<div> 
 					<label for="donationFixValue"><f:translate key="Donation_New_Comment" /></label>
