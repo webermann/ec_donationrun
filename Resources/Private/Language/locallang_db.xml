@@ -12,6 +12,7 @@
 			<label index="tx_ecdonationrun_domain_model_run.start">Start time</label>
 			<label index="tx_ecdonationrun_domain_model_run.distance">Distance</label>
 			<label index="tx_ecdonationrun_domain_model_registration">Registration</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runstatus">Run Status</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Runner Number</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnertime">Runner Time</label>
 			<label index="tx_ecdonationrun_domain_model_donation">Donation</label>
@@ -33,6 +34,7 @@
 			<label index="tx_ecdonationrun_domain_model_run.start">Start Zeit</label>
 			<label index="tx_ecdonationrun_domain_model_run.distance">Länge</label>
 			<label index="tx_ecdonationrun_domain_model_registration">Teilname</label>
+			<label index="tx_ecdonationrun_domain_model_registration.runstatus">Lauf Status</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Läufernummer</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnertime">Läuferzeit</label>
 			<label index="tx_ecdonationrun_domain_model_donation">Spende</label>

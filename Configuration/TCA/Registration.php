@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_registration']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'run,user,runnerNumber,runnerTime,donations'
+		'showRecordFieldList' => 'run,user,run_status,runner_number,runner_time,donations'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'run,user,runnerNumber,runnerTime,donations')
+		'1' => array('showitem' => 'run,user,run_status,runner_number,runner_time,donations')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -79,7 +79,19 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 				'maxitems' => 1
 			)
 		),
-		'runnerNumber' => array(
+		'run_status' => array(
+			'exclude' => 0,
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_registration.runstatus',
+			'config'  => array(
+				'type' => 'select',
+				'items' => array(
+					array('Erfolgreich', 0),
+				    array('Abgebrochen', 1),
+				    array('Nicht teilgenommen', 2),
+				)
+			)
+		),
+		'runner_number' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_registration.runnernumber',
 			'config'  => array(
@@ -88,7 +100,7 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 				'eval' => 'trim'
 			)
 		),
-		'runnerTime' => array(
+		'runner_time' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_registration.runnertime',
 			'config'  => array(
