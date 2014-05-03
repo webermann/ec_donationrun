@@ -6,47 +6,69 @@
 	
 	<h1>Spenden Lauf</h1>
 	
+	
+	<h2>Teilnehmer</h2>
+	<f:if condition="{registrations}">
+		<f:then>
+            <table>
+				<tr>
+					<th>Läufer</th>
+					<th>Gesammelte Spenden</th>
+				</tr>
+				<f:for each="{registrations}" as="registration">
+					<tr>
+						<td>{registration.name}	
+							<f:if condition="{registration.user.txEcassociationGroup.name}">
+	                            <span>({registration.user.txEcassociationGroup.name})</span>
+							</f:if></td>
+						<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{registration.donationAmount}</f:format.currency></td>
+					</tr>
+				</f:for>
+			</table>
+		</f:then>
+		<f:else>
+			<p>Keine Läufer gefunden</p>
+		</f:else>
+	</f:if>
+	
+	
+	
+	<br />
+	<h2>Spendenbenachrichtigung</h2>
+	
 	<div>
 		An folgende Spender wurde noch keine Spendenbenachrichtigung verschickt. 
 	</div>
 	<f:form action="sendDonationRequest">
-		<div class="donation_index">
-			
-			<table>
+		<table>
+			<tr>
+				<th><f:translate key="Donation_Index_List_Donator" /></th>
+				<th><f:translate key="Donation_Index_List_Donation" /></th>
+				<th><f:translate key="Donation_Index_List_Comment" /></th>
+			</tr>
+			<f:for each="{donations}" as="donation">
 				<tr>
-					<th><f:translate key="Donation_Index_List_Donator" /></th>
-					<th><f:translate key="Donation_Index_List_Donation" /></th>
-					<th><f:translate key="Donation_Index_List_Comment" /></th>
+					<td>{donation.user.name}</td>
+					<f:if condition="{donation.donationfixvalue} == 0">
+						<f:then>
+							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km</td>
+						</f:then>
+						<f:else>
+							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
+						</f:else>
+					</f:if>
+					<td>{donation.comment}</td>
 				</tr>
-				<f:for each="{donations}" as="donation">
-					<tr>
-						<td>{donation.user.name}</td>
-						<f:if condition="{donation.donationfixvalue} == 0">
-							<f:then>
-								<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km</td>
-							</f:then>
-							<f:else>
-								<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
-							</f:else>
-						</f:if>
-						<td>{donation.comment}</td>
-					</tr>
-				</f:for>
-			</table>
-		</div>
-		<div>
-			<f:form.submit value="Spendenbenachrichtigung schicken" />
-		</div>
+			</f:for>
+		</table>
+		<f:form.submit value="Spendenbenachrichtigung schicken" />
 	</f:form>
 	
-	
-	<f:comment>
-		<h2>Teilnehmer</h2>
-		<f:be.tableList tableName="tx_ecdonationrun_domain_model_registration" fieldList="{0: 'name', 1: 'parent'}" storagePid="316" levels="2" recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="true" clickTitleMode="info" alternateBackgroundColors="true" />
-		
-		<h2>Spenden</h2>
-		<f:be.tableList tableName="tx_ecdonationrun_domain_model_donation" fieldList="{0: 'name', 1: 'parent'}" storagePid="316" levels="2" recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" alternateBackgroundColors="true" />
-		
-	</f:comment>
-	
+	<br />
+	<h2>Teilnehmer E-Mail Adressen</h2>
+	{registration_emails}
+
+
+	<br />
+	<br />
 </f:be.container>
