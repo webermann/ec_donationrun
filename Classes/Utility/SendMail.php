@@ -85,7 +85,13 @@ Class Tx_EcDonationrun_Utility_SendMail {
 		$mail->setBody(strip_tags(preg_replace('/(<br*)(>)/', "\n", $text)), 'text/plain');
 		
 		if ($attachment != NULL) {
-			$mail->attach(Swift_Attachment::fromPath($attachment));
+			if (is_array($attachment)) {
+				foreach ($attachment as $val) {
+					$mail->attach(Swift_Attachment::fromPath($val));
+				}
+			} else {
+				$mail->attach(Swift_Attachment::fromPath($attachment));
+			}
 		}
 		$mail->Send();
 
