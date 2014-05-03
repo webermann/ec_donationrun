@@ -26,217 +26,241 @@
 
 
 
-	/**
-	 *
-	 * The class for the project domain model. The project class models the project
-	 * object, that is characterized by a name attribute and a start and end date. Each
-	 * project may have an infinite number of sub-projects.
-	 *
-	 * @author     Hauke Webermann <hauke@webermann.net>
-	 * @package    EcDonationrun
-	 * @subpackage Domain_Model
-	 * @version    $Id$
-	 * @license    GNU Public License, version 2
-	 *             http://opensource.org/licenses/gpl-license.php
-	 * @entity
-	 *
-	 */
+/**
+ *
+ * The class for the project domain model. The project class models the project
+ * object, that is characterized by a name attribute and a start and end date. Each
+ * project may have an infinite number of sub-projects.
+ *
+ * @author     Hauke Webermann <hauke@webermann.net>
+ * @package    EcDonationrun
+ * @subpackage Domain_Model
+ * @version    $Id$
+ * @license    GNU Public License, version 2
+ *             http://opensource.org/licenses/gpl-license.php
+ * @entity
+ *
+ */
 
 Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject_AbstractEntity {
 
-		/*
-		 * ATTRIBUTES
-		 */
+	/*
+	 * ATTRIBUTES
+	 */
 
-		/**
-		 * The run.
-		 * @var Tx_EcDonationrun_Domain_Model_Run
-		 * @lazy
-		 */
+	/**
+	 * The run.
+	 * @var Tx_EcDonationrun_Domain_Model_Run
+	 * @lazy
+	 */
 	Protected $run=NULL;
-	
-		/**
-		 * The runner of this registraion.
-		 * @var Tx_EcAssociation_Domain_Model_User
-		 * @lazy
-		 */
-	Protected $user;
 
-		/**
-		 * The runner number.
-		 * @var string
-		 */
+	/**
+	 * The runner of this registraion.
+	 * @var Tx_EcAssociation_Domain_Model_User
+	 * @lazy
+	 */
+	Protected $user;
+	/**
+	 * The run status.
+	 * @var int
+	 */
+	Protected $runStatus;
+	/**
+	 * The runner number.
+	 * @var string
+	 */
 	Protected $runnerNumber;
 
-		/**
-		 * The runner time.
-		 * @var integer
-		 */
+	/**
+	 * The runner time.
+	 * @var integer
+	 */
 	Protected $runnerTime;
-	
-		/**
-		 * A list of all donations that are assigned to this run
-		 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-		 * @lazy
-		 */
+
+	/**
+	 * A list of all donations that are assigned to this run
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
+	 * @lazy
+	 */
 	Protected $donations = NULL;
-	
-
-		/*
-		 * CONSTRUCTORS
-		 */
 
 
+	/*
+	 * CONSTRUCTORS
+	 */
 
 
 
-		 /**
-		  *
-		  * Creates a new project.
-		  *
-		  */
+
+
+	/**
+	 *
+	 * Creates a new project.
+	 *
+	 */
 
 	Public Function __construct() {
 		$this->donations = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 
-		/*
-		 * GETTERS
-		 */
+	/*
+	 * GETTERS
+	 */
 
-		 /**
-		  *
-		  * Gets the run
-		  * @return Tx_EcDonationrun_Domain_Model_Run The run
-		  *
-		  */
+	/**
+	 *
+	 * Gets the run
+	 * @return Tx_EcDonationrun_Domain_Model_Run The run
+	 *
+	 */
 
 	Public Function getRun() {
 		Return $this->run;
 	}
-	
-		 /**
-		  *
-		  * Gets the runner
-		  * @return Tx_EcAssociation_Domain_Model_User The runner
-		  *
-		  */
+
+	/**
+	 *
+	 * Gets the runner
+	 * @return Tx_EcAssociation_Domain_Model_User The runner
+	 *
+	 */
 
 	Public Function getUser() {
 		Return $this->user;
 	}
-	
-	 	/**
-		  *
-		  * Gets the name
-		  * @return string The runners name
-		  *
-		  */
+
+	/**
+	 *
+	 * Gets the name
+	 * @return string The runners name
+	 *
+	 */
 
 	Public Function getName() {
 		Return $this->getUser()->getName();
 	}
 
-		/**
-		 *
-		 * Gets the runner number.
-		 * @return string The runner number
-		 *
-		 */
+	/**
+	 * Gets the run status.
+	 * @return int
+	 */
+
+	Public Function getRunStatus() {
+		Return $this->runStatus;
+	}
+
+	/**
+	 * Gets the runner number.
+	 * @return string The runner number
+	 *
+	 */
 
 	Public Function getRunnerNumber() {
 		Return $this->runnerNumber;
 	}
 
-		/**
-		 *
-		 * Gets the runner time.
-		 * @return timesec The runner time
-		 *
-		 */
+	/**
+	 *
+	 * Gets the runner time.
+	 * @return timesec The runner time
+	 *
+	 */
 
 	Public Function getRunnerTime() {
 		Return $this->runnerTime;
 	}
 
-		/**
-		 *
-		 * Gets the edit date.
-		 * @return DateTime The edit date
-		 *
-		 */
+	/**
+	 *
+	 * Gets the edit date.
+	 * @return DateTime The edit date
+	 *
+	 */
 
 	Public Function getEditDate() {
 		Return $this->tstamp;
 	}
-	
-		/**
-		 *
-		 * Gets all donations for this registration.
-		 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-		 *
-		 */
+
+	/**
+	 *
+	 * Gets all donations for this registration.
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
+	 *
+	 */
 	Public Function getDonations() {
 		Return $this->donations;
 	}
 
-		/*
-		 * SETTERS
-		 */
-		/**
-		  *
-		  * Sets the run.
-		  * @param Tx_EcDonationrun_Domain_Model_Run $run The run
-		  * @return void
-		  *
-		  */
+	/*
+	 * SETTERS
+	 */
+	/**
+	 *
+	 * Sets the run.
+	 * @param Tx_EcDonationrun_Domain_Model_Run $run The run
+	 * @return void
+	 *
+	 */
 
 	Public Function setRun(Tx_EcDonationrun_Domain_Model_Run $run) {
 		$this->run = $run;
 	}
-		/**
-		  *
-		  * Sets the user.
-		  * @param Tx_EcAssociation_Domain_Model_User $user The user
-		  * @return void
-		  *
-		  */
+	/**
+	 *
+	 * Sets the user.
+	 * @param Tx_EcAssociation_Domain_Model_User $user The user
+	 * @return void
+	 *
+	 */
 
 	Public Function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
-		/**
-		 *
-		 * Sets the start number.
-		 * @param string $runnerNumber The start number
-		 * @return void
-		 *
-		 */
+	/**
+	 *
+	 * Sets the run status
+	 * @param int $value
+	 * @return void
+	 *
+	 */
+
+	Public Function setRunStatus($value) {
+		$this->runStatus = $value;
+	}
+	
+	/**
+	 *
+	 * Sets the start number.
+	 * @param string $runnerNumber The start number
+	 * @return void
+	 *
+	 */
 
 	Public Function setRunnerNumber($runnerNumber) {
 		$this->runnerNumber = $runnerNumber;
 	}
 
-		/**
-		 *
-		 * Sets the runners time.
-		 * @param timesec $runnerTime The runners time
-		 * @return void
-		 *
-		 */
+	/**
+	 *
+	 * Sets the runners time.
+	 * @param timesec $runnerTime The runners time
+	 * @return void
+	 *
+	 */
 
 	Public Function setRunnerTime($runnerTime) {
 		$this->runnerTime = $runnerTime;
 	}
-	
-		/**
-		 *
-		 * Is login user equal registration user.
-		 * @return boolan
-		 *
-		 */
+
+	/**
+	 *
+	 * Is login user equal registration user.
+	 * @return boolan
+	 *
+	 */
 
 	Public Function isCurrentFeUserEqualUser() {
 		if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 0) {
@@ -248,48 +272,48 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 			return false;
 		}
 	}
-	
-	
-		/**
-		 *
-		 * Gets the total amount of this registration. This methods
-		 * accumulates the donation amount to this registration.
-		 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-		 * @return double The total amount of donation of this registration
-		 *
-		 */
+
+
+	/**
+	 *
+	 * Gets the total amount of this registration. This methods
+	 * accumulates the donation amount to this registration.
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
+	 * @return double The total amount of donation of this registration
+	 *
+	 */
 
 	public function getDonationAmount() {
 		$amount = 0.0;
-		
-		foreach($this->getDonations() as $donation) {
+
+		foreach ($this->getDonations() as $donation) {
 			if ($donation->getDonationFixValue() == 0) {
 				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
 			} else {
 				$amount += $donation->getDonationFixValue();
 			}
 		}
-		
+
 		Return $amount;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Load title for TCA label_userFunc
 	 *
 	 */
 	public function getLabel(&$parameters, $parentObject) {
 		$registration = t3lib_BEfunc::getRecord($parameters['table'], $parameters['row']['uid']);
-        $run = t3lib_BEfunc::getRecord("tx_ecdonationrun_domain_model_run", $registration['run']);
-        $user = t3lib_BEfunc::getRecord("fe_users", $registration['user']);
-        
-        $parameters['title'] = $user['first_name'].' '.$user['last_name'].' @ '.$run['name'];
+		$run = t3lib_BEfunc::getRecord("tx_ecdonationrun_domain_model_run", $registration['run']);
+		$user = t3lib_BEfunc::getRecord("fe_users", $registration['user']);
+
+		$parameters['title'] = $user['first_name'].' '.$user['last_name'].' @ '.$run['name'];
 	}
-	
-	
-	
+
+
+
 }
 
 ?>
