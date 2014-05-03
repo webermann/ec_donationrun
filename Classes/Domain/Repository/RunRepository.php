@@ -42,6 +42,15 @@
 Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persistence_Repository {
 	protected $defaultOrderings = array ('distance' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING);
 	
+	public function initializeObjectForBe() {
+		/**
+		 * http://forge.typo3.org/projects/typo3v4-mvc/wiki/Default_Orderings_and_Query_Settings_in_Repository
+		 * @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
+		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($defaultQuerySettings);
+	}
+	
 }
 
 ?>
