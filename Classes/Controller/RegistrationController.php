@@ -295,6 +295,14 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->redirect('index');
 	}
 	
+	static public Function getRankingRunner($registrations) {
+		$ranking = array();
+		foreach ($registrations as $registration) {
+			$ranking[] = $registration;
+		}
+		usort($ranking,'cmpDonationAmount');
+		return $ranking;
+	}
 	
 	/**
 	 * The ranking action
@@ -302,11 +310,7 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 	 */
 	Public Function showRankingRunnerAction() {
 		$registrations = $this->registrationRepository->findAllActive();
-		$ranking = array();
-		foreach ($registrations as $registration) {
-			$ranking[] = $registration;
-		}
-		usort($ranking,'cmpDonationAmount');
+		$ranking = $this->getRankingRunner($registrations);
 		array_splice($ranking,5);
 		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
 		$this->view->assign('registrations', $ranking)
