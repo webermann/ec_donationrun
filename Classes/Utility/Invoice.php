@@ -52,7 +52,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		}
 		
 		$year = date("Y", time());
-		$invoiceId = 0;
+		static $invoiceId = 0;
 		do {
 			$invoiceId++;
 			$invoicePath = $destinationPath.'/RJ'.'_'.$year.$invoiceId.'.pdf';
@@ -61,6 +61,8 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		
 		// Some defaults and configuration
 		$h = 5;
+		$w = 158;
+		$politeForm = false;
 		
 		// Get a new instance of the FPDF library
 		$pdf = new PDF('portrait','mm','A4');
@@ -81,18 +83,27 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		
 		// Print Subject
 		$pdf->SetY(95);
-		$pdf->Cell(158, $h, date('d.m.Y', time()), 0, 2, 'R');
+		$pdf->Cell($w, $h, date('d.m.Y', time()), 0, 2, 'R');
 		$pdf->SetFont('Arial', 'B', 12);
 		$pdf->Cell(100, $h, 'Running for Jesus - Spendenbenachrichtigung', 0, 2);
 		$pdf->SetFont('Arial', '', 10);
 		// Print Text
 		$pdf->SetY(110);
-		$pdf->Cell(100, $h, self::c('Liebe/r '.$donations[0]->getUser()->getName().', (Sehr geehrte '.$donations[0]->getUser()->getName().'),'), 0, 2);
-		$pdf->MultiCell(158, $h,self::c(
-			'am '.$donations[0]->getRegistration()->getRun()->getStart()->format('d.m.Y').
-			' fand der Sponsorenlauf "Running for Jesus" statt. '.
-			'Viele Läufer gingen an den Start und wir freuen uns über Deine (Ihre) Zusage diesen Erfolg finanziell zu unterstützen.')
-		);
+		if ($politeForm) {
+			$pdf->Cell(100, $h, self::c('Sehr geehrte '.$donations[0]->getUser()->getName().','), 0, 2);
+			$pdf->MultiCell($w, $h, self::c(
+				'am '.$donations[0]->getRegistration()->getRun()->getStart()->format('d.m.Y').
+				' fand der Sponsorenlauf "Running for Jesus" statt. '.
+				'Viele Läufer gingen an den Start und wir freuen uns über Ihre Zusage diesen Erfolg finanziell zu unterstützen.')
+			);
+		} else {
+			$pdf->Cell(100, $h, self::c('Liebe/r '.$donations[0]->getUser()->getName().','), 0, 2);
+			$pdf->MultiCell($w, $h, self::c(
+				'am '.$donations[0]->getRegistration()->getRun()->getStart()->format('d.m.Y').
+				' fand der Sponsorenlauf "Running for Jesus" statt. '.
+				'Viele Läufer gingen an den Start und wir freuen uns über deine Zusage diesen Erfolg finanziell zu unterstützen.')
+			);
+		}
 		
 		$donationsRunSuccessful = array();
 		$donationsRunAborted = array();
@@ -122,7 +133,11 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		if (!empty($donationsRunSuccessful)) {
 			$pdf->Ln();
 			if (count($donationsRunSuccessful) != 1) {
-				$pdf->Cell(100, $h, self::c('Für folgende Läufer hast du (haben Sie) eine Spende zugesagt:'), 0, 2);
+				if ($politeForm) {
+					$pdf->Cell(100, $h, self::c('Für folgende Läufer haben Sie eine Spende zugesagt:'), 0, 2);
+				} else {
+					$pdf->Cell(100, $h, self::c('Für folgende Läufer hast du eine Spende zugesagt:'), 0, 2);
+				}
 				
 			    $pdf->SetFont('Arial','B',10);
 				for ($i=0; $i<count($tableHeader); $i++) {
@@ -142,27 +157,49 @@ Class Tx_EcDonationrun_Utility_Invoice {
 					$fill=!$fill;
 				}
 				$pdf->Cell(array_sum($tableWidth), $h, '', 'T', 1);
-				$pdf->MultiCell(158, $h, self::c(
-					"Wir würden uns sehr freuen wenn Du (Sie) den Betrag von ".number_format($donationAmount, 2, ',', '.').
-					" Euro überweist (überweisen)."
-				));
+				if ($politeForm) {
+					$pdf->MultiCell($w, $h, self::c(
+						"Wir würden uns sehr freuen wenn Sie den Betrag von ".number_format($donationAmount, 2, ',', '.').
+						" Euro überweisen."
+					));
+				} else {
+					$pdf->MultiCell($w, $h, self::c(
+						"Wir würden uns sehr freuen wenn du den Betrag von ".number_format($donationAmount, 2, ',', '.').
+						" Euro überweist."
+					));
+				}
 			} else {
-				$pdf->MultiCell(158, $h, self::c(
-					"Für ".$donation->getRegistration()->getUser()->getName().
-					" (".$donation->getRegistration()->getRun()->getName().")".
-					" hast Du (haben Sie) einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt.".
-					" Wir würden uns sehr freuen wenn Du (Sie) den Betrag überweist (überweisen)."
-				));
+				if ($politeForm) {
+					$pdf->MultiCell($w, $h, self::c(
+						"Für ".$donation->getRegistration()->getUser()->getName().
+						" (".$donation->getRegistration()->getRun()->getName().")".
+						" haben Sie einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt.".
+						" Wir würden uns sehr freuen wenn Sie den Betrag überweisen."
+					));
+				} else {
+					$pdf->MultiCell($w, $h, self::c(
+						"Für ".$donation->getRegistration()->getUser()->getName().
+						" (".$donation->getRegistration()->getRun()->getName().")".
+						" hast du einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt.".
+						" Wir würden uns sehr freuen wenn du den Betrag überweist."
+					));
+				}
 			}
 		}
-		
+
 		if (!empty($donationsRunAborted)) {
 			$text = '';
 			foreach ($donationsRunAborted as $donation) {
 				if ($text == '') {
-					$text .= "Für ".$donation->getRegistration()->getUser()->getName().
-						" (".$donation->getRegistration()->getRun()->getName().")".
-						" hast Du (haben Sie) einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt";
+					$text .= "Leider musste der Lauf von einigen abgebrochen werden und das Ziel wurde nicht erreicht. Trotz des Abbruchs wurde voller Einsatz gezeigt. ".
+						"Für ".$donation->getRegistration()->getUser()->getName().
+						" (".$donation->getRegistration()->getRun()->getName().")";
+					if ($politeForm) {
+						$text .= " haben Sie einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt";
+					} else {
+						$text .= " hast du einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt";
+					}
+						
 				} else {
 					$text .= ", für ".$donation->getRegistration()->getUser()->getName().
 						" (".$donation->getRegistration()->getRun()->getName().")".
@@ -170,41 +207,47 @@ Class Tx_EcDonationrun_Utility_Invoice {
 				}
 			}
 			$text .= '.';
-
+			
+			if ($politeForm) {
+				$text .= " Natürlich brauchen Sie den Betrag nicht überweisen. Falls Sie den Betrag trotzdem spenden möchten, wären wir Ihnen natürlich sehr dankbar.";
+			} else {
+				$text .= " Natürlich brauchst du den Betrag nicht überweisen. Falls du den Betrag trotzdem spenden möchtest, wären wir dir natürlich sehr dankbar.";
+			}
 			$pdf->Ln();
-			$pdf->MultiCell(158, $h, self::c(
-				"Leider musste der Lauf von einigen abgebrochen werden und das Ziel wurde nicht erreicht. Trotz des Abbruchs wurde voller Einsatz gezeigt. ".
-				$text.
-				" Natürlich brauchst Du (brauchen Sie) den Betrag nicht überweisen. ".
-				"Falls Du (Sie) den Betrag trotzdem spenden möchtest (möchten), wären wir Dir (Ihnen) natürlich sehr dankbar."
-			));
+			$pdf->MultiCell($w, $h, self::c($text));
 		}
 			
 		if (!empty($donationsRunDeregistered)) {
 			$text = '';
 			foreach ($donationsRunDeregistered as $donation) {
 				if ($text == '') {
-					$text .= "Du hattest (Sie hatten) für ".$donation->getRegistration()->getUser()->getName().
-						" (".$donation->getRegistration()->getRun()->getName().")".
+					if ($politeForm) {
+						$text .= "Sie hatten für ";
+					} else {
+						$text .= "Du hattest für ";
+					}
+					$text .= $donation->getRegistration()->getUser()->getName()." (".$donation->getRegistration()->getRun()->getName().")".
 						" eine Unterstützung von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt";
 				} else {
-					$text .= ", für ".$donation->getRegistration()->getUser()->getName().
-						" (".$donation->getRegistration()->getRun()->getName().")".
+					$text .= ", für ".$donation->getRegistration()->getUser()->getName()." (".$donation->getRegistration()->getRun()->getName().")".
 						" einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro";
 				}
 			}
 			$text .= '.';
-						
+
+			if ($politeForm) {
+				$text .= " Der Lauf wurde leider nicht angetreten. Natürlich brauchen Sie den Betrag somit auch nicht überweisen. ".
+					"Falls Sie den Betrag trotzdem spenden möchten, wären wir Ihnen natürlich sehr dankbar.";
+			} else {
+				$text .= " Der Lauf wurde leider nicht angetreten. Natürlich brauchst du den Betrag somit auch nicht überweisen. ".
+					"Falls du den Betrag trotzdem spenden möchtest, wären wir dir natürlich sehr dankbar.";
+			}
 			$pdf->Ln();
-			$pdf->MultiCell(158, $h, self::c(
-				$text.
-				" Der Lauf wurde leider nicht angetreten. Natürlich brauchst Du (brauchen Sie) den Betrag somit auch nicht überweisen. ".
-				"Falls Du (Sie) den Betrag trotzdem spenden möchtest (möchten), wären wir Dir (Ihnen) natürlich sehr dankbar."
-			));
+			$pdf->MultiCell($w, $h, self::c($text));
 		}
 		
 		$pdf->Ln();
-		$pdf->MultiCell(158, $h, self::c(
+		$pdf->MultiCell($w, $h, self::c(
 			"Bitte überweise den Gesamtbetrag, mit Angabe der Vorgangsnummer auf das Konto des Niedersächsischen EC-Verbandes:\n".
 			"IBAN: DE58 5206 0410 0000 6159 78\n".
 			"BIC: GENODEF1EK1\n".
@@ -212,18 +255,28 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		));
 		
 		$pdf->SetFont('Arial', '', 10);
+		if ($politeForm) {
+			$text = "Mit Ihrem Beitrag unterstützen Sie die sozial-diakonische ".
+				"Stadtteilarbeit 'Die PLiNKE' in Hannover/Linden und ermöglichen die wertvolle ".
+				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos finden Sie unter www.die-plinke.de und www.ec-niedersachsen.de.\n\n".
+				"Für Rückfragen stehen wir Ihnen gern zur Verfügung.\n".
+				"Vielen Dank für Ihre Unterstützung.\n\n".
+				"Herzliche Grüße\n".
+				"- Im Namen des Running for Jesus - Teams -\n".
+				"Carsten Müller";
+		} else {
+			$text = "Mit deinem Beitrag unterstützt du die sozial-diakonische ".
+				"Stadtteilarbeit 'Die PLiNKE' in Hannover/Linden und ermöglichst die wertvolle ".
+				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos findest du unter www.die-plinke.de ".
+				"und www.ec-niedersachsen.de.\n\n".
+				"Für Rückfragen stehen wir dir gern zur Verfügung.\n".
+				"Vielen Dank für deine Unterstützung.\n\n".
+				"Herzliche Grüße\n".
+				"- Im Namen des Running for Jesus - Teams -\n".
+				"Carsten Müller";
+		}
 		$pdf->Ln();
-		$pdf->MultiCell(158, $h, self::c(
-			"Mit Deinem (Ihrem) Beitrag unterstützt Du (unterstützen Sie) die sozial-diakonische ".
-			"Stadtteilarbeit 'Die PLiNKE' in Hannover/Linden und ermöglichst (ermöglichen) die wertvolle ".
-			"Arbeit im Niedersächsischen EC-Verband. Weitere Infos findest Du (finden Sie) unter www.die-plinke.de ".
-			"und www.ec-niedersachsen.de.\n\n".
-			"Für Rückfragen stehen wir Dir (Ihnen) gern zur Verfügung.\n".
-			"Vielen Dank für Deine (Ihre)Unterstützung.\n\n".
-			"Herzliche Grüße\n".
-			"- Im Namen des Running for Jesus - Teams -\n".
-			"Carsten Müller")
-		);
+		$pdf->MultiCell($w, $h, self::c($text));
 		
 		$pdf->Output($invoicePath, 'f');
 		

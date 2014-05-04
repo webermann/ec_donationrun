@@ -176,7 +176,8 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 		foreach ($usersDonationsByRunner as $donations) {
 			$invoices = array();
 			foreach ($donations as $donation) {
-				$invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donations, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
+				$donationToGenerate = array(&$donation);
+				$invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donationToGenerate, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
 				if (!is_file($invoice)) {
 					throw new Exception('EC Donationrun: Generate Invoice failt!');
 				}
