@@ -77,9 +77,9 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		$pdf->SetFont('Arial', '', 10);
 		
 		// Print Address
-		$pdf->Cell(100, $h, self::c($donations[0]->getUser()->getName()), 0, 2);
-		$pdf->Cell(100, $h, self::c($donations[0]->getUser()->getAddress()), 0, 2);
-		$pdf->Cell(100, $h, self::c($donations[0]->getUser()->getZip().' '.$donations[0]->getUser()->getCity()), 0, 2);
+		$pdf->Cell(100, $h, self::c(ucwords($donations[0]->getUser()->getName())), 0, 2);
+		$pdf->Cell(100, $h, self::c(ucfirst($donations[0]->getUser()->getAddress())), 0, 2);
+		$pdf->Cell(100, $h, self::c($donations[0]->getUser()->getZip().' '.ucfirst($donations[0]->getUser()->getCity())), 0, 2);
 		
 		// Print Subject
 		$pdf->SetY(95);
@@ -287,14 +287,14 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		if ($donation->getDonationFixValue() == 0) {
 			return $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
 		} else {
-			return $donation->getDonationFixValue() * $donation->getRegistration()->getRun()->getDistance();
+			return $donation->getDonationFixValue();
 		}
 	}
 	protected function getRealDonationFormated(Tx_EcDonationrun_Domain_Model_Donation $donation) {
 		if ($donation->getDonationFixValue() == 0) {
 			return number_format($donation->getDonationValue(), 2, ',', '.')." Euro pro km";
 		} else {
-			return number_format($donation->getDonationFixValue(), 2, ',', '.')." Euro Festbetrag";
+			return number_format($donation->getDonationFixValue(), 2, ',', '.')." Euro (fest)";
 		}
 	}
 	protected function c($data) {
