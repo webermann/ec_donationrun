@@ -209,9 +209,9 @@ Class Tx_EcDonationrun_Utility_Invoice {
 			$text .= '.';
 			
 			if ($politeForm) {
-				$text .= " Natürlich brauchen Sie den Betrag nicht überweisen. Falls Sie den Betrag trotzdem spenden möchten, wären wir Ihnen natürlich sehr dankbar.";
+				$text .= " Natürlich brauchen Sie den Betrag nicht überweisen. Falls Sie den Betrag trotzdem spenden möchten, würden wir uns jedoch sehr freuen!";
 			} else {
-				$text .= " Natürlich brauchst du den Betrag nicht überweisen. Falls du den Betrag trotzdem spenden möchtest, wären wir dir natürlich sehr dankbar.";
+				$text .= " Natürlich brauchst du den Betrag nicht überweisen. Falls du den Betrag trotzdem spenden möchtest, würden wir uns jedoch sehr freuen!";
 			}
 			$pdf->Ln();
 			$pdf->MultiCell($w, $h, self::c($text));
@@ -237,10 +237,10 @@ Class Tx_EcDonationrun_Utility_Invoice {
 
 			if ($politeForm) {
 				$text .= " Der Lauf wurde leider nicht angetreten. Natürlich brauchen Sie den Betrag somit auch nicht überweisen. ".
-					"Falls Sie den Betrag trotzdem spenden möchten, wären wir Ihnen natürlich sehr dankbar.";
+					"Falls Sie den Betrag trotzdem spenden möchten, würden wir uns jedoch sehr freuen!";
 			} else {
 				$text .= " Der Lauf wurde leider nicht angetreten. Natürlich brauchst du den Betrag somit auch nicht überweisen. ".
-					"Falls du den Betrag trotzdem spenden möchtest, wären wir dir natürlich sehr dankbar.";
+					"Falls du den Betrag trotzdem spenden möchtest, würden wir uns jedoch sehr freuen!";
 			}
 			$pdf->Ln();
 			$pdf->MultiCell($w, $h, self::c($text));
@@ -257,7 +257,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		$pdf->SetFont('Arial', '', 10);
 		if ($politeForm) {
 			$text = "Mit Ihrem Beitrag unterstützen Sie die sozial-diakonische ".
-				"Stadtteilarbeit 'Die PLiNKE' in Hannover/Linden und ermöglichen die wertvolle ".
+				"Stadtteilarbeit 'Die PLiNKe' in Hannover/Linden und ermöglichen die wertvolle ".
 				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos finden Sie unter www.die-plinke.de und www.ec-niedersachsen.de.\n\n".
 				"Für Rückfragen stehen wir Ihnen gern zur Verfügung.\n".
 				"Vielen Dank für Ihre Unterstützung.\n\n".
@@ -266,7 +266,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 				"Carsten Müller";
 		} else {
 			$text = "Mit deinem Beitrag unterstützt du die sozial-diakonische ".
-				"Stadtteilarbeit 'Die PLiNKE' in Hannover/Linden und ermöglichst die wertvolle ".
+				"Stadtteilarbeit 'Die PLiNKe' in Hannover/Linden und ermöglichst die wertvolle ".
 				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos findest du unter www.die-plinke.de ".
 				"und www.ec-niedersachsen.de.\n\n".
 				"Für Rückfragen stehen wir dir gern zur Verfügung.\n".
