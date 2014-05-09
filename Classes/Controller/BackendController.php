@@ -151,8 +151,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 				$invoicesByPost[] = $invoice;
 			} else {
 				Tx_EcDonationrun_Utility_SendMail::sendMail(
-				//array($donations[0]->getUser()->getEmail() => $donation->getUser()->getName()),
-					'hauke@webermann.net',
+					array($donations[0]->getUser()->getEmail() => $donation->getUser()->getName()),
 					"Running for Jesus - Spendenbenachrichtigung",
 					"Hallo ".$donations[0]->getUser()->getName().",\n".
 					"herzlichen Dank für deine Spende bei Running for Jesus im Anhang findest du die Spendenbenachrichtigung als pdf.",
@@ -172,7 +171,6 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 				$invoicesByPost);
 				$log .= "Mail verschickt an ".$this->settings['mail']['viaPostAddress']."\n";
 		}
-		
 		foreach ($usersDonationsByRunner as $donations) {
 			$invoices = array();
 			foreach ($donations as $donation) {
@@ -185,8 +183,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 			}
 			// Send mail to runner
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
-			//array($donations[0]->getRegistration()->getUser()->getEmail() => $donations[0]->getRegistration()->getUser()->getName()),
-				'hauke@webermann.net',
+				array($donations[0]->getRegistration()->getUser()->getEmail() => $donations[0]->getRegistration()->getUser()->getName()),
 				"Running for Jesus - Spendenbenachrichtigung per Läufer",
 				"Hallo ".$donations[0]->getRegistration()->getUser()->getName().",\n".
 				"im Anhang erhälst du die Spendenbenachrichtigung für deine Spender.",
@@ -196,16 +193,13 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 				$donation->setNotificationStatus(2); //	Mail sent
 			}
 		}
-		
-		// generate xls
-		
-		
 		$this->view->assign('log', $log);
 		$this->view->assign('processingTime', number_format((microtime(true) - $startTime), 2, ',', '.'));
 	}
 
 
 
+		// TODO generate xls
 
 
 

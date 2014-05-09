@@ -111,7 +111,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		
 		foreach ($donations as &$donation) {
 			// Set invoice number
-//TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			$donation->setInvoiceNumber($invoiceNumber);
+			$donation->setInvoiceNumber($invoiceNumber);
 			// Sort donations
 			$runStatus = $donation->getRegistration()->getRunStatus();
 			if ($runStatus == 0) { // Run successful
