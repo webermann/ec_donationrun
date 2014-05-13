@@ -151,10 +151,10 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 				$invoicesByPost[] = $invoice;
 			} else {
 				Tx_EcDonationrun_Utility_SendMail::sendMail(
-					array($donations[0]->getUser()->getEmail() => $donation->getUser()->getName()),
+					array($donations[0]->getUser()->getEmail() => $donations[0]->getUser()->getName()),
 					"Running for Jesus - Spendenbenachrichtigung",
 					"Hallo ".$donations[0]->getUser()->getName().",\n".
-					"herzlichen Dank für deine Spende bei Running for Jesus im Anhang findest du die Spendenbenachrichtigung als pdf.",
+					"herzlichen Dank für deine Spende bei Running for Jesus, im Anhang findest du die Spendenbenachrichtigung als pdf.",
 					$invoice);
 				$log .= "Mail verschickt an ".$donations[0]->getUser()->getName().' ('.str_replace($this->settings['invoicePath'].'/','', $invoice).")\n";
 			}
