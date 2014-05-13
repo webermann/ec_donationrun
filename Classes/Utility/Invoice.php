@@ -159,12 +159,12 @@ Class Tx_EcDonationrun_Utility_Invoice {
 				$pdf->Cell(array_sum($tableWidth), $h, '', 'T', 1);
 				if ($politeForm) {
 					$pdf->MultiCell($w, $h, self::c(
-						"Wir würden uns sehr freuen wenn Sie den Betrag von ".number_format($donationAmount, 2, ',', '.').
+						"Wir würden uns sehr freuen, wenn Sie den Betrag von ".number_format($donationAmount, 2, ',', '.').
 						" Euro überweisen."
 					));
 				} else {
 					$pdf->MultiCell($w, $h, self::c(
-						"Wir würden uns sehr freuen wenn du den Betrag von ".number_format($donationAmount, 2, ',', '.').
+						"Wir würden uns sehr freuen, wenn du den Betrag von ".number_format($donationAmount, 2, ',', '.').
 						" Euro überweist."
 					));
 				}
@@ -174,14 +174,14 @@ Class Tx_EcDonationrun_Utility_Invoice {
 						"Für ".$donation->getRegistration()->getUser()->getName().
 						" (".$donation->getRegistration()->getRun()->getName().")".
 						" haben Sie einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt.".
-						" Wir würden uns sehr freuen wenn Sie den Betrag überweisen."
+						" Wir würden uns sehr freuen, wenn Sie den Betrag überweisen."
 					));
 				} else {
 					$pdf->MultiCell($w, $h, self::c(
 						"Für ".$donation->getRegistration()->getUser()->getName().
 						" (".$donation->getRegistration()->getRun()->getName().")".
 						" hast du einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt.".
-						" Wir würden uns sehr freuen wenn du den Betrag überweist."
+						" Wir würden uns sehr freuen, wenn du den Betrag überweist."
 					));
 				}
 			}
@@ -248,7 +248,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 		
 		$pdf->Ln();
 		$pdf->MultiCell($w, $h, self::c(
-			"Bitte überweise den Gesamtbetrag, mit Angabe der Vorgangsnummer auf das Konto des Niedersächsischen EC-Verbandes:\n".
+			"Bitte überweise den Gesamtbetrag mit Angabe der Vorgangsnummer auf das Konto des Niedersächsischen EC-Verbandes:\n".
 			"IBAN: DE58 5206 0410 0000 6159 78\n".
 			"BIC: GENODEF1EK1\n".
 			"Verwendungszweck: ".$invoiceNumber
