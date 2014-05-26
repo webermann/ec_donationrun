@@ -35,7 +35,11 @@
 						</f:else>
 					</f:if>
 					<td>{donation.comment}</td>
-					<td><f:link.action controller="Donation" action="edit" arguments="{donation : donation}" pageUid="{donationEditPageUid}" >Bearbeiten</f:link.action></td>
+					<td>
+					<f:if condition="{donation.invoiceNumber} == ''">
+						<f:link.action controller="Donation" action="edit" arguments="{donation : donation}" pageUid="{donationEditPageUid}" >Bearbeiten</f:link.action>
+					</f:if>
+					</td>
 					<f:comment>
 						<td>Löschen</td>
 					</f:comment>
