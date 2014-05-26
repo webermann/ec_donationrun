@@ -196,10 +196,55 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 		$this->view->assign('log', $log);
 		$this->view->assign('processingTime', number_format((microtime(true) - $startTime), 2, ',', '.'));
 	}
-
-
-
-		// TODO generate xls
+	
+	
+	/**
+	 * The export action.
+	 * @return void
+	 */
+	Public Function exportAction() {
+		// export stuff
+		$donations = $this->donationRepository->findAll();
+		// todo sort by invoice number
+		$export = "Name;Vorname;Anschrift;PLZ;Ort;E-Mail;Rechnungsnummer;Spende;Datum;Läufer;\n";
+		
+		foreach ($donations as $donation) {
+			if ($donation->getDonationFixValue() == 0) {
+				$realDonationValue = $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+			} else {
+				$realDonationValue = $donation->getDonationFixValue();
+			}
+			$export .=
+				$donation->getUser()->getLastName().';'.
+				$donation->getUser()->getLastName().';'.
+				$donation->getUser()->getAddress().';'.
+				$donation->getUser()->getZip().';'.
+				$donation->getUser()->getCity().';'.
+				$donation->getUser()->getEmail().';'.
+				$donation->getInvoiceNumber().';'.
+				str_replace(".", ",", $realDonationValue).';'.
+				';'.//date('d.m.Y',$donation->getTstamp()).';'.
+				$donation->getRunner()->getName().";\n";
+		}
+		// TODO iso to ansi iconv("", "", $export);
+		
+		// download stuff
+		$headers = array(
+			'Pragma' => 'public',
+			'Expires' => 0,
+			'Cache-Control' => 'public',
+			'Content-Description' => 'File Transfer',
+			'Content-Type' => 'application/csv',
+			'Content-Disposition' => 'attachment;filename="export.csv"',
+			'Content-Transfer-Encoding' => 'binary',
+			'Content-Length' => filesize($export)
+		);
+		foreach ($headers as $header => $data) {
+			$this->response->setHeader($header, $data);
+		}
+		//@readfile($export);
+		$this->view->assign('export', $export);
+	}
 
 
 
