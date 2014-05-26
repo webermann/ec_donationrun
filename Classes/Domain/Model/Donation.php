@@ -114,6 +114,13 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	Protected $invoiceNumber;
 	
 	/**
+	 * tstamp
+	 *
+	 * @var DateTime
+	 */
+	protected $tstamp;
+	
+	/**
 	 * hidden
 	 *
 	 * @var boolean
@@ -225,6 +232,16 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		Return $this->invoiceNumber;
 	}
 
+	/**
+	 *
+	 * Gets the edit date.
+	 * @return DateTime The edit date
+	 *
+	 */
+	Public Function getTimestamp() {
+		Return $this->tstamp;
+	}
+	
 	/**
 	 * Returns hidden
 	 *

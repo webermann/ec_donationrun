@@ -206,7 +206,8 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 		// export stuff
 		$donations = $this->donationRepository->findAll();
 		// todo sort by invoice number
-		$export = "Name;Vorname;Anschrift;PLZ;Ort;E-Mail;Rechnungsnummer;Spende;Datum;Läufer;\n";
+		///$export = "Name;Vorname;Anschrift;PLZ;Ort;E-Mail;Rechnungsnummer;Spende;Datum;Läufer;\n";
+		$export = "Name;Vorname;Anschrift;PLZ;Ort;E-Mail;Rechnungsnummer;Spende;Läufer;\n";
 		
 		foreach ($donations as $donation) {
 			if ($donation->getDonationFixValue() == 0) {
@@ -223,10 +224,10 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 				$donation->getUser()->getEmail().';'.
 				$donation->getInvoiceNumber().';'.
 				str_replace(".", ",", $realDonationValue).';'.
-				';'.//date('d.m.Y',$donation->getTstamp()).';'.
+				//$donation->getTimestamp()->format("d.m.Y").';'.
 				$donation->getRunner()->getName().";\n";
 		}
-		// TODO iso to ansi iconv("", "", $export);
+		// TODO Add bom or convert to ansi??
 		
 		// download stuff
 		$headers = array(

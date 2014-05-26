@@ -109,6 +109,9 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 				$this->redirect('index', 'Registration', 'ecdonationrun', NULL, $this->settings['registrationIndex']);
 			}
 		}
+		
+		// todo Bearbeiten deaktivieren!!
+		
 		if (!isset($this->settings['donationEdit'])) throw new Exception('EC Donationrun: donationEdit not set');
 		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
 		$this->view->assign('registration' , $registration)
