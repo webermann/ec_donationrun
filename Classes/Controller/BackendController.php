@@ -217,7 +217,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 			}
 			$export .=
 				$donation->getUser()->getLastName().';'.
-				$donation->getUser()->getLastName().';'.
+				$donation->getUser()->getFirstName().';'.
 				$donation->getUser()->getAddress().';'.
 				$donation->getUser()->getZip().';'.
 				$donation->getUser()->getCity().';'.
