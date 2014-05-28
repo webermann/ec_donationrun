@@ -59,7 +59,7 @@ Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extba
 	public function findAllActive() {
 		$query = $this->createQuery();
 		$result = $query
-			->matching($query->greaterThanOrEqual('run.start', time()-60*60*24*30)) // Zeige 30 Tage nach start noch an.
+			->matching($query->greaterThanOrEqual('run.start', time()-60*60*24*90)) // Zeige 90 Tage nach start noch an.
 			//->matching($query->greaterThan('user.name', '')) TODO
 			->setOrderings(Array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 			->execute();
