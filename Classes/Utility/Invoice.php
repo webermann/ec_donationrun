@@ -263,7 +263,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 				"Vielen Dank für Ihre Unterstützung.\n\n".
 				"Herzliche Grüße\n".
 				"- Im Namen des Running for Jesus - Teams -\n".
-				"Carsten Müller";
+				"Benjamin Schaar";
 		} else {
 			$text = "Mit deinem Beitrag unterstützt du die sozial-diakonische ".
 				"Stadtteilarbeit 'Die PLiNKe' in Hannover/Linden und ermöglichst die wertvolle ".
@@ -273,7 +273,7 @@ Class Tx_EcDonationrun_Utility_Invoice {
 				"Vielen Dank für deine Unterstützung.\n\n".
 				"Herzliche Grüße\n".
 				"- Im Namen des Running for Jesus - Teams -\n".
-				"Carsten Müller";
+				"Benjamin Schaar";
 		}
 		$pdf->Ln();
 		$pdf->MultiCell($w, $h, self::c($text));
