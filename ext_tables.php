@@ -60,6 +60,7 @@ $TCA['tx_ecdonationrun_domain_model_run'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
+		'default_sortby'           => 'ORDER BY crdate DESC',
 		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Run.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_run.gif'
@@ -84,6 +85,7 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
+		'default_sortby'           => 'ORDER BY crdate DESC',
 		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Registration.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_registration.gif'
@@ -109,6 +111,7 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
+		'default_sortby'           => 'ORDER BY crdate DESC',
 		'enablecolumns'            => array( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Donation.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_donation.gif'
