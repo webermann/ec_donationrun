@@ -34,16 +34,39 @@ $pluginSignature = strtolower($extensionName) . '_pi1';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
  t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:'.$_EXTKEY.'/Configuration/FlexForms/ControllerActions.xml');
 
-If ( TYPO3_MODE === 'BE' )
+if ( TYPO3_MODE === 'BE' )
     Tx_Extbase_Utility_Extension::registerModule ( $_EXTKEY,
 	                                            'web',
 	                                            'tx_ecdonationrun_m1',
 	                                            '',
-	                                            Array ( 'Backend' => 'index,sendDonationRequest,export' ),
-	                                            Array ( 'access' => 'user,group',
+	                                            array ( 'Backend' => 'index,sendDonationRequest,export' ),
+	                                            array ( 'access' => 'user,group',
 	                                                    'icon'   => 'EXT:ec_donationrun/ext_icon.gif',
 	                                                    'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml' ) );
 
+t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_event',
+                                          'EXT:ec_donationrun/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_event.xml' );
+t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_event' );
+$TCA['tx_ecdonationrun_domain_model_event'] = array (
+	'ctrl' => array (
+		'title'                    => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_event',
+		'label'                    => 'name',
+		'tstamp'                   => 'tstamp',
+		'crdate'                   => 'crdate',
+		'versioningWS'             => 2,
+		'versioning_followPages'   => TRUE,
+		'origUid'                  => 't3_origuid',
+		'languageField'            => 'sys_language_uid',
+		'transOrigPointerField'    => 'l18n_parent',
+		'transOrigDiffSourceField' => 'l18n_diffsource',
+		'delete'                   => 'deleted',
+		'default_sortby'           => 'ORDER BY crdate ASC',
+		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
+		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Event.php',
+		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_event.gif'
+	)
+);
+	                                            
 t3lib_extMgm::addLLrefForTCAdescr       ( 'tx_ecdonationrun_domain_model_run',
                                           'EXT:ec_donationrun/Resources/Private/Language/locallang_csh_tx_ecdonationrun_domain_model_run.xml' );
 t3lib_extMgm::allowTableOnStandardPages ( 'tx_ecdonationrun_domain_model_run' );
@@ -60,7 +83,7 @@ $TCA['tx_ecdonationrun_domain_model_run'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
-		'default_sortby'           => 'ORDER BY crdate DESC',
+		'default_sortby'           => 'ORDER BY crdate ASC',
 		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Run.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_run.gif'
@@ -85,7 +108,7 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
-		'default_sortby'           => 'ORDER BY crdate DESC',
+		'default_sortby'           => 'ORDER BY crdate ASC',
 		'enablecolumns'            => array ( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Registration.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_registration.gif'
@@ -111,7 +134,7 @@ $TCA['tx_ecdonationrun_domain_model_donation'] = array (
 		'transOrigPointerField'    => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'delete'                   => 'deleted',
-		'default_sortby'           => 'ORDER BY crdate DESC',
+		'default_sortby'           => 'ORDER BY crdate ASC',
 		'enablecolumns'            => array( 'disabled' => 'hidden' ),
 		'dynamicConfigFile'        => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Donation.php',
 		'iconfile'                 => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_ecdonationrun_domain_model_donation.gif'

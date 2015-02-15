@@ -40,7 +40,7 @@
 
 require_once t3lib_extMgm::extPath('fpdf').'class.tx_fpdf.php';
 
-Class Tx_EcDonationrun_Utility_Invoice {
+class Tx_EcDonationrun_Utility_Invoice {
 
 	/*
 	 * @param array<Tx_EcDonationrun_Domain_Model_Donation> $donations

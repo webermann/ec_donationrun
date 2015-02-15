@@ -1,5 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_registration']['ctrl'],

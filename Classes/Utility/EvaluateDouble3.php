@@ -40,7 +40,7 @@
 	 *
 	 */
 
-Class tx_ecdonationrun_double3 {
+class tx_ecdonationrun_double3 {
     function returnFieldJS() {
         return "
             var theVal = ''+value;

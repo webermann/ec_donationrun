@@ -3,7 +3,7 @@
 /*                                                                      *
  *  COPYRIGHT NOTICE                                                    *
  *                                                                      *
- *  (c) 2013 Hauke Webermann <hauke@webermann.net>                      *
+ *  (c) 2015 Hauke Webermann <hauke@webermann.net>                      *
  *           webermann.net                                              *
  *           All rights reserved                                        *
  *                                                                      *
@@ -28,17 +28,23 @@
 
 	/**
 	 *
-	 * Abstract exception class for all domain errors that might occur in this extension.
+	 * A ViewHelper for Mail text.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
-	 * @subpackage Domain_Exception
-	 * @version    $Id$
+	 * @subpackage Utility
+	 * @version    $Id: SendMail.php 128 2015-01-31 15:48:17Z hauke $
 	 * @license    GNU Public License, version 2
 	 *             http://opensource.org/licenses/gpl-license.php
 	 *
 	 */
 
-abstract class Tx_EcDonationrun_Domain_Exception_AbstractException extends Tx_Extbase_Exception { }
+class Tx_EcDonationrun_Utility_MailTexter {
+    
+	/* Include Mail text from mail_tmpl.php */
+	
+	
+	
+}
 
 ?>

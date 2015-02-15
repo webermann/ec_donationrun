@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Context Sensitive Help (CSH) for table tx_ecdonationrun_domain_model_event</description>
+        <type>CSH</type>
+        <csh_table>tx_ecdonationrun_domain_model_event</csh_table>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+			<label index="name.description">Name of the event</label>
+			<label index="city.description">The city of the event</label>
+			<label index="city.info">Some Infos about the event</label>
+			<label index="city.website">The website of the event</label>
+			<label index="city.runs">The runs of the event</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="name.description">Name des Event</label>
+			<label index="city.description">Der Ort des Evnts</label>
+			<label index="city.info">Infos zum Event</label>
+			<label index="city.website">Die Webseite zum Events</label>
+			<label index="city.runs">Die Läufe des Events</label>
+		</languageKey>
+    </data>
+</T3locallang>

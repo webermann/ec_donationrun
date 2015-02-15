@@ -28,9 +28,6 @@
 
 /**
  *
- * The class for the timeset domain model. Models a single timeset with a start and a
- * stop time. Each timeset is associated with an assignment.
- *
  * @author     Hauke Webermann <hauke@webermann.net>
  * @package    EcDonationrun
  * @subpackage Domain_Model
@@ -41,21 +38,21 @@
  *
  */
 
-Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
 	 * The registration
 	 * @var Tx_EcDonationrun_Domain_Model_Registration
 	 * @lazy
 	 */
-	Protected $registration;
+	protected $registration;
 
 	/**
 	 * The user of this donation.
 	 * @var Tx_EcAssociation_Domain_Model_User
 	 * @lazy
 	 */
-	Protected $user;
+	protected $user;
 
 
 	/**
@@ -63,14 +60,14 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @var float
 	 * @validate NotEmpty
 	 */
-	Protected $donationValue;
+	protected $donationValue;
 
 
 	/**
 	 * The fix value of this donation
 	 * @var float
 	 */
-	Protected $donationFixValue;
+	protected $donationFixValue;
 
 
 	/**
@@ -81,7 +78,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 'Läufer')
 	 * @var int
 	 */
-	Protected $notificationVia;
+	protected $notificationVia;
 
 	/**
 	 * A informaiton about the Notification Status
@@ -93,25 +90,25 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 		 'Danke')
 	 * @var int
 	 */
-	Protected $notificationStatus;
+	protected $notificationStatus;
 
 	/**
 	 * A informaiton if the donator has paid the donatoin
 	 * @var string
 	 */
-	Protected $comment;
+	protected $comment;
 
 	/**
 	 * A informaiton if the donator wants a contribution receipt
 	 * @var boolean
 	 */
-	Protected $contributionReceipt;
+	protected $contributionReceipt;
 
 	/**
 	 * A informaiton of the invoice number
 	 * @var string
 	 */
-	Protected $invoiceNumber;
+	protected $invoiceNumber;
 	
 	/**
 	 * tstamp
@@ -138,8 +135,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return Tx_EcDonationrun_Domain_Model_Registration
 	 */
 
-	Public Function getRegistration() {
-		Return $this->registration;
+	public function getRegistration() {
+		return $this->registration;
 	}
 
 	/**
@@ -148,8 +145,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return Tx_EcAssociation_Domain_Model_User
 	 */
 
-	Public Function getUser() {
-		Return $this->user;
+	public function getUser() {
+		return $this->user;
 	}
 
 	/**
@@ -158,8 +155,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return Tx_EcAssociation_Domain_Model_User
 	 */
 
-	Public Function getRunner() {
-		Return $this->getRegistration()->getUser();
+	public function getRunner() {
+		return $this->getRegistration()->getUser();
 	}
 
 	/**
@@ -168,8 +165,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return float $donationValue
 	 */
 
-	Public Function getDonationValue() {
-		Return $this->donationValue;
+	public function getDonationValue() {
+		return $this->donationValue;
 	}
 
 	/**
@@ -178,8 +175,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return float $donationFixValue
 	 */
 
-	Public Function getDonationFixValue() {
-		Return $this->donationFixValue;
+	public function getDonationFixValue() {
+		return $this->donationFixValue;
 	}
 
 	/**
@@ -188,8 +185,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return int $notificationVia
 	 */
 
-	Public Function getNotificationVia() {
-		Return $this->notificationVia;
+	public function getNotificationVia() {
+		return $this->notificationVia;
 	}
 
 	/**
@@ -198,8 +195,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return int $notificationStatus
 	 */
 
-	Public Function getNotificationStatus() {
-		Return $this->notificationStatus;
+	public function getNotificationStatus() {
+		return $this->notificationStatus;
 	}
 
 	/**
@@ -208,8 +205,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return string $comment
 	 */
 
-	Public Function getComment() {
-		Return $this->comment;
+	public function getComment() {
+		return $this->comment;
 	}
 
 	/**
@@ -218,8 +215,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return boolean $contributionReceipt
 	 */
 
-	Public Function getContributionReceipt() {
-		Return $this->contributionReceipt;
+	public function getContributionReceipt() {
+		return $this->contributionReceipt;
 	}
 
 /**
@@ -228,8 +225,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return string $invoiceNumber
 	 */
 
-	Public Function getInvoiceNumber() {
-		Return $this->invoiceNumber;
+	public function getInvoiceNumber() {
+		return $this->invoiceNumber;
 	}
 
 	/**
@@ -238,8 +235,8 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return DateTime The edit date
 	 *
 	 */
-	Public Function getTimestamp() {
-		Return $this->tstamp;
+	public function getTimestamp() {
+		return $this->tstamp;
 	}
 	
 	/**
@@ -262,7 +259,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setRegistration(Tx_EcDonationrun_Domain_Model_Registration $registration) {
+	public function setRegistration(Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$this->registration = $registration;
 	}
 
@@ -273,7 +270,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setUser(Tx_EcAssociation_Domain_Model_User $user) {
+	public function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
@@ -284,7 +281,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setDonationValue($value) {
+	public function setDonationValue($value) {
 		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
 		$this->donationValue = $value;
 	}
@@ -296,7 +293,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setDonationFixValue($value) {
+	public function setDonationFixValue($value) {
 		$value = floatval(str_replace(',', '.', str_replace('.', '', $value)));
 		$this->donationFixValue = $value;
 	}
@@ -308,7 +305,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setNotificationVia($value) {
+	public function setNotificationVia($value) {
 		$this->notificationVia = $value;
 	}
 
@@ -319,7 +316,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setNotificationStatus($value) {
+	public function setNotificationStatus($value) {
 		$this->notificationStatus = $value;
 	}
 
@@ -330,7 +327,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setComment($value) {
+	public function setComment($value) {
 		$this->comment = $value;
 	}
 
@@ -341,7 +338,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setContributionReceipt($value) {
+	public function setContributionReceipt($value) {
 		$this->contributionReceipt = $value;
 	}
 	
@@ -352,7 +349,7 @@ Class Tx_EcDonationrun_Domain_Model_Donation Extends Tx_Extbase_DomainObject_Abs
 	 * @return void
 	 */
 
-	Public Function setInvoiceNumber($value) {
+	public function setInvoiceNumber($value) {
 		$this->invoiceNumber = $value;
 	}
 

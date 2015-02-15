@@ -5,40 +5,43 @@
 </f:section>
 
 <f:section name="menu">
-	<f:if condition="{userHasNoRegistration}">
-		<ul>
-			<li><f:link.action action="new" controller="Registration" pageUid="{registrationNewPageUid}">Als Läufer anmelden</f:link.action></li>
-		</ul>
-	</f:if>
+	<ul>
+		<li><f:link.action action="new" controller="Registration" pageUid="{registrationNewPageUid}">Als Läufer anmelden</f:link.action></li>
+	</ul>
 </f:section>
 
 <f:section name="content">
 	<div class="registration_new">
 		<f:if condition="{registrations}">
 			<f:then>
-				<f:for each="{registrations}" as="runs" key="title">
-					<h3>{title}</h3>
-					<f:for each="{runs}" as="registration">	
-						<p>
-							<f:if condition="{registration.user.image}">
-								<f:image src="uploads/tx_srfeuserregister/{registration.user.image}" alt="User Bild" width="100" height="100c"/> 
-							</f:if>
-							<f:comment>
-								For Admin View
-								<f:link.action action="show" arguments="{registration : registration}">
-									{registration.name} 
+				<f:for each="{registrations}" as="events" key="titleEvent">
+					<h2>{titleEvent}</h2>
+					<spam>... info ...</span>
+					<f:for each="{events}" as="runs" key="titleRun">
+						<h3>{titleRun}</h3>
+						<f:for each="{runs}" as="registration">	
+							<p>
+								<f:if condition="{registration.user.image}">
+									<f:image src="uploads/tx_srfeuserregister/{registration.user.image}" alt="User Bild" width="100" height="100c"/> 
+								</f:if>
+								<f:comment>
+									For Admin View
+									<f:link.action action="show" arguments="{registration : registration}">
+										{registration.name} 
+									</f:link.action>
+									({registration.user.txassociationGroup.name})
+								</f:comment>
+								{registration.name}
+								<f:if condition="{registration.user.txEcassociationGroup.name}">
+									({registration.user.txEcassociationGroup.name})
+								</f:if>
+								<f:link.action controller="Donation" action="new" arguments="{registration : registration}" pageUid="{donationNewPageUid}" >
+									Spenden
 								</f:link.action>
-								({registration.user.txassociationGroup.name})
-							</f:comment>
-							{registration.name}
-							<f:if condition="{registration.user.txEcassociationGroup.name}">
-								({registration.user.txEcassociationGroup.name})
-							</f:if>
-							<f:link.action controller="Donation" action="new" arguments="{registration : registration}" pageUid="{donationNewPageUid}" >
-								Spenden
-							</f:link.action>
-						</p>
+							</p>
+						</f:for>
 					</f:for>
+					<br>
 				</f:for>
 			</f:then><f:else>
 				<p>Keine Läufer gefunden</p>

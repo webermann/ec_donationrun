@@ -40,9 +40,9 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Exception_NoProjectMemberException Extends Tx_EcDonationrun_Domain_Exception_AbstractException {
-	Protected $code = 1266412844;
-	Protected $message = "You are no member of this project!";
+class Tx_EcDonationrun_Domain_Exception_NoProjectMemberException extends Tx_EcDonationrun_Domain_Exception_AbstractException {
+	protected $code = 1266412844;
+	protected $message = "You are no member of this project!";
 }
 
 ?>

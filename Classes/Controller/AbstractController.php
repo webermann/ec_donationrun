@@ -32,7 +32,7 @@
 	 * class implements a basic error handling that catches all exception throws within
 	 * a mittwald_timetrack controller or in the domain model.
 	 *
-	 * @author     Hauke Webermann <hauke@webermann.net> 
+	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
 	 * @subpackage Controller
 	 * @version    $Id$
@@ -41,10 +41,7 @@
 	 *
 	 */
 
-Abstract Class Tx_EcDonationrun_Controller_AbstractController Extends Tx_Extbase_MVC_Controller_ActionController {
-
-
-
+abstract class Tx_EcDonationrun_Controller_AbstractController extends Tx_Extbase_MVC_Controller_ActionController {
 		/**
 		 *
 		 * Handles an exception. This methods modifies the controller context for the
@@ -56,7 +53,7 @@ Abstract Class Tx_EcDonationrun_Controller_AbstractController Extends Tx_Extbase
 		 *
 		 */
 
-	Protected Function handleError(Tx_EcDonationrun_Domain_Exception_AbstractException $e) {
+	protected function handleError(Tx_EcDonationrun_Domain_Exception_AbstractException $e) {
 		$controllerContext = $this->buildControllerContext();
 		$controllerContext->getRequest()->setControllerName('Default');
 		$controllerContext->getRequest()->setControllerActionName('error');
@@ -80,7 +77,7 @@ Abstract Class Tx_EcDonationrun_Controller_AbstractController Extends Tx_Extbase
 		 *
 		 */
 
-	Protected Function callActionMethod() {
+	protected function callActionMethod() {
 		Try { parent::callActionMethod(); }
 		Catch(Tx_EcDonationrun_Domain_Exception_AbstractException $e) {
 			$this->handleError($e);

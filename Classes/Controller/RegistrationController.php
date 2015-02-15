@@ -26,71 +26,67 @@
 
 
 
-	/**
-	 *
-	 * Registration controller class for the timetracking extension. Provides actions for
-	 * registration listing, creating and updating registrations and displaying registration details.
-	 *
-	 * @author     Hauke Webermann <hauke@webermann.net>
-	 * @package    EcDonationrun
-	 * @subpackage Controller
-	 * @version    $Id$
-	 * @license    GNU Public License, version 2
-	 *             http://opensource.org/licenses/gpl-license.php
-	 *
+/**
+ *
+ * Registration controller class for the timetracking extension. Provides actions for
+ * registration listing, creating and updating registrations and displaying registration details.
+ *
+ * @author     Hauke Webermann <hauke@webermann.net>
+ * @package    EcDonationrun
+ * @subpackage Controller
+ * @version    $Id$
+ * @license    GNU Public License, version 2
+ *             http://opensource.org/licenses/gpl-license.php
+ *
+ */
+
+class Tx_EcDonationrun_Controller_RegistrationController extends Tx_EcDonationrun_Controller_AbstractController {
+
+	/*
+	 * ATTRIBUTES
 	 */
 
-Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationrun_Controller_AbstractController {
-
-		/*
-		 * ATTRIBUTES
-		 */
-
-		/**
-		 * A registration repository instance
-		 * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
-		 */
-	Protected $registrationRepository;
-
-		/**
-		 * A run repository instance
-		 * @var Tx_EcDonationrun_Domain_Repository_RunRepository
-		 */
-	Protected $runRepository;
-
-		/**
-		 * A frontend user repository instance
-		 * @var Tx_EcAssociation_Domain_Repository_UserRepository
-		 */
-	Protected $userRepository;
-		/**
-		 * A donation repository instance
-		 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
-		 */
-	Protected $donationRepository;
 	/**
-     * A FE User Group repository instance
-     * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
-     */
-    protected $frontendUserGroupRepository;
-		/*
-		 * ACTION METHODS
-		 */
+	 * A registration repository instance
+	 * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
+	 */
+	protected $registrationRepository;
 
+	/**
+	 * A run repository instance
+	 * @var Tx_EcDonationrun_Domain_Repository_RunRepository
+	 */
+	protected $runRepository;
 
+	/**
+	 * A frontend user repository instance
+	 * @var Tx_EcAssociation_Domain_Repository_UserRepository
+	 */
+	protected $userRepository;
+	/**
+	 * A donation repository instance
+	 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
+	 */
+	protected $donationRepository;
+	/**
+	 * A FE User Group repository instance
+	 * @var Tx_Extbase_Domain_Repository_FrontendUserGroupRepository
+	 */
+	protected $frontendUserGroupRepository;
 
-
+	/*
+	 * ACTION METHODS
+	 */
 	
-		/**
-		 *
-		 * The initialization action. This methods creates instances of all required
-		 * repositories.
-		 *
-		 * @return void
-		 *
-		 */
-
-	Protected Function initializeAction() {
+	/**
+	 *
+	 * The initialization action. This methods creates instances of all required
+	 * repositories.
+	 *
+	 * @return void
+	 *
+	 */
+	protected function initializeAction() {
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->donationRepository     =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 		$this->runRepository          =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
@@ -98,39 +94,34 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->frontendUserGroupRepository =& t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserGroupRepository');
 	}
 
-
-
-		/**
-		 *
-		 * The index action. Displays a list of all top-level registrations.
-		 * @return void
-		 *
-		 */
-
-	Public Function indexAction() {
+	/**
+	 *
+	 * The index action. Displays a list of all top-level registrations.
+	 * @return void
+	 *
+	 */
+	public function indexAction() {
 		$registrations = NULL;
 		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
-			$registrations[$registration->getRun()->getName()][] = $registration;
+			$registrations[$registration->getRun()->getEvent()->getName()][$registration->getRun()->getName()][] = $registration;
 		}
 		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
 		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
 		$this->view->assign('registrations', $registrations)
-		 	  	   ->assign('userHasNoRegistration', !$this->hasUserRegistration())
 				   ->assign('registrationNewPageUid', $this->settings['registrationNew'])
 				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 	}
 
-		/**
-		 *
-		 * The generateNewLink action. Displays a link to new registration.
-		 * @return void
-		 *
-		 */
-
-	Public Function generateNewLinkAction() {
+	/**
+	 *
+	 * The generateNewLink action. Displays a link to new registration.
+	 * @return void
+	 *
+	 */
+	public function generateNewLinkAction() {
 		$registrations = NULL;
 		foreach ($this->registrationRepository->findAllActive() as $registration) {
 			if ($registration->getUser()->getName() == NULL) {
@@ -139,88 +130,93 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 			$registrations[$registration->getRun()->getName()][] = $registration;
 		}
 		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
-		$this->view->assign('userHasNoRegistration', !$this->hasUserRegistration())
-				   ->assign('pageUid', $this->settings['registrationNew']);
+		$this->view->assign('pageUid', $this->settings['registrationNew']);
 	}
 
-		/**
-		 *
-		 * The show action. Displays details for a specific registration.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration that is to be displayed.
-		 * @return void
-		 *
-		 */
-
-	Public Function showAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
+	/**
+	 *
+	 * The show action. Displays details for a specific registration.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration that is to be displayed.
+	 * @return void
+	 *
+	 */
+	public function showAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$this->view->assign('registration', $registration);
 	}
 
-
-
-		/**
-		 *
-		 * The new action. Displays a form for creating a new registration.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The new registration
-		 * @return void
-		 * @dontvalidate $registration
-		 *
-		 */
-
-	Public Function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
+	/**
+	 *
+	 * The new action. Displays a form for creating a new registration.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The new registration
+	 * @return void
+	 * @dontvalidate $registration
+	 *
+	 */
+	public function newAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
 			if (!isset($this->settings['loginPageRunner'])) throw new Exception('EC Donationrun: loginPageRunner not set');
 			$this->redirectToUri('index.php?id='.$this->settings['loginPageRunner'].
 				'&return_url='.urlencode($GLOBALS['TSFE']->anchorPrefix));
-		} else {
-			// Check if user has a registration
-			if ($this->hasUserRegistration()) {
-				$this->flashMessages->add('Du bist bereits für einen Lauf angemeldet.');
-				$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
+		}
+		$runs = NULL;
+		/* Get all runs without registration */
+		foreach ($this->runRepository->findAllActive() as $run) {
+			if (!$run->hasUserRegistration()) {
+				$runs[$run->getEvent()->getName()][] = $run;
 			}
 		}
-		$this->view->assign('runs', $this->runRepository->findAll())
-				   ->assign('user', $this->getCurrentFeUser());
+		// Check if user has all registrations
+		if ($runs == NULL) {
+			$this->flashMessages->add('Du bist bereits für alle Läufe angemeldet.');
+			$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
+		}
+		
+		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
+		$this->view->assign('runs', $runs)
+				   ->assign('user', $this->getCurrentFeUser())
+				   ->assign('registrationIndexPageUid', $this->settings['registrationIndex']);
 	}
 
+	/**
+	 *
+	 * The create action. This method creates a new registration and stores it into the
+	 * database.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Run $run The new Run
+	 * @return void
+	 */
 
+	public function createAction(Tx_EcDonationrun_Domain_Model_Run $run) {
+		$registration = new Tx_EcDonationrun_Domain_Model_Registration;
 
-		/**
-		 *
-		 * The create action. This method creates a new registration and stores it into the
-		 * database.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The new Registration
-		 * @return void
-		 */
-
-	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$user = $this->userRepository->findByUid($this->getCurrentFeUser()->getUid());
 		$registration->setUser($user);
 		if (isset($this->settings['userGroupRunner'])) {
 			$userGroup = $this->frontendUserGroupRepository->findByUid($this->settings['userGroupRunner']);
-	    	if ($userGroup) {
+			if ($userGroup) {
 				$user->addUsergroup($userGroup);
-	    	}
+			}
 		}
+		$registration->setRun($run);
 		$this->registrationRepository->add($registration);
-		
+
 		Tx_EcDonationrun_Utility_SendMail::sendMail(
-			array($registration->getUser()->getEmail() => $registration->getUser()->getName()),
+		array($registration->getUser()->getEmail() => $registration->getUser()->getName()),
 			"Anmeldung für einen Lauf",
 			"Hallo ".$registration->getUser()->getName().",\n".
 			"hiermit bestätigen wir, dass du dich für den ".
-			$registration->getRun()->getName()." am ".
-			date("d.m.Y", $registration->getRun()->getStart()->getTimestamp()).
+		$registration->getRun()->getName()." am ".
+		date("d.m.Y", $registration->getRun()->getStart()->getTimestamp()).
 			" angemeldet hast.\n".
 			"Wir freuen uns sehr, dass du Running for Jesus durch deinen sportlichen Einsatz unterstützt.\n".
 			"Im internen Bereich der Homepage bekommst du wertvolle Tipps für dein Training und deine Sponsorensuche. ".
 			"Dort hast du auch unter 'Meine Spender' die Möglichkeit, deine Spenderliste zu verwalten.");
-		
+
 		if (isset($this->settings['mail']['adminAddress'])) {
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
-				array($this->settings['mail']['adminAddress']),
+			array($this->settings['mail']['adminAddress']),
 				"Info Registrierung",
 				"Hallo,".
 				"\nes hat sich ein neuer Läufer angemeldet.".
@@ -232,70 +228,67 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
 	}
 
-
-
-		/**
-		 *
-		 * The edit action. This method displays a form for editing existing registrations.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration
-		 * @return void
-		 * @dontvalidate $registration
-		 *
-		 */
-
-	Public Function editAction( Tx_EcDonationrun_Domain_Model_Registration $registration) {
+	/**
+	 *
+	 * The edit action. This method displays a form for editing existing registrations.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration
+	 * @return void
+	 * @dontvalidate $registration
+	 *
+	 */
+	public function editAction( Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$this->view->assign('registration' , $registration)
-		           ->assign('registrations', array_merge(Array(NULL), $this->registrationRepository->findAll()))
-		           ->assign('users'   , $this->userRepository->findAll())
-		           ->assign('runs'   , $this->runRepository->findAll());
+				   ->assign('registrations', array_merge(array(NULL), $this->registrationRepository->findAll()))
+				   ->assign('users', $this->userRepository->findAll())
+				   ->assign('runs', $this->runRepository->findAll());
 	}
 
 
 
-		/**
-		 *
-		 * The update action. Updates an existing registration in the database.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration
-		 * @param array $assignments                                 An array of users and runs that are to be assigned to this registration.
-		 * @return void
-		 * @dontverifyrequesthash
-		 *
-		 */
-
-	Public Function updateAction( Tx_EcDonationrun_Domain_Model_Registration $registration, $assignments) {
+	/**
+	 *
+	 * The update action. Updates an existing registration in the database.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration
+	 * @param array $assignments                                 An array of users and runs that are to be assigned to this registration.
+	 * @return void
+	 * @dontverifyrequesthash
+	 *
+	 */
+	public function updateAction( Tx_EcDonationrun_Domain_Model_Registration $registration, $assignments) {
 		$registration->removeAllAssignments();
 		ForEach($assignments As $userId => $runId) {
-			If($runId == 0) Continue;
+			if ($runId == 0) Continue;
 			$registration->assignUser($this->userRepository->findByUid((int)$userId),
-			                       $this->runRepository->findByUid((int)$runId));
+			$this->runRepository->findByUid((int)$runId));
 		}
 		$this->registrationRepository->update($registration);
 		$this->flashMessages->add("Das Projekt {$registration->getName()} wurde erfolgreich bearbeitet.");
 
-		$this->redirect('show', NULL, NULL, Array('registration' => $registration));
+		$this->redirect('show', NULL, NULL, array('registration' => $registration));
 	}
 
-
-
-		/**
-		 *
-		 * The delete action. Deletes an existing registration from the database.
-		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration that is to be deleted
-		 * @return void
-		 *
-		 */
-
-	Public Function deleteAction( Tx_EcDonationrun_Domain_Model_Registration $registration) {
+	/**
+	 *
+	 * The delete action. Deletes an existing registration from the database.
+	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration that is to be deleted
+	 * @return void
+	 *
+	 */
+	public function deleteAction( Tx_EcDonationrun_Domain_Model_Registration $registration) {
 		$this->registrationRepository->remove($registration);
 		$this->flashMessages->add("Das Projekt {$registration->getName()} wurde erfolgreich gelöscht.");
 
 		$this->redirect('index');
 	}
-	
-	static public Function getRankingRunner($registrations) {
+
+	/**
+	 * The ranking helper
+	 * @return array
+	 * */
+	static public function getRankingRunner($registrations) {
 		$ranking = array();
 		foreach ($registrations as $registration) {
 			$ranking[] = $registration;
@@ -303,12 +296,12 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		usort($ranking,'cmpDonationAmount');
 		return $ranking;
 	}
-	
+
 	/**
 	 * The ranking action
 	 * @return void
 	 */
-	Public Function showRankingRunnerAction() {
+	public function showRankingRunnerAction() {
 		$registrations = $this->registrationRepository->findAllActive();
 		$ranking = $this->getRankingRunner($registrations);
 		array_splice($ranking,5);
@@ -316,20 +309,20 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		$this->view->assign('registrations', $ranking)
 				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 	}
-	
+
 	/**
 	 * The ranking action
 	 * @return void
 	 */
-	Public Function showRankingKvAction() {
-		
+	public function showRankingKvAction() {
+
 	}
-	
+
 	/**
 	 * The donation global amount action
 	 * @return void
 	 */
-	Public Function showDonationAmountAction() {
+	public function showDonationAmountAction() {
 		$registrations = $this->registrationRepository->findAllActive();
 		$amount = 0.0;
 		foreach ($registrations as $registration) {
@@ -337,49 +330,32 @@ Class Tx_EcDonationrun_Controller_RegistrationController Extends Tx_EcDonationru
 		}
 		$this->view->assign('amount', $amount);
 	}
-		
-		/*
-		 * HELPER METHODS
-		 */
-		/**
-		 * Gets the currently logged in frontend user.
-		 * @return Tx_Extbase_Domain_Model_FrontendUser The currently logged in frontend
-		 *                                              user, or NULL if no user is
-		 *                                              logged in.
-		 */
-	
-	Protected Function getCurrentFeUser() {
+
+	/*
+	 * HELPER METHODS
+	 */
+	/**
+	 * Gets the currently logged in frontend user.
+	 * @return Tx_Extbase_Domain_Model_FrontendUser The currently logged in frontend
+	 *                                              user, or NULL if no user is
+	 *                                              logged in.
+	 */
+
+	protected function getCurrentFeUser() {
 		$userRepository = New Tx_Extbase_Domain_Repository_FrontendUserRepository();
-		Return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
+		return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
 			? $userRepository->findByUid( intval($GLOBALS['TSFE']->fe_user->user['uid']))
 			: NULL;
 	}
-	/**
-		 * Has the current fe user already a registration?
-		 * @return boolean
-		 */
-	Protected Function hasUserRegistration() {
-		$userHasRegistration = false;
-		foreach ($this->registrationRepository->findAllActive() as $registration) {
-			if ($registration->getUser()->getName() == NULL) {
-				continue;
-			}
-			if ($registration->isCurrentFeUserEqualUser()) {
-				$userHasRegistration = true;
-				break;
-			}
-		}
-		return $userHasRegistration;
-	}
-	
+
 }
-/* Compare Function for Ranking */
+/* Compare function for Ranking */
 function cmpDonationAmount($a, $b) {
 	if ($a->getDonationAmount() == $b->getDonationAmount()) {
-        return 0;
-    }
-    return ($a->getDonationAmount() < $b->getDonationAmount()) ? 1 : -1;
+		return 0;
+	}
+	return ($a->getDonationAmount() < $b->getDonationAmount()) ? 1 : -1;
 }
-	
+
 
 ?>

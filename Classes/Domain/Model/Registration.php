@@ -28,9 +28,6 @@
 
 /**
  *
- * The class for the project domain model. The project class models the project
- * object, that is characterized by a name attribute and a start and end date. Each
- * project may have an infinite number of sub-projects.
  *
  * @author     Hauke Webermann <hauke@webermann.net>
  * @package    EcDonationrun
@@ -42,7 +39,7 @@
  *
  */
 
-Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/*
 	 * ATTRIBUTES
@@ -53,37 +50,37 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 * @var Tx_EcDonationrun_Domain_Model_Run
 	 * @lazy
 	 */
-	Protected $run=NULL;
+	protected $run=NULL;
 
 	/**
 	 * The runner of this registraion.
 	 * @var Tx_EcAssociation_Domain_Model_User
 	 * @lazy
 	 */
-	Protected $user;
+	protected $user;
 	/**
 	 * The run status.
 	 * @var int
 	 */
-	Protected $runStatus;
+	protected $runStatus;
 	/**
 	 * The runner number.
 	 * @var string
 	 */
-	Protected $runnerNumber;
+	protected $runnerNumber;
 
 	/**
 	 * The runner time.
 	 * @var integer
 	 */
-	Protected $runnerTime;
+	protected $runnerTime;
 
 	/**
 	 * A list of all donations that are assigned to this run
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
 	 * @lazy
 	 */
-	Protected $donations = NULL;
+	protected $donations = NULL;
 
 
 	/*
@@ -100,7 +97,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function __construct() {
+	public function __construct() {
 		$this->donations = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
@@ -116,8 +113,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getRun() {
-		Return $this->run;
+	public function getRun() {
+		return $this->run;
 	}
 
 	/**
@@ -127,8 +124,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getUser() {
-		Return $this->user;
+	public function getUser() {
+		return $this->user;
 	}
 
 	/**
@@ -138,8 +135,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getName() {
-		Return $this->getUser()->getName();
+	public function getName() {
+		return $this->getUser()->getName();
 	}
 
 	/**
@@ -147,8 +144,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 * @return int
 	 */
 
-	Public Function getRunStatus() {
-		Return $this->runStatus;
+	public function getRunStatus() {
+		return $this->runStatus;
 	}
 
 	/**
@@ -157,8 +154,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getRunnerNumber() {
-		Return $this->runnerNumber;
+	public function getRunnerNumber() {
+		return $this->runnerNumber;
 	}
 
 	/**
@@ -168,8 +165,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getRunnerTime() {
-		Return $this->runnerTime;
+	public function getRunnerTime() {
+		return $this->runnerTime;
 	}
 
 	/**
@@ -179,8 +176,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function getEditDate() {
-		Return $this->tstamp;
+	public function getEditDate() {
+		return $this->tstamp;
 	}
 
 	/**
@@ -189,8 +186,8 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
 	 *
 	 */
-	Public Function getDonations() {
-		Return $this->donations;
+	public function getDonations() {
+		return $this->donations;
 	}
 
 	/*
@@ -203,10 +200,10 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 * @return void
 	 *
 	 */
-
-	Public Function setRun(Tx_EcDonationrun_Domain_Model_Run $run) {
+	public function setRun(Tx_EcDonationrun_Domain_Model_Run $run) {
 		$this->run = $run;
 	}
+	
 	/**
 	 *
 	 * Sets the user.
@@ -214,8 +211,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 * @return void
 	 *
 	 */
-
-	Public Function setUser(Tx_EcAssociation_Domain_Model_User $user) {
+	public function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
@@ -227,7 +223,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function setRunStatus($value) {
+	public function setRunStatus($value) {
 		$this->runStatus = $value;
 	}
 	
@@ -239,7 +235,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function setRunnerNumber($runnerNumber) {
+	public function setRunnerNumber($runnerNumber) {
 		$this->runnerNumber = $runnerNumber;
 	}
 
@@ -251,7 +247,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function setRunnerTime($runnerTime) {
+	public function setRunnerTime($runnerTime) {
 		$this->runnerTime = $runnerTime;
 	}
 
@@ -262,7 +258,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 	 *
 	 */
 
-	Public Function isCurrentFeUserEqualUser() {
+	public function isCurrentFeUserEqualUser() {
 		if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 0) {
 			return false;
 		}
@@ -294,7 +290,7 @@ Class Tx_EcDonationrun_Domain_Model_Registration Extends Tx_Extbase_DomainObject
 			}
 		}
 
-		Return $amount;
+		return $amount;
 	}
 
 

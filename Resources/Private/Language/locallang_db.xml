@@ -6,6 +6,11 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="tx_ecdonationrun_domain_model_event">Event</label>
+			<label index="tx_ecdonationrun_domain_model_event.name">Name</label>
+			<label index="tx_ecdonationrun_domain_model_event.city">City</label>
+			<label index="tx_ecdonationrun_domain_model_event.info">Info</label>
+			<label index="tx_ecdonationrun_domain_model_event.website">Website</label>
 			<label index="tx_ecdonationrun_domain_model_run">Run</label>
 			<label index="tx_ecdonationrun_domain_model_run.name">Name</label>
 			<label index="tx_ecdonationrun_domain_model_run.user">User</label>
@@ -28,6 +33,11 @@
 			<label index="tx_ecdonationrun_domain_model_donation.contribution_receipt">Contribution Receipt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="tx_ecdonationrun_domain_model_event">Event</label>
+			<label index="tx_ecdonationrun_domain_model_event.name">Name</label>
+			<label index="tx_ecdonationrun_domain_model_event.city">Stadt</label>
+			<label index="tx_ecdonationrun_domain_model_event.info">Info</label>
+			<label index="tx_ecdonationrun_domain_model_event.website">Website</label>
 			<label index="tx_ecdonationrun_domain_model_run">Lauf</label>
 			<label index="tx_ecdonationrun_domain_model_run.name">Name</label>
 			<label index="tx_ecdonationrun_domain_model_run.user">Läufer</label>

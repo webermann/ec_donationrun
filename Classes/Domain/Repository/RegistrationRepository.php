@@ -39,7 +39,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extbase_Persistence_Repository {
+class Tx_EcDonationrun_Domain_Repository_RegistrationRepository extends Tx_Extbase_Persistence_Repository {
 	protected $defaultOrderings = array ('run' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING);
 	
 	public function initializeObjectForBe() {
@@ -54,14 +54,14 @@ Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extba
 	/**
 	 * Returns all objects of this repository.
 	 *
-	 * @return Array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
+	 * @return array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
 	 */
 	public function findAllActive() {
 		$query = $this->createQuery();
 		$result = $query
 			->matching($query->greaterThanOrEqual('run.start', time()-60*60*24*90)) // Zeige 90 Tage nach start noch an.
 			//->matching($query->greaterThan('user.name', '')) TODO
-			->setOrderings(Array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+			->setOrderings(array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 			->execute();
 		return $result;
 	}
@@ -72,15 +72,15 @@ Class Tx_EcDonationrun_Domain_Repository_RegistrationRepository Extends Tx_Extba
 		 * Find Registrations from User
 		 *
 		 * @param  Tx_Extbase_Domain_Model_FrontendUser $user The parent user
-		 * @return Array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
+		 * @return array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
 		 *
 		 */
 
-	Public Function findRegistrationsFromUser($user) {
+	public function findRegistrationsFromUser($user) {
 		$query = $this->createQuery();
-		Return $query
+		return $query
 			->matching($query->equals('user', $user->getUid()))
-			->setOrderings(Array('crdate' => Tx_Extbase_Persistence_Query::ORDER_DESCENDING))
+			->setOrderings(array('crdate' => Tx_Extbase_Persistence_Query::ORDER_DESCENDING))
 			->execute();
 
 	}

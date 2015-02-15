@@ -28,7 +28,7 @@
 
 	/**
 	 *
-	 * An assignment. Models an association between users, projects and roles.
+	 * A run.
 	 *
 	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
@@ -40,44 +40,51 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_EcDonationrun_Domain_Model_Run extends Tx_Extbase_DomainObject_AbstractEntity {
 
 		/*
 		 * ATTRIBUTES
 		 */
 	
 		/**
-		 * The project name
+		 * The run name
 		 * @var string
 		 * @validate StringLength(minimum = 3, maximum = 255)
 		 */
-	Protected $name;
+	protected $name;
 
 		/**
 		 * The start time.
 		 * @var DateTime
 		 */
-	Protected $start;
+	protected $start;
 	
 		/**
 		 * The run distance.
 		 * @var double
 		 */
-	Protected $distance;
+	protected $distance;
+	
+	/**
+	 * The event
+	 * @var Tx_EcDonationrun_Domain_Model_Event
+	 * @lazy
+	 */
+	protected $event=NULL;
 	
 		/**
 		 * A list of all registrations that are assigned to this run
 		 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Registration>
 		 * @lazy
 		 */
-	Protected $registrations = NULL;
+	protected $registrations = NULL;
 	
 		/**
 		 * A list of all donations that are assigned to this run
 		 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
 		 * @lazy
 		 */
-	Protected $donations = NULL;
+	protected $donations = NULL;
 
 
 		/*
@@ -93,7 +100,7 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		  *
 		  */
 
-	Public Function __construct () {
+	public function __construct () {
 
 	}
 
@@ -107,8 +114,8 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		  * @return string The run name
 		  *
 		  */
-	Public Function getName() {
-		Return $this->name;
+	public function getName() {
+		return $this->name;
 	}
 
 		 /**
@@ -117,8 +124,8 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		  * @return DateTime The run start time
 		  *
 		  */
-	Public Function getStart() {
-		Return $this->start;
+	public function getStart() {
+		return $this->start;
 	}
 	
 		 /**
@@ -127,22 +134,29 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		  * @return double The run distance
 		  *
 		  */
-	Public Function getDistance() {
-		Return $this->distance;
+	public function getDistance() {
+		return $this->distance;
 	}
-	
+	/**
+	 *
+	 * Gets the event
+	 * @return Tx_EcDonationrun_Domain_Model_Event
+	 *
+	 */
+	public function getEvent() {
+		return $this->event;
+	}
 		/**
 		 *
 		 * Gets all registrations for this run.
 		 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Registration> All registrations
 		 *
 		 */
-
-	Public Function getRegistrations() {
-		If($this->registrations === NULL) {
+	public function getRegistrations() {
+		if ($this->registrations === NULL) {
 			$this->registrations = New Tx_Extbase_Persistence_ObjectStorage();
 		}
-		Return $this->registrations;
+		return $this->registrations;
 	}
 
 		/**
@@ -151,13 +165,13 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation> All donations
 		 *
 		 */
-	Public Function getDonations() {
-		If($this->donations === NULL) {
+	public function getDonations() {
+		if ($this->donations === NULL) {
 			$this->donations = New Tx_Extbase_Persistence_ObjectStorage();
 			ForEach($this->getRegistrations() As $registration)
 				$this->donations->addAll($registration->getDonations());
 		}
-		Return $this->donations;
+		return $this->donations;
 	}
 	
 		/**
@@ -166,9 +180,7 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		 * @return DateTime The edit date
 		 *
 		 */
-
-	Public Function getEditDate() { Return $this->tstamp; }
-
+	public function getEditDate() { return $this->tstamp; }
 
 		/*
 		 * SETTERS
@@ -180,8 +192,7 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		  * @return void
 		  *
 		  */
-
-	Public Function setName($name) {
+	public function setName($name) {
 		$this->name = $name;
 	}
 
@@ -192,8 +203,7 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		 * @return void
 		 *
 		 */
-
-	Public Function setStart(DateTime $start) {
+	public function setStart(DateTime $start) {
 		$this->start = $start;
 	}
 	
@@ -204,9 +214,38 @@ Class Tx_EcDonationrun_Domain_Model_Run Extends Tx_Extbase_DomainObject_Abstract
 		 * @return void
 		 *
 		 */
-
-	Public Function setDistance(DateTime $distance) {
+	public function setDistance($distance) {
 		$this->distance = $distance;
+	}
+	
+	/**
+	 *
+	 * Sets the event.
+	 * @param Tx_EcDonationrun_Domain_Model_Event $event
+	 * @return void
+	 *
+	 */
+	public function setEvent(Tx_EcDonationrun_Domain_Model_Event $event) {
+		$this->event = $event;
+	}
+	
+	/**
+	 * Has the current fe user already a registration?
+	 * @return boolean
+	 */
+	public function hasUserRegistration() {
+		$userHasRegistration = false;
+		foreach ($this->getRegistrations() as $registration) {
+			if ($registration->getUser()->getName() == NULL) {
+				continue;
+			}
+			if ($registration->isCurrentFeUserEqualUser()) {
+				$userHasRegistration = true;
+				break;
+			}
+		}
+		return $userHasRegistration;
+		
 	}
 	
 }

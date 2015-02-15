@@ -40,7 +40,7 @@
  *
  */
 
-Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_EcDonationrun_Controller_BackendController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/*
 	 * ATTRIBUTES
@@ -49,18 +49,18 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 	 * A run repository instance
 	 * @var Tx_EcDonationrun_Domain_Repository_RunRepository
 	 */
-	//Protected $runRepository;
+	//protected $runRepository;
 	/**
 	* A registration repository.
 	* @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
 	*/
-	Protected $registrationRepository;
+	protected $registrationRepository;
 
 	/**
 	 * A donatoin repository.
 	 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
 	 */
-	Protected $donationRepository;
+	protected $donationRepository;
 
 	/**
 	 * A FE User repository instance
@@ -85,7 +85,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 	 * @return void
 	 *
 	 */
-	Protected Function initializeAction() {
+	protected function initializeAction() {
 		//$this->runRepository          =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RunRepository');
 		$this->registrationRepository =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->registrationRepository->initializeObjectForBe();
@@ -101,7 +101,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 	 * The index action. Displays a list of all available registrations.
 	 * @return void
 	 */
-	Public Function indexAction() {
+	public function indexAction() {
 		/* Registrion Ranking */
 		$registrations = $this->registrationRepository->findAllActive();
 		$ranking = Tx_EcDonationrun_Controller_RegistrationController::getRankingRunner($registrations);
@@ -120,7 +120,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 	 * The sendDonationRequest action.
 	 * @return void
 	 */
-	Public Function sendDonationRequestAction() {
+	public function sendDonationRequestAction() {
 		if (!isset($this->settings['invoicePath'])) throw new Exception('EC Donationrun: invoicePath not set');
 		if (!isset($this->settings['invoiceTemplate'])) throw new Exception('EC Donationrun: invoiceTemplate not set');
 		if (!isset($this->settings['mail']['viaPostAddress'])) throw new Exception('EC Donationrun: mail.viaPostAddress not set');
@@ -202,7 +202,7 @@ Class Tx_EcDonationrun_Controller_BackendController Extends Tx_Extbase_MVC_Contr
 	 * The export action.
 	 * @return void
 	 */
-	Public Function exportAction() {
+	public function exportAction() {
 		// export stuff
 		$donations = $this->donationRepository->findAll();
 		// todo sort by invoice number

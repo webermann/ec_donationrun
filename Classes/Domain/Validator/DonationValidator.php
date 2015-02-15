@@ -40,7 +40,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class Tx_EcDonationrun_Domain_Validator_DonationValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
 
 
 
@@ -53,7 +53,7 @@ Class Tx_EcDonationrun_Domain_Validator_DonationValidator Extends Tx_Extbase_Val
 		 *
 		 */
 	
-	Public Function isValid($donation) {
+	public function isValid($donation) {
 		
 		if(!$donation InstanceOf Tx_EcDonationrun_Domain_Model_Donation)
 			$this->addError(Tx_Extbase_Utility_Localization::translate('Donation_Error_Invalid', 'EcDonationrun'), 1265721022);

@@ -39,7 +39,7 @@
  *
  */
 
-Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_Persistence_Repository {
+class Tx_EcDonationrun_Domain_Repository_DonationRepository extends Tx_Extbase_Persistence_Repository {
 	
 	public function initializeObjectForBe() {
 		/**
@@ -53,13 +53,13 @@ Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_P
 	/**
 	 * Returns all objects with no invoice number of this repository.
 	 *
-	 * @return Array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
+	 * @return array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
 	 */
 	public function findAllNoInvoice() {
 		$query = $this->createQuery();
 		$result = $query
 		->matching($query->equals('invoiceNumber', NULL))
-		->setOrderings(Array('user' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+		->setOrderings(array('user' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 		->execute();
 		return $result;
 	}
@@ -71,15 +71,15 @@ Class Tx_EcDonationrun_Domain_Repository_DonationRepository Extends Tx_Extbase_P
 	 * Find Donation from Registration
 	 *
 	 * @param  Tx_EcDonationrun_Domain_Model_Registration $registration The parent registration
-	 * @return Array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
+	 * @return array<Tx_EcDonationrun_Domain_Model_Donation>  The result list.
 	 *
 	 */
 
-	Public Function findDonationsFromRegistration($registration) {
+	public function findDonationsFromRegistration($registration) {
 		$query = $this->createQuery();
-		Return $query
+		return $query
 		->matching($query->equals('registration', $registration->getUid()))
-		->setOrderings(Array('crdate' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+		->setOrderings(array('crdate' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 		->execute();
 
 	}

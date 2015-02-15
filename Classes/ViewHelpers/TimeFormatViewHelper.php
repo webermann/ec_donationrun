@@ -40,7 +40,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper Extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 
 
@@ -53,23 +53,23 @@ Class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper Extends Tx_Fluid_Core_Vi
 		 *
 		 */
 
-	Public Function render($amount) {
+	public function render($amount) {
 		$unit = 'Seconds';
 
-		If($amount == 0) {
+		if ($amount == 0) {
 			$unit = 'Hours';
-		} ElseIf($amount >= 604800) {
+		} elseif ($amount >= 604800) {
 			$unit = 'Days';
 			$amount /= 86400.00;
-		} ElseIf($amount >= 3600) {
+		} elseif ($amount >= 3600) {
 			$unit = 'Hours';
 			$amount /= 3600;
-		} ElseIf($amount >= 60) {
+		} elseif ($amount >= 60) {
 			$unit = 'Minutes';
 			$amount /= 60.00;
 		}
 
-		Return number_format($amount, 2, ',', '').' '.Tx_Extbase_Utility_Localization::translate('ViewHelper_Unit_'.$unit, 'EcDonationrun');
+		return number_format($amount, 2, ',', '').' '.Tx_Extbase_Utility_Localization::translate('ViewHelper_Unit_'.$unit, 'EcDonationrun');
 	}
 
 }

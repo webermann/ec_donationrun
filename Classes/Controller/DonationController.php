@@ -40,7 +40,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Controller_AbstractController {
+class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Controller_AbstractController {
 
 		/*
 		 * ATTRIBUTES
@@ -50,13 +50,13 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * A registration repository instance
 		 * @var Tx_EcDonationrun_Domain_Repository_RegistrationRepository
 		 */
-	Protected $registrationRepository;
+	protected $registrationRepository;
 		
 		/**
 		 * A donation repository instance
 		 * @var Tx_EcDonationrun_Domain_Repository_DonationRepository
 		 */
-	Protected $donationRepository;
+	protected $donationRepository;
 		
 	/**
      * A FE User repository instance
@@ -80,7 +80,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 *
 		 */
 
-	Public Function initializeAction() {
+	public function initializeAction() {
 		$this->registrationRepository      =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_RegistrationRepository');
 		$this->donationRepository          =& t3lib_div::makeInstance('Tx_EcDonationrun_Domain_Repository_DonationRepository');
 		$this->frontendUserRepository      =& t3lib_div::makeInstance('Tx_EcAssociation_Domain_Repository_UserRepository');
@@ -99,7 +99,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @return void
 		 * @dontvalidate $registration
 		 */
-	Public Function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration = NULL) {
+	public function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration = NULL) {
 		// Check parameter and if null registration load from current user
 		if ($registration == NULL) {
 			$registrations = $this->registrationRepository->findRegistrationsFromUser($this->getCurrentFeUser());
@@ -135,7 +135,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @dontvalidate $donation
 		 */
 
-	Public Function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
+	public function newAction ( Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                            Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser == 0) {
 			if (!isset($this->settings['loginPageDonator'])) throw new Exception('EC Donationrun: loginPageDonator not set');
@@ -160,7 +160,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 *
 		 */
 
-	Public Function editAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
+	public function editAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
 		
 		
 		
@@ -179,7 +179,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @dontvalidate $donation
 		 */
 
-	Public Function newNoLoginAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL,
+	public function newNoLoginAction(Tx_EcDonationrun_Domain_Model_Registration $registration=NULL,
 	                                 Tx_EcDonationrun_Domain_Model_Donation $donation=NULL) {
 		if ($GLOBALS['TSFE']->loginUser != 0) {
 			// TODO wenn doch eingeloggt...
@@ -203,7 +203,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @dontvalidate $isNoLogin
 		 */
 
-	Public Function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
+	public function createAction(Tx_EcDonationrun_Domain_Model_Registration $registration,
 	                             Tx_EcDonationrun_Domain_Model_Donation $donation,
 	                             $isNoLogin = '') {
 	    if ($isNoLogin == 'isNoLogin' || $registration->isCurrentFeUserEqualUser()) {
@@ -336,7 +336,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @return void
 		 */
 
-	Public Function updateAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
+	public function updateAction(Tx_EcDonationrun_Domain_Model_Donation $donation) {
 		$this->donationRepository->update($donation);
 		
 		if (isset($this->settings['mail']['adminAddress'])) {
@@ -363,7 +363,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @return void
 		 *
 		 */
-	Public Function confirmNoLoginAction() {
+	public function confirmNoLoginAction() {
 		$formValues = t3lib_div::_GP('tx_ecdonationrun_pi1');
 		if (!isset($formValues['donationToConfirm'])) {
 			$this->view->assign('confirmStatus', FALSE);
@@ -404,7 +404,7 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 * @return void
 		 *
 		 */
-	Public Function generateNoLoginLinkAction() {
+	public function generateNoLoginLinkAction() {
 		$formValues = t3lib_div::_GP('tx_ecdonationrun_pi1');
 		$registration = $this->registrationRepository->findByUid($formValues['registration']);
 		if (!isset($this->settings['donationNoLogin'])) throw new Exception('EC Donationrun: donationNoLogin not set');
@@ -450,9 +450,9 @@ Class Tx_EcDonationrun_Controller_DonationController Extends Tx_EcDonationrun_Co
 		 *
 		 */
 
-	Protected Function getCurrentFeUser() {
+	protected function getCurrentFeUser() {
 		$userRepository = New Tx_Extbase_Domain_Repository_FrontendUserRepository();
-		Return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
+		return intval($GLOBALS['TSFE']->fe_user->user['uid']) > 0
 			? $userRepository->findByUid( intval($GLOBALS['TSFE']->fe_user->user['uid']) )
 			: NULL;
 	}

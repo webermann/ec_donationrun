@@ -39,7 +39,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persistence_Repository {
+class Tx_EcDonationrun_Domain_Repository_RunRepository extends Tx_Extbase_Persistence_Repository {
 	protected $defaultOrderings = array ('distance' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING);
 	
 	public function initializeObjectForBe() {
@@ -49,6 +49,20 @@ Class Tx_EcDonationrun_Domain_Repository_RunRepository Extends Tx_Extbase_Persis
 		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
 		$defaultQuerySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($defaultQuerySettings);
+	}
+	
+	/**
+	 * Returns all objects of this repository.
+	 *
+	 * @return array<Tx_EcDonationrun_Domain_Model_Run>  The result list.
+	 */
+	public function findAllActive() {
+		$query = $this->createQuery();
+		$result = $query
+			->matching($query->greaterThanOrEqual('start', time()-60*60*24*90)) // Zeige 90 Tage nach start noch an.
+			->setOrderings(array('start' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
+			->execute();
+		return $result;
 	}
 	
 }

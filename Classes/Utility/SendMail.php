@@ -28,8 +28,7 @@
 
 	/**
 	 *
-	 * A ViewHelper for formatting time amounts. In dependence of the time amount, the
-	 * time amount if formatted with a different unit (seconds, minutes, hours, days).
+	 * A ViewHelper for sending a mail.
 	 *
 	 * @author     Hauke Webermann <hauke@webermann.net>
 	 * @package    EcDonationrun
@@ -40,7 +39,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_Utility_SendMail {
+class Tx_EcDonationrun_Utility_SendMail {
     
 	/*
 	 * http://swiftmailer.org/docs/messages.html
@@ -49,6 +48,8 @@ Class Tx_EcDonationrun_Utility_SendMail {
 	 * */
 	
 	static public function sendMail($email, $subjectText, $mailText, $attachment = NULL, $cc=NULL, $bcc=NULL, $replyTo=NULL, $from=NULL) {
+		return true;
+		
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		//Adressen festlegen
 		if ($from == NULL) {

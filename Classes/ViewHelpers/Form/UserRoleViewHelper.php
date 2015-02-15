@@ -41,7 +41,7 @@
 	 *
 	 */
 
-Class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper Extends Tx_Fluid_ViewHelpers_Form_SelectViewHelper {
+class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper extends Tx_Fluid_ViewHelpers_Form_SelectViewHelper {
 
 
 
@@ -52,7 +52,7 @@ Class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper Extends Tx_Fluid_View
 		 *
 		 */
 
-	Public Function initializeArguments() {
+	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument ( 'project', 'Tx_EcDonationrun_Domain_Model_Project', '', TRUE );
 		$this->registerArgument ( 'user'   , 'Tx_Extbase_Domain_Model_FrontendUser'     , '', TRUE );
@@ -68,12 +68,12 @@ Class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper Extends Tx_Fluid_View
 		 *
 		 */
 
-	Protected Function getOptions() {
-		$options = Array(0 => 'Kein Mitglied');
+	protected function getOptions() {
+		$options = array(0 => 'Kein Mitglied');
 		ForEach($this->arguments['options'] As $option) {
-			If($option InstanceOf Tx_EcDonationrun_Domain_Model_Role)
+			if ($option InstanceOf Tx_EcDonationrun_Domain_Model_Role)
 				$options[$option->getUid()] = $option->getName();
-		} Return $options;
+		} return $options;
 	}
 
 
@@ -91,9 +91,9 @@ Class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper Extends Tx_Fluid_View
 		 *
 		 */
 
-	Protected Function getSelectedValue() {
+	protected function getSelectedValue() {
 		$assignment = $this->arguments['project'] ? $this->arguments['project']->getAssignmentForUser($this->arguments['user']) : NULL;
-		Return $assignment ? $assignment->getRole()->getUid() : 0;
+		return $assignment ? $assignment->getRole()->getUid() : 0;
 	}
 
 
@@ -107,8 +107,8 @@ Class Tx_EcDonationrun_ViewHelpers_Form_UserRoleViewHelper Extends Tx_Fluid_View
 		 *
 		 */
 
-	Protected Function getName() {
-		Return parent::getName().'['.$this->arguments['user']->getUid().']';
+	protected function getName() {
+		return parent::getName().'['.$this->arguments['user']->getUid().']';
 	}
 
 }
