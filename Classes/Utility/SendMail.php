@@ -48,8 +48,6 @@ class Tx_EcDonationrun_Utility_SendMail {
 	 * */
 	
 	static public function sendMail($email, $subjectText, $mailText, $attachment = NULL, $cc=NULL, $bcc=NULL, $replyTo=NULL, $from=NULL) {
-		return true;
-		
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		//Adressen festlegen
 		if ($from == NULL) {
