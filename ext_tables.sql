@@ -38,6 +38,7 @@ CREATE TABLE tx_ecdonationrun_domain_model_run (
 	name tinytext,
 	start int(11) DEFAULT '0' NOT NULL,
 	distance double(10,3) DEFAULT '0.000' NOT NULL,
+	distance_unit tinyint(4) DEFAULT '0' NOT NULL,
 	event int(11) unsigned DEFAULT '0' NOT NULL,
 	registrations int(11) unsigned DEFAULT '0', 
 	

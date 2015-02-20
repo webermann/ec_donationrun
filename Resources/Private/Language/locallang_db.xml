@@ -16,6 +16,7 @@
 			<label index="tx_ecdonationrun_domain_model_run.user">User</label>
 			<label index="tx_ecdonationrun_domain_model_run.start">Start time</label>
 			<label index="tx_ecdonationrun_domain_model_run.distance">Distance</label>
+			<label index="tx_ecdonationrun_domain_model_run.distance_unit">Distance Unit</label>
 			<label index="tx_ecdonationrun_domain_model_registration">Registration</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runstatus">Run Status</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Runner Number</label>
@@ -43,6 +44,7 @@
 			<label index="tx_ecdonationrun_domain_model_run.user">Läufer</label>
 			<label index="tx_ecdonationrun_domain_model_run.start">Start Zeit</label>
 			<label index="tx_ecdonationrun_domain_model_run.distance">Länge</label>
+			<label index="tx_ecdonationrun_domain_model_run.distance_unit">Einheit</label>
 			<label index="tx_ecdonationrun_domain_model_registration">Teilname</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runstatus">Lauf Status</label>
 			<label index="tx_ecdonationrun_domain_model_registration.runnernumber">Läufernummer</label>

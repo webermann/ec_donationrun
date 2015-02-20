@@ -102,15 +102,19 @@ class Tx_EcDonationrun_Controller_RegistrationController extends Tx_EcDonationru
 	 */
 	public function indexAction() {
 		$registrations = NULL;
+		$events = NULL;
 		foreach ($this->registrationRepository->findAllActive() as $registration) {
+			$count = 0;
 			if ($registration->getUser()->getName() == NULL) {
 				continue;
 			}
 			$registrations[$registration->getRun()->getEvent()->getName()][$registration->getRun()->getName()][] = $registration;
+			$events[$registration->getRun()->getEvent()->getName()] = $registration->getRun()->getEvent()->getInfo();
 		}
 		if (!isset($this->settings['registrationNew'])) throw new Exception('EC Donationrun: EC Donationrun: registrationNew not set');
 		if (!isset($this->settings['donationNew'])) throw new Exception('EC Donationrun: EC Donationrun: donationNew not set');
 		$this->view->assign('registrations', $registrations)
+				   ->assign('events', $events)
 				   ->assign('registrationNewPageUid', $this->settings['registrationNew'])
 				   ->assign('donationNewPageUid', $this->settings['donationNew']);
 	}

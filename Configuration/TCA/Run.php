@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_run'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_run']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'name,start,distance,event,registrations'
+		'showRecordFieldList' => 'name,start,distance,distance_unit,event,registrations'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'name,start,distance,event,registrations')
+		'1' => array('showitem' => 'name,start,distance,distance_unit,event,registrations')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -55,6 +55,18 @@ $TCA['tx_ecdonationrun_domain_model_run'] = array(
 				'size' => 12,
 				'max' => 20,
 				'eval' => 'tx_ecdonationrun_double3,required'
+			)
+		),
+		'distance_unit' => array(
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_run.distance_unit',
+			'config'  => array(
+				'type' => 'select',
+				'items' => array(
+				    array('km', 0),
+				    array('Runden', 1),
+				    array('Etappen', 2)
+				)
 			)
 		),
 		'event' => array(
