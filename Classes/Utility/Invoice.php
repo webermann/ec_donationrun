@@ -46,7 +46,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 	 * @param array<Tx_EcDonationrun_Domain_Model_Donation> $donations
 	 * */
 
-	static public function generateInvoice(array &$donations, $destinationPath, $templatePath = '') {
+	static public function generateInvoice(array &$donations, $destinationPath, $templatePath = '', $politeForm = false) {
 		if (!t3lib_extMgm::isLoaded('fpdf')) {
 			throw new Exception('EC Donationrun: fpdf not loaded in Tx_EcDonationrun_Utility_Invoice.');
 		}
@@ -62,7 +62,6 @@ class Tx_EcDonationrun_Utility_Invoice {
 		// Some defaults and configuration
 		$h = 5;
 		$w = 158;
-		$politeForm = false;
 		
 		// Get a new instance of the FPDF library
 		$pdf = new PDF('portrait','mm','A4');
