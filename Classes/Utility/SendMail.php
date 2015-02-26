@@ -73,12 +73,7 @@ class Tx_EcDonationrun_Utility_SendMail {
 		$mail->setSubject($subjectText);
 
 		//Mailtext
-		$text = $mailText.
-				"\n\nViele Grüße\n".
-				"Dein Running for Jesus - Team\n\n".
-				"Weiter Infos findest Du unter www.runningforjesus.de.\n".
-				"Bei Fragen zu Running for Jesus, kannst Du Dich gerne an Nina Hoffmann wenden: \n".
-				"info@runningforjesus.de\n";
+		$text = $mailText;
 		
 		//$mail->setBody($text, 'text/html');
 		$mail->setBody(strip_tags(preg_replace('/(<br*)(>)/', "\n", $text)), 'text/plain');

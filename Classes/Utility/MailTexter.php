@@ -43,7 +43,20 @@ class Tx_EcDonationrun_Utility_MailTexter {
     
 	/* Include Mail text from mail_tmpl.php */
 	
-	
+	/**
+	 * Returns the greeting for Mail body
+	 *
+	 *  */
+	// TODO check why this is not working in registration controller
+	// static public function getMailGreeting(Tx_EcDonationrun_Domain_Model_Event $event) {
+	static public function getMailGreeting($event) {
+		return 	"\n\nViele Grüße\n".
+				"Dein Running for Jesus - Team\n\n".
+				"Weiter Infos findest Du unter www.runningforjesus.de.\n".
+				"Bei Fragen zu Running for Jesus, kannst Du Dich gerne an ".
+				$event->getContactPerson().
+				" wenden: \n".$event->getContactPersonMail()."\n";
+	}
 	
 }
 
