@@ -94,29 +94,28 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 		 * The index action. This method displays a list of all donations for a specific
 		 * registration.
 		 *
-		 * @param Tx_EcDonationrun_Domain_Model_Registration $registration The registration for which the donations are to be
-		 *                                                           displayed for.
+		 * @param Tx_EcAssociation_Domain_Model_User $user
 		 * @return void
-		 * @dontvalidate $registration
+		 * @dontvalidate $user
 		 */
-	public function indexAction ( Tx_EcDonationrun_Domain_Model_Registration $registration = NULL) {
+	public function indexAction(Tx_EcAssociation_Domain_Model_User $user = NULL) {
 		// Check parameter and if null registration load from current user
-		if ($registration == NULL) {
-			$registrations = $this->registrationRepository->findRegistrationsFromUser($this->getCurrentFeUser());
-			$registration = $registrations->getFirst();
-			if ($registration == NULL) {
-				$this->flashMessages->add('Bitte erst für einen Lauf anmelden.');
-				$this->redirect('index', 'Registration', 'ecdonationrun', NULL, $this->settings['registrationIndex']);
-			}
+		if ($user == NULL) {
+			$user = $this->getCurrentFeUser();
+		}
+		$registrations = $this->registrationRepository->findRegistrationsFromUser($user);
+		if ($registrations->getFirst() == NULL) {
+			$this->flashMessages->add('Bitte erst für einen Lauf anmelden.');
+			$this->redirect('index', 'Registration', 'ecdonationrun', NULL, $this->settings['registrationIndex']);
+		}
+		$donationAmount = 0.0;
+		foreach ($registrations as $registration) {
+			$donationAmount += $registration->getDonationAmount();
 		}
 		
-		// todo Bearbeiten deaktivieren!!
-		
 		if (!isset($this->settings['donationEdit'])) throw new Exception('EC Donationrun: donationEdit not set');
-		$donations = $this->donationRepository->findDonationsFromRegistration($registration);
-		$this->view->assign('registration' , $registration)
-				   ->assign('donations', $registration->getDonations())
-				   ->assign('donation_amount', $registration->getDonationAmount())
+		$this->view->assign('registrations' , $registrations)
+				   ->assign('donation_amount', $donationAmount)
 				   ->assign('donationNewPageUid', $this->settings['donationNew'])
 				   ->assign('donationEditPageUid', $this->settings['donationEdit']);
 				   
@@ -248,8 +247,10 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 					"\nSpender:  ".$donation->getUser()->getName().
 					"\nSpende:   ".$this->getRealDonation($donation).
 					"\nLäufer:   ".$donation->getRegistration()->getUser()->getName().
-					"\nLauf:     ".$donation->getRegistration()->getRun()->getName().
-					"\nKomentar: ".$donation->getComment());
+					"\nLauf:     ".$donation->getRegistration()->getRun()->getName()." (".
+							       $donation->getRegistration()->getRun()->getEvent()->getName().")".
+					"\nKomentar: ".$donation->getComment().
+			       	Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 			}
 			if (!defined('MCRYPT_RIJNDAEL_128')) throw new Exception('EC Donationrun: The MCRYPT_RIJNDAEL_128 algorithm is required (PHP 5.3).');
 			if (!isset($this->settings['cryptKey'])) throw new Exception('EC Donationrun: cryptKey not set');
@@ -274,10 +275,13 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 				"herzlichen Dank für deine Spendenzusage bei Running for Jesus in Höhe von ".$this->getRealDonation($donation)." .\n".
 				$donation->getRegistration()->getUser()->getName()." läuft/skatet/walkt am ".
 				date("d.m.Y", $donation->getRegistration()->getRun()->getStart()->getTimestamp())." ".
-				$donation->getRegistration()->getRun()->getDistance()." km für ".
-				"die sozial-diakonischen Stadtteilarbeit 'Die PLiNKe' in Hannover und den niedersächsischen EC-Jugendverband.\n\n".
+				$donation->getRegistration()->getRun()->getDistance()." ".
+				$donation->getRegistration()->getRun()->getDistanceUnitFormated().".\n\n".
+				$donation->getRegistration()->getRun()->getEvent()->getDonationInfo().".\n\n".
 				"Bitte klicke folgenden Link, um Deine Spendenzusage zu bestätigen:\n".$confirmLink.
-				"\n\nNach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!");
+				"\n\nNach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!".
+				Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
+				// TODO Sätze entkoppeln
 
 			$this->flashMessages->add('Vielen Dank für deine Spende. Du bekommst eine E-Mail mit der du deine Spende noch bestätigen musst.');
 			$this->redirect('index', 'Registration', NULL, NULL, $this->settings['registrationIndex']);
@@ -294,9 +298,11 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 				"herzlichen Dank für deine Spendenzusage bei Running for Jesus in Höhe von ".$this->getRealDonation($donation)." .\n".
 				$donation->getRegistration()->getUser()->getName()." läuft/skatet/walkt am ".
 				date("d.m.Y", $donation->getRegistration()->getRun()->getStart()->getTimestamp())." ".
-				$donation->getRegistration()->getRun()->getDistance()." km für ".
-				"die sozial-diakonischen Stadtteilarbeit 'Die PLiNKe' in Hannover und den niedersächsischen EC-Jugendverband.\n".
-				"Nach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!");
+				$donation->getRegistration()->getRun()->getDistance()." ".
+				$donation->getRegistration()->getRun()->getDistanceUnitFormated().".\n\n".
+				$donation->getRegistration()->getRun()->getEvent()->getDonationInfo().".\n\n".
+				"Nach Running for Jesus bekommst du eine Mail mit allen wichtigen Infos zur Spendenabwicklung!".
+				Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 		}
 			
 		Tx_EcDonationrun_Utility_SendMail::sendMail(
@@ -304,7 +310,8 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 			"Info Spendenzusage",
 			"Hallo ".$donation->getRegistration()->getUser()->getName().",\n".
 			$donation->getUser()->getName(). " wird dich bei Running for Jesus mit ".
-			$this->getRealDonation($donation)." unterstützen.");
+			$this->getRealDonation($donation)." unterstützen.".
+			Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 		
 		if (isset($this->settings['mail']['adminAddress'])) {
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
@@ -315,8 +322,10 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 				"\nSpender:  ".$donation->getUser()->getName().
 				"\nSpende:   ".$this->getRealDonation($donation).
 				"\nLäufer:   ".$donation->getRegistration()->getUser()->getName().
-				"\nLauf:     ".$donation->getRegistration()->getRun()->getName().
-				"\nKomentar: ".$donation->getComment());
+				"\nLauf:     ".$donation->getRegistration()->getRun()->getName()." (".
+							   $donation->getRegistration()->getRun()->getEvent()->getName().")".
+				"\nKomentar: ".$donation->getComment().
+				Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 		}
 		
 		// Print a success message and return to the registration detail view.
@@ -348,9 +357,11 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 				"\nSpender:  ".$donation->getUser()->getName().
 				"\nSpende:   ".$this->getRealDonation($donation).
 				"\nLäufer:   ".$donation->getRegistration()->getUser()->getName().
-				"\nLauf:     ".$donation->getRegistration()->getRun()->getName().
+				"\nLauf:     ".$donation->getRegistration()->getRun()->getName()." (".
+							   $donation->getRegistration()->getRun()->getEvent()->getName().")".
 				"\nKomentar: ".$donation->getComment().
-				"\nBearbeiter: ".$this->getCurrentFeUser()->getName());
+				"\nBearbeiter: ".$this->getCurrentFeUser()->getName().
+			   	Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 		}
 		// Print a success message and return to the registration detail view.
 		$this->flashMessages->add('Spende gespeichert.');
@@ -387,7 +398,9 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 						"\nSpender: ".$donation->getUser()->getName().
 						"\nSpende:  ".$this->getRealDonation($donation).
 						"\nLäufer:  ".$donation->getRegistration()->getUser()->getName().
-						"\nLauf:    ".$donation->getRegistration()->getRun()->getName());
+						"\nLauf:    ".$donation->getRegistration()->getRun()->getName()." (".
+									  $donation->getRegistration()->getRun()->getEvent()->getName().")".
+					  	Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donation->getRegistration()->getRun()->getEvent()));
 				}
 				$this->view->assign('confirmStatus', TRUE);
 			} else {
@@ -434,7 +447,8 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 		 */
 		protected function getRealDonation(Tx_EcDonationrun_Domain_Model_Donation $donation) {
 			if ($donation->getDonationFixValue() == 0) {
-				return number_format($donation->getDonationValue(), 2, ',', '.')." Euro pro km";
+				return number_format($donation->getDonationValue(), 2, ',', '.')." Euro pro ".
+					Tx_EcDonationrun_ViewHelpers_DistanceFormatViewHelper::render($donation->getRegistration()->getRun()->getDistanceUnit());
 			} else {
 				return number_format($donation->getDonationFixValue(), 2, ',', '.')." Euro Festbetrag";
 			}
