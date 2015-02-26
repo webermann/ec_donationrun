@@ -51,7 +51,7 @@
 					<td>{donation.user.name}</td>
 					<f:if condition="{donation.donationfixvalue} == 0">
 						<f:then>
-							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km</td>
+							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km/Etappe</td>
 						</f:then>
 						<f:else>
 							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
