@@ -154,7 +154,8 @@ class Tx_EcDonationrun_Controller_BackendController extends Tx_Extbase_MVC_Contr
 					array($donations[0]->getUser()->getEmail() => $donations[0]->getUser()->getName()),
 					"Running for Jesus - Spendenbenachrichtigung",
 					"Hallo ".$donations[0]->getUser()->getName().",\n".
-					"herzlichen Dank für deine Spende bei Running for Jesus, im Anhang findest du die Spendenbenachrichtigung als pdf.",
+					"herzlichen Dank für deine Spende bei Running for Jesus, im Anhang findest du die Spendenbenachrichtigung als pdf.".
+					Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
 					$invoice);
 				$log .= "Mail verschickt an ".$donations[0]->getUser()->getName().' ('.str_replace($this->settings['invoicePath'].'/','', $invoice).")\n";
 			}
@@ -186,7 +187,8 @@ class Tx_EcDonationrun_Controller_BackendController extends Tx_Extbase_MVC_Contr
 				array($donations[0]->getRegistration()->getUser()->getEmail() => $donations[0]->getRegistration()->getUser()->getName()),
 				"Running for Jesus - Spendenbenachrichtigung per Läufer",
 				"Hallo ".$donations[0]->getRegistration()->getUser()->getName().",\n".
-				"im Anhang erhälst du die Spendenbenachrichtigung für deine Spender.",
+				"im Anhang erhälst du die Spendenbenachrichtigung für deine Spender.".
+				Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
 				$invoices);
 			$log .= "Mail verschickt an ".$donations[0]->getRegistration()->getUser()->getName()."\n";
 			foreach ($donations as $donation) {
