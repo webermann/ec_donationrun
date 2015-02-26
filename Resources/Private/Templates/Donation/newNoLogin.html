@@ -1,3 +1,4 @@
+{namespace h=Tx_EcDonationrun_ViewHelpers} 
 <f:layout name="main" />
 
 <f:section name="title">
@@ -57,10 +58,10 @@
 </f:comment>
 				<div> 
 					<label for="registration"><f:translate key="Donation_New_Registration" /></label> 
-					<span>{registration.name} ({registration.run.name} {registration.run.distance} km)</span>
+					<span>{registration.name} ({registration.run.name} {registration.run.distance} {registration.run.distanceUnitFormated})</span>
 				</div>
 				<div> 
-					<label for="donationValue"><f:translate key="Donation_New_DonationValue" /></label>
+					<label for="donationValue">Spende pro {h:distanceFormat(unit: registration.run.distanceUnit, plural: 0)}</label>
 					<f:form.textfield  property="donationValue" id="donationValue" /> Euro
 				</div> 
 				<div> 
