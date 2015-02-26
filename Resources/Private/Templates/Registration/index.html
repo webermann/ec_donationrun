@@ -1,3 +1,4 @@
+{namespace h=Tx_EcDonationrun_ViewHelpers} 
 <f:layout name="main" />
 
 <f:section name="title">
@@ -14,10 +15,9 @@
 	<div class="registration_new">
 		<f:if condition="{registrations}">
 			<f:then>
-				<f:debug>{events}</f:debug>
 				<f:for each="{registrations}" as="eventsOfRuns" key="titleEvent">
 					<h2>{titleEvent}</h2>
-					<span>{events.{titleEvent}}</span>
+					<span>{h:arrayKey(obj: events, prop: titleEvent)}</span>
 					<f:for each="{eventsOfRuns}" as="runs" key="titleRun">
 						<h3>{titleRun}</h3>
 						<f:for each="{runs}" as="registration">	
