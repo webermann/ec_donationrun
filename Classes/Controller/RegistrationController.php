@@ -57,7 +57,6 @@ class Tx_EcDonationrun_Controller_RegistrationController extends Tx_EcDonationru
 	 * @var Tx_EcDonationrun_Domain_Repository_RunRepository
 	 */
 	protected $runRepository;
-
 	/**
 	 * A frontend user repository instance
 	 * @var Tx_EcAssociation_Domain_Repository_UserRepository
@@ -216,8 +215,9 @@ class Tx_EcDonationrun_Controller_RegistrationController extends Tx_EcDonationru
 			" angemeldet hast.\n".
 			"Wir freuen uns sehr, dass du Running for Jesus durch deinen sportlichen Einsatz unterstützt.\n".
 			"Im internen Bereich der Homepage bekommst du wertvolle Tipps für dein Training und deine Sponsorensuche. ".
-			"Dort hast du auch unter 'Meine Spender' die Möglichkeit, deine Spenderliste zu verwalten.");
-
+			"Dort hast du auch unter 'Meine Spender' die Möglichkeit, deine Spenderliste zu verwalten.".
+			Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($run->getEvent()));
+			
 		if (isset($this->settings['mail']['adminAddress'])) {
 			Tx_EcDonationrun_Utility_SendMail::sendMail(
 			array($this->settings['mail']['adminAddress']),
@@ -225,7 +225,9 @@ class Tx_EcDonationrun_Controller_RegistrationController extends Tx_EcDonationru
 				"Hallo,".
 				"\nes hat sich ein neuer Läufer angemeldet.".
 				"\nLäufer: ".$registration->getUser()->getName().
-				"\nLauf:   ".$registration->getRun()->getName());
+				"\nLauf:   ".$registration->getRun()->getName()." (".
+							 $registration->getRun()->getEvent()->getName().")".
+			 	Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($run->getEvent()));
 		}
 		$this->flashMessages->add('Du bist für den Lauf "'.$registration->getRun()->getName().'" angemeldet.');
 		if (!isset($this->settings['registrationIndex'])) throw new Exception('EC Donationrun: registrationIndex not set');
