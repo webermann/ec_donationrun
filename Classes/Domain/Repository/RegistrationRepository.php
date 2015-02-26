@@ -60,26 +60,23 @@ class Tx_EcDonationrun_Domain_Repository_RegistrationRepository extends Tx_Extba
 		$query = $this->createQuery();
 		$result = $query
 			->matching($query->greaterThanOrEqual('run.start', time()-60*60*24*90)) // Zeige 90 Tage nach start noch an.
-			//->matching($query->greaterThan('user.name', '')) TODO
 			->setOrderings(array('run' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 			->execute();
 		return $result;
 	}
 	
-	
-		/**
-		 *
-		 * Find Registrations from User
-		 *
-		 * @param  Tx_Extbase_Domain_Model_FrontendUser $user The parent user
-		 * @return array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
-		 *
-		 */
-
+	/**
+	 * Find Registrations from User
+	 *
+	 * @param  Tx_Extbase_Domain_Model_FrontendUser $user The parent user
+	 * @return array<Tx_EcDonationrun_Domain_Model_Registration>  The result list.
+	 */
 	public function findRegistrationsFromUser($user) {
 		$query = $this->createQuery();
 		return $query
-			->matching($query->equals('user', $user->getUid()))
+			->matching($query->logicalAnd(
+				$query->greaterThanOrEqual('run.start', time()-60*60*24*90), // Zeige 90 Tage nach start noch an.
+				$query->equals('user', $user->getUid())))
 			->setOrderings(array('crdate' => Tx_Extbase_Persistence_Query::ORDER_DESCENDING))
 			->execute();
 
