@@ -68,7 +68,37 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	 * @var string
 	 */
 	protected $website;
-
+	
+	/**
+	 * The event donation info
+	 * @var string
+	 */
+	protected $donationInfo;
+	
+	/**
+	 * The event bank account 
+	 * @var string
+	 */
+	protected $bankAccount;
+	
+	/**
+	 * The event contact person 
+	 * @var string
+	 */
+	protected $contactPerson;
+	
+	/**
+	 * The event contact person mail 
+	 * @var string
+	 */
+	protected $contactPersonMail;
+	
+	/**
+	 * The event invoice number format 
+	 * @var string
+	 */
+	protected $invoiceNumberFormat;
+	
 	/**
 	 * A list of all runs that are assigned to this event
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Run>
@@ -135,32 +165,65 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	}
 	
 	/**
-	 *
+	 * Gets the event donation info
+	 * @return string
+	 */
+	public function getDonationInfo() {
+		return $this->donationInfo;
+	}
+	
+	/**
+	 * Gets the event bank account
+	 * @return string
+	 */
+	public function getBankAccount() {
+		return $this->bankAccount;
+	}
+	
+	/**
+	 * Gets the event contact person
+	 * @return string
+	 */
+	public function getContactPerson() {
+		return $this->contactPerson;
+	}
+	
+	/**
+	 * Gets the event contact person mail
+	 * @return string
+	 */
+	public function getContactPersonMail() {
+		return $this->contactPersonMail;
+	}
+	
+	/**
+	 * Gets the event invoice number format
+	 * @return string
+	 */
+	public function getInvoiceNumberFormat() {
+		return $this->invoiceNumberFormat;
+	}
+	
+	/**
 	 * Gets all runs for this event.
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Runs>
-	 *
 	 */
 	public function getRuns() {
 		return $this->runs;
 	}
 
-
 	/**
-	 *
 	 * Gets the edit date.
 	 * @return DateTime
-	 *
 	 */
 	public function getEditDate() {
 		return $this->tstamp;
 	}
 
-
 	/*
 	 * SETTERS
 	 */
 	/**
-	 *
 	 * Sets the event name
 	 * @param string $name
 	 * @return void
@@ -170,7 +233,6 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 *
 	 * Sets the event city.
 	 * @param string $val
 	 * @return void
@@ -181,7 +243,6 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 *
 	 * Sets the info
 	 * @param string $val
 	 * @return void
@@ -192,16 +253,59 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	}
 	
 	/**
-	 *
 	 * Sets the website
 	 * @param string $val
 	 * @return void
-	 *
 	 */
 	public function setWebsite($val) {
 		$this->website = $val;
 	}
+	
+	/**
+	 * Sets the donation info
+	 * @param string $val
+	 * @return void
+	 */
+	public function setDonationInfo($val) {
+		$this->donationInfo = $val;
+	}
 
+	/**
+	 * Sets the bank account
+	 * @param string $val
+	 * @return void
+	 */
+	public function setBankAccount($val) {
+		$this->bankAccount = $val;
+	}
+	
+	/**
+	 * Sets the contact person
+	 * @param string $val
+	 * @return void
+	 */
+	public function setContactPerson($val) {
+		$this->contactPerson = $val;
+	}
+	
+	/**
+	 * Sets the contact person mail
+	 * @param string $val
+	 * @return void
+	 */
+	public function setContactPersonMail($val) {
+		$this->contactPersonMail = $val;
+	}
+	
+	/**
+	 * Sets the invoice number format
+	 * @param string $val
+	 * @return void
+	 */
+	public function setInvoiceNumberFormat($val) {
+		$this->invoiceNumberFormat = $val;
+	}
+	
 }
 
 ?>
