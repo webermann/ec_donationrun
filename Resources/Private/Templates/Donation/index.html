@@ -1,50 +1,50 @@
+{namespace h=Tx_EcDonationrun_ViewHelpers} 
 <f:layout name="main" />
 
 	<!-- TITLE -->
 <f:section name="title">
-	<f:translate key="Donation_Index_Title" arguments="{0: registration.run.name}" />
-	(Zugesagte Spenden:
+	Insgesamt zugesagte Spenden:
 	<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation_amount}</f:format.currency>) 
 </f:section>
 
-	<!-- MENU -->
-<f:section name="menu">
-	<ul>
-		<li><f:link.action controller="Donation" action="new" arguments="{registration : registration}" pageUid="{donationNewPageUid}" >Neue Spende hinzufügen</f:link.action></li>
-	</ul>
-</f:section>
+<f:section name="menu" />
 
 <f:section name="content">
 	<div class="donation_index">
-		<table>
-			<tr>
-				<th><f:translate key="Donation_Index_List_Donator" /></th>
-				<th><f:translate key="Donation_Index_List_Donation" /></th>
-				<th><f:translate key="Donation_Index_List_Comment" /></th>
-				<th><f:translate key="Donation_Index_List_Options" /></th>
-			</tr>
-			<f:for each="{donations}" as="donation">
+		<f:for each="{registrations}" as="registration">
+			<h2>{registration.run.name}</h2>
+			<span><f:link.action controller="Donation" action="new" arguments="{registration : registration}" pageUid="{donationNewPageUid}" >Neue Spende hinzufügen</f:link.action></span>
+			<table>
 				<tr>
-					<td>{donation.user.name}</td>
-					<f:if condition="{donation.donationfixvalue} == 0">
-						<f:then>
-							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro km</td>
-						</f:then>
-						<f:else>
-							<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
-						</f:else>
-					</f:if>
-					<td>{donation.comment}</td>
-					<td>
-					<f:if condition="{donation.invoiceNumber} == ''">
-						<f:link.action controller="Donation" action="edit" arguments="{donation : donation}" pageUid="{donationEditPageUid}" >Bearbeiten</f:link.action>
-					</f:if>
-					</td>
-					<f:comment>
-						<td>Löschen</td>
-					</f:comment>
+					<th><f:translate key="Donation_Index_List_Donator" /></th>
+					<th><f:translate key="Donation_Index_List_Donation" /></th>
+					<th><f:translate key="Donation_Index_List_Comment" /></th>
+					<th><f:translate key="Donation_Index_List_Options" /></th>
 				</tr>
-			</f:for>
-		</table>
+				<f:for each="{registration.donations}" as="donation">
+					<tr>
+						<td>{donation.user.name}</td>
+						<f:if condition="{donation.donationfixvalue} == 0">
+							<f:then>
+								<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationValue}</f:format.currency> pro {h:distanceFormat(unit: registration.run.distanceUnit, plural: 0)}</td>
+							</f:then>
+							<f:else>
+								<td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{donation.donationfixvalue}</f:format.currency> (fest)</td>
+							</f:else>
+						</f:if>
+						<td>{donation.comment}</td>
+						<td>
+						<f:if condition="{donation.invoiceNumber} == ''">
+							<f:link.action controller="Donation" action="edit" arguments="{donation : donation}" pageUid="{donationEditPageUid}" >Bearbeiten</f:link.action>
+						</f:if>
+						</td>
+						<f:comment>
+							<td>Löschen</td>
+						</f:comment>
+					</tr>
+				</f:for>
+			</table>
+			<br>
+		</f:for>
 	</div>
 </f:section>
