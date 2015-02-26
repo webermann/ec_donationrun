@@ -3,7 +3,7 @@
 /*                                                                      *
  *  COPYRIGHT NOTICE                                                    *
  *                                                                      *
- *  (c) 2013 Hauke Webermann <hauke@webermann.net>                      *
+ *  (c) 2015 Hauke Webermann <hauke@webermann.net>                      *
  *           webermann.net                                              *
  *           All rights reserved                                        *
  *                                                                      *
@@ -28,42 +28,34 @@
 
 /**
  *
- * A ViewHelper for formatting time amounts. In dependence of the time amount, the
- * time amount if formatted with a different unit (seconds, minutes, hours, days).
+ * A ViewHelper to get array content by key
  *
  * @author     Hauke Webermann <hauke@webermann.net>
  * @package    EcDonationrun
  * @subpackage ViewHelpers
- * @version    $Id$
+ * @version    $Id: TimeFormatViewHelper.php 130 2015-02-15 13:17:42Z hauke $
  * @license    GNU Public License, version 2
  *             http://opensource.org/licenses/gpl-license.php
  *
  */
 
-class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
-	/**
-	 * Renders the time amount.
-	 *
-	 * @param  int    $amount The time amount in seconds
-	 * @return string         The formatted output
-	 */
-	public function render($amount) {
-		$unit = 'Seconds';
+class Tx_EcDonationrun_ViewHelpers_ArrayKeyViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
-		if ($amount == 0) {
-			$unit = 'Hours';
-		} elseif ($amount >= 604800) {
-			$unit = 'Days';
-			$amount /= 86400.00;
-		} elseif ($amount >= 3600) {
-			$unit = 'Hours';
-			$amount /= 3600;
-		} elseif ($amount >= 60) {
-			$unit = 'Minutes';
-			$amount /= 60.00;
+	/**
+	 * @param $obj  object Object
+	 * @param $prop string Property
+	 */
+	public function render($obj,$prop) {
+		if(is_object($obj)) {
+			return $obj->$prop;
+		} elseif(is_array($obj)) {
+			if(array_key_exists($prop, $obj)) {
+				return $obj[$prop];
+			}
 		}
-		return number_format($amount, 2, ',', '').' '.Tx_Extbase_Utility_Localization::translate('ViewHelper_Unit_'.$unit, 'EcDonationrun');
+		return NULL;
 	}
+
 
 }
 

@@ -3,7 +3,7 @@
 /*                                                                      *
  *  COPYRIGHT NOTICE                                                    *
  *                                                                      *
- *  (c) 2013 Hauke Webermann <hauke@webermann.net>                      *
+ *  (c) 2015 Hauke Webermann <hauke@webermann.net>                      *
  *           webermann.net                                              *
  *           All rights reserved                                        *
  *                                                                      *
@@ -28,41 +28,44 @@
 
 /**
  *
- * A ViewHelper for formatting time amounts. In dependence of the time amount, the
- * time amount if formatted with a different unit (seconds, minutes, hours, days).
+ * A ViewHelper for formatting distance unit. In dependence of the  distance_unit, the
+ * distance if formatted with a different unit (pro km, pro Etappe).
  *
  * @author     Hauke Webermann <hauke@webermann.net>
  * @package    EcDonationrun
  * @subpackage ViewHelpers
- * @version    $Id$
+ * @version    $Id: TimeFormatViewHelper.php 130 2015-02-15 13:17:42Z hauke $
  * @license    GNU Public License, version 2
  *             http://opensource.org/licenses/gpl-license.php
  *
  */
 
-class Tx_EcDonationrun_ViewHelpers_TimeFormatViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_EcDonationrun_ViewHelpers_DistanceFormatViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
-	 * Renders the time amount.
+	 * Renders the distance unit.
 	 *
-	 * @param  int    $amount The time amount in seconds
-	 * @return string         The formatted output
+	 * @param  $unit int unit
+	 * @param  $plural int options
+	 * @return string The formatted output
 	 */
-	public function render($amount) {
-		$unit = 'Seconds';
-
-		if ($amount == 0) {
-			$unit = 'Hours';
-		} elseif ($amount >= 604800) {
-			$unit = 'Days';
-			$amount /= 86400.00;
-		} elseif ($amount >= 3600) {
-			$unit = 'Hours';
-			$amount /= 3600;
-		} elseif ($amount >= 60) {
-			$unit = 'Minutes';
-			$amount /= 60.00;
+	public function render($unit, $plural=1) {
+		if ($unit == 0) {
+			return "km";
+		} elseif ($unit == 1) {
+			if ($plural == 0) {
+				return "Runde";
+			} else {
+				return "Runden";
+			}
+		} elseif ($unit == 2) {
+			if ($plural == 0) {
+				return "Etappe";
+			} else {
+				return "Etappen";
+			}
+		} else {
+			return NULL;
 		}
-		return number_format($amount, 2, ',', '').' '.Tx_Extbase_Utility_Localization::translate('ViewHelper_Unit_'.$unit, 'EcDonationrun');
 	}
 
 }
