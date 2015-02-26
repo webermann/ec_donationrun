@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_event'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_event']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'name,city,info,website,runs'
+		'showRecordFieldList' => 'name,city,info,website,donation_info,bank_account,contact_person,contact_person_mail,invoice_number_format,runs'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'name,city,info,website,runs')
+		'1' => array('showitem' => 'name,city,info,website,donation_info,bank_account,contact_person,contact_person_mail,invoice_number_format,runs')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -63,6 +63,53 @@ $TCA['tx_ecdonationrun_domain_model_event'] = array(
 				'type' => 'input',
 				'size' => 30,
 				'eval' => 'trim'
+			)
+		),
+		'donation_info' => array(
+			'exclude' => 0,
+			'label'   => 'Info zur Spende',
+			'config'  => array(
+				'type' => 'text',
+				'cols' => '40',
+		        'rows' => '5',
+				'eval' => 'trim,required'
+			)
+		),
+		'bank_account' => array(
+			'exclude' => 0,
+			'label'   => 'Bankverbindung',
+			'config'  => array(
+				'type' => 'text',
+				'cols' => '40',
+		        'rows' => '5',
+				'eval' => 'trim,required'
+			)
+		),
+		'contact_person' => array(
+			'exclude' => 1,
+			'label'   => 'Kontaktperson',
+			'config'  => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim,required'
+			)
+		),
+		'contact_person_mail' => array(
+			'exclude' => 1,
+			'label'   => 'Kontaktperson Mail Adresse',
+			'config'  => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim,required'
+			)
+		),
+		'invoice_number_format' => array(
+			'exclude' => 1,
+			'label'   => 'Rechnunsnummer Format',
+			'config'  => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim,required'
 			)
 		),
 		'runs' => array(
