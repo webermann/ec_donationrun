@@ -381,7 +381,7 @@ class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_Abs
 		$user = t3lib_BEfunc::getRecord("fe_users", $donation['user']);
 
 		if ($donation['donation_fix_value'] == 0) {
-			$realDonation = number_format($donation['donation_value'], 2, ',', '.')." € pro km";
+			$realDonation = number_format($donation['donation_value'], 2, ',', '.')." € pro km/Etappe";
 		} else {
 			$realDonation = number_format($donation['donation_fix_value'], 2, ',', '.')." € Festbetrag";
 		}
