@@ -16,7 +16,7 @@
 		<f:if condition="{registrations}">
 			<f:then>
 				<f:for each="{registrations}" as="eventsOfRuns" key="titleEvent">
-					<h2>{titleEvent}</h2>
+					<h2 id="{titleEvent}">{titleEvent}</h2>
 					<span>{h:arrayKey(obj: events, prop: titleEvent)}</span>
 					<f:for each="{eventsOfRuns}" as="runs" key="titleRun">
 						<h3>{titleRun}</h3>
