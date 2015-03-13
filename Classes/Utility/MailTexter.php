@@ -45,7 +45,8 @@ class Tx_EcDonationrun_Utility_MailTexter {
 	
 	/**
 	 * Returns the greeting for Mail body
-	 *
+	 * @param Tx_EcDonationrun_Domain_Model_Event $event
+	 * @return string
 	 *  */
 	// TODO check why this is not working in registration controller
 	// static public function getMailGreeting(Tx_EcDonationrun_Domain_Model_Event $event) {
