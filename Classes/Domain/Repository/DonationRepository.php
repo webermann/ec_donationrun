@@ -40,7 +40,7 @@
  */
 
 class Tx_EcDonationrun_Domain_Repository_DonationRepository extends Tx_Extbase_Persistence_Repository {
-	
+
 	public function initializeObjectForBe() {
 		/**
 		 * http://forge.typo3.org/projects/typo3v4-mvc/wiki/Default_Orderings_and_Query_Settings_in_Repository
@@ -49,7 +49,7 @@ class Tx_EcDonationrun_Domain_Repository_DonationRepository extends Tx_Extbase_P
 		$defaultQuerySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($defaultQuerySettings);
 	}
-	 
+
 	/**
 	 * Returns all objects with no invoice number of this repository.
 	 *
@@ -58,7 +58,9 @@ class Tx_EcDonationrun_Domain_Repository_DonationRepository extends Tx_Extbase_P
 	public function findAllNoInvoice() {
 		$query = $this->createQuery();
 		$result = $query
-		->matching($query->equals('invoiceNumber', NULL))
+		->matching($query->logicalAnd(
+		    $query->equals('invoiceNumber', NULL),
+		    $query->lessThan('registration.run.start', time())))
 		->setOrderings(array('user' => Tx_Extbase_Persistence_Query::ORDER_ASCENDING))
 		->execute();
 		return $result;

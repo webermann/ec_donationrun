@@ -109,14 +109,14 @@ class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_Abs
 	 * @var string
 	 */
 	protected $invoiceNumber;
-	
+
 	/**
 	 * tstamp
 	 *
 	 * @var DateTime
 	 */
 	protected $tstamp;
-	
+
 	/**
 	 * hidden
 	 *
@@ -137,6 +137,16 @@ class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_Abs
 
 	public function getRegistration() {
 		return $this->registration;
+	}
+
+	/**
+	 *
+	 * Gets the run
+	 * @return Tx_EcDonationrun_Domain_Model_Run
+	 */
+
+	public function getRun() {
+		return $this->getRegistration()->getRun();
 	}
 
 	/**
@@ -238,7 +248,7 @@ class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_Abs
 	public function getTimestamp() {
 		return $this->tstamp;
 	}
-	
+
 	/**
 	 * Returns hidden
 	 *
@@ -341,7 +351,7 @@ class Tx_EcDonationrun_Domain_Model_Donation extends Tx_Extbase_DomainObject_Abs
 	public function setContributionReceipt($value) {
 		$this->contributionReceipt = $value;
 	}
-	
+
 	/**
 	 *
 	 * Sets the invoice number.
