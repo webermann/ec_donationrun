@@ -68,37 +68,37 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	 * @var string
 	 */
 	protected $website;
-	
+
 	/**
 	 * The event donation info
 	 * @var string
 	 */
 	protected $donationInfo;
-	
+
 	/**
-	 * The event bank account 
+	 * The event bank account
 	 * @var string
 	 */
 	protected $bankAccount;
-	
+
 	/**
-	 * The event contact person 
+	 * The event contact person
 	 * @var string
 	 */
 	protected $contactPerson;
-	
+
 	/**
-	 * The event contact person mail 
+	 * The event contact person mail
 	 * @var string
 	 */
 	protected $contactPersonMail;
-	
+
 	/**
-	 * The event invoice number format 
+	 * The event invoice number format
 	 * @var string
 	 */
 	protected $invoiceNumberFormat;
-	
+
 	/**
 	 * A list of all runs that are assigned to this event
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Run>
@@ -163,7 +163,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getWebsite() {
 		return $this->website;
 	}
-	
+
 	/**
 	 * Gets the event donation info
 	 * @return string
@@ -171,7 +171,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getDonationInfo() {
 		return $this->donationInfo;
 	}
-	
+
 	/**
 	 * Gets the event bank account
 	 * @return string
@@ -179,7 +179,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getBankAccount() {
 		return $this->bankAccount;
 	}
-	
+
 	/**
 	 * Gets the event contact person
 	 * @return string
@@ -187,7 +187,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getContactPerson() {
 		return $this->contactPerson;
 	}
-	
+
 	/**
 	 * Gets the event contact person mail
 	 * @return string
@@ -195,7 +195,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getContactPersonMail() {
 		return $this->contactPersonMail;
 	}
-	
+
 	/**
 	 * Gets the event invoice number format
 	 * @return string
@@ -203,7 +203,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function getInvoiceNumberFormat() {
 		return $this->invoiceNumberFormat;
 	}
-	
+
 	/**
 	 * Gets all runs for this event.
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Runs>
@@ -251,7 +251,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setInfo($val) {
 		$this->info = $val;
 	}
-	
+
 	/**
 	 * Sets the website
 	 * @param string $val
@@ -260,7 +260,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setWebsite($val) {
 		$this->website = $val;
 	}
-	
+
 	/**
 	 * Sets the donation info
 	 * @param string $val
@@ -278,7 +278,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setBankAccount($val) {
 		$this->bankAccount = $val;
 	}
-	
+
 	/**
 	 * Sets the contact person
 	 * @param string $val
@@ -287,7 +287,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setContactPerson($val) {
 		$this->contactPerson = $val;
 	}
-	
+
 	/**
 	 * Sets the contact person mail
 	 * @param string $val
@@ -296,7 +296,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setContactPersonMail($val) {
 		$this->contactPersonMail = $val;
 	}
-	
+
 	/**
 	 * Sets the invoice number format
 	 * @param string $val
@@ -305,7 +305,29 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 	public function setInvoiceNumberFormat($val) {
 		$this->invoiceNumberFormat = $val;
 	}
-	
+
+	/**
+	 * Gets the total amount of this registration. This methods
+	 * accumulates the donation amount to this event.
+	 * @return double The total amount of donation of this registration
+	 */
+	public function getDonationAmount() {
+		$amount = 0.0;
+
+		foreach ($this->getRuns() as $run) {
+		    if ($run->getStart()->getTimestamp() >= time()-60*60*24*90) {
+                foreach ($run->getDonations() as $donation) {
+        			if ($donation->getDonationFixValue() == 0) {
+        				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+        			} else {
+        				$amount += $donation->getDonationFixValue();
+        			}
+                }
+		    }
+		}
+		return $amount;
+	}
+
 }
 
 ?>

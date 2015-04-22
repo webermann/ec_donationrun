@@ -6,6 +6,26 @@
 	
 	<h1>Spenden Lauf</h1>
 	
+	<h2>Events</h2>
+    <f:if condition="{events}">
+        <f:then>
+            <table>
+                <tr>
+                    <th>Event</th>
+                    <th>Gesammelte Spenden</th>
+                </tr>
+                <f:for each="{events}" as="event">
+                    <tr>
+                        <td>{event.name}</td>
+                        <td><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{event.donationAmount}</f:format.currency></td>
+                    </tr>
+                </f:for>
+            </table>
+        </f:then>
+        <f:else>
+            <p>Keine Events gefunden</p>
+        </f:else>
+    </f:if>
 	
 	<h2>Teilnehmer</h2>
 	<f:if condition="{registrations}">
