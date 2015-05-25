@@ -40,13 +40,13 @@
 	 */
 
 class Tx_EcDonationrun_Utility_SendMail {
-    
+
 	/*
 	 * http://swiftmailer.org/docs/messages.html
 	 * http://api.typo3.org/typo3cms/47/html/classt3lib__mail___message.html
 	 *
 	 * */
-	
+
 	static public function sendMail($email, $subjectText, $mailText, $attachment = NULL, $cc=NULL, $bcc=NULL, $replyTo=NULL, $from=NULL) {
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		//Adressen festlegen
@@ -57,7 +57,7 @@ class Tx_EcDonationrun_Utility_SendMail {
 			$mail->setFrom($from);
 		}
 		$mail->setTo($email);
-		
+
 		if ($replyTo !== NULL) {
 			$mail->setReplyTo($replyTo);
 		}
@@ -74,10 +74,10 @@ class Tx_EcDonationrun_Utility_SendMail {
 
 		//Mailtext
 		$text = $mailText;
-		
+
 		//$mail->setBody($text, 'text/html');
 		$mail->setBody(strip_tags(preg_replace('/(<br*)(>)/', "\n", $text)), 'text/plain');
-		
+
 		if ($attachment != NULL) {
 			if (is_array($attachment)) {
 				foreach ($attachment as $val) {
@@ -91,8 +91,8 @@ class Tx_EcDonationrun_Utility_SendMail {
 
 		return $mail->isSent();
 	}
-	
-	
+
+
 }
 
 ?>
