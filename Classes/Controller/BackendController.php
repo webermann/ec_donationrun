@@ -137,74 +137,80 @@ class Tx_EcDonationrun_Controller_BackendController extends Tx_Extbase_MVC_Contr
         if (!isset($this->settings['invoiceTemplate'])) throw new Exception('EC Donationrun: invoiceTemplate not set');
         if (!isset($this->settings['mail']['viaPostAddress'])) throw new Exception('EC Donationrun: mail.viaPostAddress not set');
         $startTime = microtime(true);
-        $donations = $this->donationRepository->findAllNoInvoice();
-        $usersDonationsByRunner = array();
-        $usersDonations = array();
-        foreach ($donations as $donation) {
-            if (($donation->getDonationValue() == 0.0) && ($donation->getDonationFixValue() == 0.0)) {
-                continue;
-            }
-            if ($donation->getNotificationVia() == 2) { // by runner?
-                $usersDonationsByRunner[$donation->getRegistration()->getUser()->getUid()][] = $donation;
-            } else {
-                $usersDonations[$donation->getUser()->getUid()][] = $donation;
-            }
+        $allDonationsNoInvoice = $this->donationRepository->findAllNoInvoice();
+        $allDonationsByEvent = array();
+        foreach ($allDonationsNoInvoice as $donation) {
+            $allDonationsByEvent[$donation->getRegistration()->getRun()->getEvent()->getUid()][] = $donation;
         }
-        $log = '';
-        $invoicesByPost = array();
-        foreach ($usersDonations as $donations) {
-            $invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donations, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
+        foreach ($allDonationsByEvent as $allDonationsFromEvent) {
+            $usersDonationsByRunner = array();
+            $usersDonations = array();
+            foreach ($allDonationsFromEvent as $donation) {
+                if (($donation->getDonationValue() == 0.0) && ($donation->getDonationFixValue() == 0.0)) {
+                    continue;
+                }
+                if ($donation->getNotificationVia() == 2) { // by runner?
+                    $usersDonationsByRunner[$donation->getRegistration()->getUser()->getUid()][] = $donation;
+                } else {
+                    $usersDonations[$donation->getUser()->getUid()][] = $donation;
+                }
+            }
+            $log = '';
+            $invoicesByPost = array();
+            foreach ($usersDonations as $donations) {
+                $invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donations, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
 
-            if (!is_file($invoice)) {
-                throw new Exception('EC Donationrun: Generate Invoice failt!');
-            }
-            //sendmail
-            if ($donations[0]->getNotificationVia() == 1) { // By Post
-                $invoicesByPost[] = $invoice;
-            } else {
-                Tx_EcDonationrun_Utility_SendMail::sendMail(
-                    array($donations[0]->getUser()->getEmail() => $donations[0]->getUser()->getName()),
-                    "Running for Jesus - Spendenbenachrichtigung",
-                    "Hallo ".$donations[0]->getUser()->getName().",\n".
-                    "herzlichen Dank für deine Spende bei Running for Jesus, im Anhang findest du die Spendenbenachrichtigung als pdf.".
-                    Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
-                    $invoice);
-                $log .= "Mail verschickt an ".$donations[0]->getUser()->getName().' ('.str_replace($this->settings['invoicePath'].'/','', $invoice).")\n";
-            }
-            foreach ($donations as $donation) {
-                $donation->setNotificationStatus(2); //    Mail sent
-            }
-        }
-        if (!empty($invoicesByPost)) {
-            Tx_EcDonationrun_Utility_SendMail::sendMail(
-                $this->settings['mail']['viaPostAddress'],
-                "Running for Jesus - Spendenbenachrichtigung per Post",
-                "Hallo Nina,\n".
-                "hier kommt eine Spendenbenachrichting per Post.",
-                $invoicesByPost);
-                $log .= "Mail verschickt an ".$this->settings['mail']['viaPostAddress']."\n";
-        }
-        foreach ($usersDonationsByRunner as $donations) {
-            $invoices = array();
-            foreach ($donations as $donation) {
-                $donationToGenerate = array(&$donation);
-                $invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donationToGenerate, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
                 if (!is_file($invoice)) {
                     throw new Exception('EC Donationrun: Generate Invoice failt!');
                 }
-                $invoices[] = $invoice;
+                //sendmail
+                if ($donations[0]->getNotificationVia() == 1) { // By Post
+                    $invoicesByPost[] = $invoice;
+                } else {
+                    Tx_EcDonationrun_Utility_SendMail::sendMail(
+                        array($donations[0]->getUser()->getEmail() => $donations[0]->getUser()->getName()),
+                        "Running for Jesus - Spendenbenachrichtigung",
+                        "Hallo ".$donations[0]->getUser()->getName().",\n".
+                        "herzlichen Dank für deine Spende bei Running for Jesus, im Anhang findest du die Spendenbenachrichtigung als pdf.".
+                        Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
+                        $invoice);
+                    $log .= "Mail verschickt an ".$donations[0]->getUser()->getName().' ('.str_replace($this->settings['invoicePath'].'/','', $invoice).")\n";
+                }
+                foreach ($donations as $donation) {
+                    $donation->setNotificationStatus(2); //    Mail sent
+                }
             }
-            // Send mail to runner
-            Tx_EcDonationrun_Utility_SendMail::sendMail(
-                array($donations[0]->getRegistration()->getUser()->getEmail() => $donations[0]->getRegistration()->getUser()->getName()),
-                "Running for Jesus - Spendenbenachrichtigung per Läufer",
-                "Hallo ".$donations[0]->getRegistration()->getUser()->getName().",\n".
-                "im Anhang erhälst du die Spendenbenachrichtigung für deine Spender.".
-                Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
-                $invoices);
-            $log .= "Mail verschickt an ".$donations[0]->getRegistration()->getUser()->getName()."\n";
-            foreach ($donations as $donation) {
-                $donation->setNotificationStatus(2); //    Mail sent
+            if (!empty($invoicesByPost)) {
+                Tx_EcDonationrun_Utility_SendMail::sendMail(
+                    $this->settings['mail']['viaPostAddress'],
+                    "Running for Jesus - Spendenbenachrichtigung per Post",
+                    "Hallo Nina,\n".
+                    "hier kommt eine Spendenbenachrichting per Post.",
+                    $invoicesByPost);
+                    $log .= "Mail verschickt an ".$this->settings['mail']['viaPostAddress']."\n";
+            }
+            foreach ($usersDonationsByRunner as $donations) {
+                $invoices = array();
+                foreach ($donations as $donation) {
+                    $donationToGenerate = array(&$donation);
+                    $invoice = Tx_EcDonationrun_Utility_Invoice::generateInvoice($donationToGenerate, $this->settings['invoicePath'], $this->settings['invoiceTemplate']);
+                    if (!is_file($invoice)) {
+                        throw new Exception('EC Donationrun: Generate Invoice failt!');
+                    }
+                    $invoices[] = $invoice;
+                }
+                // Send mail to runner
+                Tx_EcDonationrun_Utility_SendMail::sendMail(
+                    array($donations[0]->getRegistration()->getUser()->getEmail() => $donations[0]->getRegistration()->getUser()->getName()),
+                    "Running for Jesus - Spendenbenachrichtigung per Läufer",
+                    "Hallo ".$donations[0]->getRegistration()->getUser()->getName().",\n".
+                    "im Anhang erhälst du die Spendenbenachrichtigung für deine Spender.".
+                    Tx_EcDonationrun_Utility_MailTexter::getMailGreeting($donations[0]->getRegistration()->getRun()->getEvent()),
+                    $invoices);
+                $log .= "Mail verschickt an ".$donations[0]->getRegistration()->getUser()->getName()."\n";
+                foreach ($donations as $donation) {
+                    $donation->setNotificationStatus(2); //    Mail sent
+                }
             }
         }
         $this->view->assign('log', $log);
@@ -225,7 +231,7 @@ class Tx_EcDonationrun_Controller_BackendController extends Tx_Extbase_MVC_Contr
 
         foreach ($donations as $donation) {
             if ($donation->getDonationFixValue() == 0) {
-                $realDonationValue = $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+                $realDonationValue = $donation->getDonationValue() * $donation->getRegistration()->getRealDistance();
             } else {
                 $realDonationValue = $donation->getDonationFixValue();
             }
