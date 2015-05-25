@@ -50,22 +50,23 @@ class Tx_EcDonationrun_Utility_Invoice {
 		if (!t3lib_extMgm::isLoaded('fpdf')) {
 			throw new Exception('EC Donationrun: fpdf not loaded in Tx_EcDonationrun_Utility_Invoice.');
 		}
-		
+		$event = $donations[0]->getRegistration()->getRun()->getEvent();
+
 		$year = date("Y", time());
 		static $invoiceId = 0;
 		do {
 			$invoiceId++;
-			$invoicePath = $destinationPath.'/RJ'.'_'.$year.$invoiceId.'.pdf';
+			$invoicePath = $destinationPath.'/'.$event->getInvoiceNumberFormat().'_'.$year.$invoiceId.'.pdf';
 		} while (is_file($invoicePath)) ;
-		$invoiceNumber = 'RJ '.$year.$invoiceId;
-		
+		$invoiceNumber = $event->getInvoiceNumberFormat().' '.$year.$invoiceId;
+
 		// Some defaults and configuration
 		$h = 5;
 		$w = 158;
-		
+
 		// Get a new instance of the FPDF library
 		$pdf = new PDF('portrait','mm','A4');
-		
+
 		if (($templatePath != '') && ($donations[0]->getNotificationVia() != 1)) { // Not by Post?
 			$pdf->tx_fpdf->template = $templatePath;
 		}
@@ -74,12 +75,12 @@ class Tx_EcDonationrun_Utility_Invoice {
 		// Shoe template only on first page
 		$pdf->tx_fpdf->template = '';
 		$pdf->SetFont('Arial', '', 10);
-		
+
 		// Print Address
 		$pdf->Cell(100, $h, self::c(ucwords($donations[0]->getUser()->getName())), 0, 2);
 		$pdf->Cell(100, $h, self::c(ucfirst($donations[0]->getUser()->getAddress())), 0, 2);
 		$pdf->Cell(100, $h, self::c($donations[0]->getUser()->getZip().' '.ucfirst($donations[0]->getUser()->getCity())), 0, 2);
-		
+
 		// Print Subject
 		$pdf->SetY(95);
 		$pdf->Cell($w, $h, date('d.m.Y', time()), 0, 2, 'R');
@@ -103,11 +104,11 @@ class Tx_EcDonationrun_Utility_Invoice {
 				'Viele Läufer gingen an den Start und wir freuen uns über deine Zusage diesen Erfolg finanziell zu unterstützen.')
 			);
 		}
-		
+
 		$donationsRunSuccessful = array();
 		$donationsRunAborted = array();
 		$donationsRunDeregistered = array();
-		
+
 		foreach ($donations as &$donation) {
 			// Set invoice number
 			$donation->setInvoiceNumber($invoiceNumber);
@@ -121,14 +122,14 @@ class Tx_EcDonationrun_Utility_Invoice {
 				$donationsRunDeregistered[] = $donation;
 			}
 		}
-		
+
 		$tableHeader = array('Läufer', 'Lauf', 'Spende', 'Summe');
 		$tableWidth = array(45, 45, 40, 30);
 		$pdf->SetFillColor(169, 169, 169);
 	    $pdf->SetTextColor(0);
 	    $pdf->SetDrawColor(0);
 	    $pdf->SetLineWidth(.3);
-		
+
 		if (!empty($donationsRunSuccessful)) {
 			$pdf->Ln();
 			if (count($donationsRunSuccessful) != 1) {
@@ -137,7 +138,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 				} else {
 					$pdf->Cell(100, $h, self::c('Für folgende Läufer hast du eine Spende zugesagt:'), 0, 2);
 				}
-				
+
 			    $pdf->SetFont('Arial','B',10);
 				for ($i=0; $i<count($tableHeader); $i++) {
 					$pdf->Cell($tableWidth[$i], 7, self::c($tableHeader[$i]), 1, 0, 'C', 1);
@@ -146,7 +147,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 				$pdf->Ln();
 				$fill=0;
 				$donationAmount = 0.0;
-				
+
 				foreach ($donationsRunSuccessful as &$donation) {
 					$pdf->Cell($tableWidth[0], $h, self::c($donation->getRegistration()->getUser()->getName()), 'LR', 0, 'L', $fill);
 					$pdf->Cell($tableWidth[1], $h, self::c($donation->getRegistration()->getRun()->getName()), 'LR', 0, 'L', $fill);
@@ -198,7 +199,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 					} else {
 						$text .= " hast du einen Betrag von ".number_format(self::getRealDonationValue($donation), 2, ',', '.')." Euro zugesagt";
 					}
-						
+
 				} else {
 					$text .= ", für ".$donation->getRegistration()->getUser()->getName().
 						" (".$donation->getRegistration()->getRun()->getName().")".
@@ -206,7 +207,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 				}
 			}
 			$text .= '.';
-			
+
 			if ($politeForm) {
 				$text .= " Natürlich brauchen Sie den Betrag nicht überweisen. Falls Sie den Betrag trotzdem spenden möchten, würden wir uns jedoch sehr freuen!";
 			} else {
@@ -215,7 +216,7 @@ class Tx_EcDonationrun_Utility_Invoice {
 			$pdf->Ln();
 			$pdf->MultiCell($w, $h, self::c($text));
 		}
-			
+
 		if (!empty($donationsRunDeregistered)) {
 			$text = '';
 			foreach ($donationsRunDeregistered as $donation) {
@@ -244,47 +245,40 @@ class Tx_EcDonationrun_Utility_Invoice {
 			$pdf->Ln();
 			$pdf->MultiCell($w, $h, self::c($text));
 		}
-		
+
 		$pdf->Ln();
-		$pdf->MultiCell($w, $h, self::c(
-			"Bitte überweise den Gesamtbetrag mit Angabe der Vorgangsnummer auf das Konto des Niedersächsischen EC-Verbandes:\n".
-			"IBAN: DE58 5206 0410 0000 6159 78\n".
-			"BIC: GENODEF1EK1\n".
-			"Verwendungszweck: ".$invoiceNumber
-		));
-		
+		$text = "Bitte überweise den Gesamtbetrag mit Angabe der Vorgangsnummer auf das Konto des Niedersächsischen EC-Verbandes:\n".
+			$event->getBankAccount().
+			"\nVerwendungszweck: ".$invoiceNumber;
+		$pdf->MultiCell($w, $h, self::c($text));
+
 		$pdf->SetFont('Arial', '', 10);
 		if ($politeForm) {
-			$text = "Mit Ihrem Beitrag unterstützen Sie die sozial-diakonische ".
-				"Stadtteilarbeit 'Die PLiNKe' in Hannover/Linden und ermöglichen die wertvolle ".
-				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos finden Sie unter www.die-plinke.de und www.ec-niedersachsen.de.\n\n".
-				"Für Rückfragen stehen wir Ihnen gern zur Verfügung.\n".
+			$text = $event->getDonationInfo().
+				"\n\nFür Rückfragen stehen wir Ihnen gern zur Verfügung.\n".
 				"Vielen Dank für Ihre Unterstützung.\n\n".
 				"Herzliche Grüße\n".
 				"- Im Namen des Running for Jesus - Teams -\n".
-				"Benjamin Schaar";
+				$event->getContactPerson();
 		} else {
-			$text = "Mit deinem Beitrag unterstützt du die sozial-diakonische ".
-				"Stadtteilarbeit 'Die PLiNKe' in Hannover/Linden und ermöglichst die wertvolle ".
-				"Arbeit im Niedersächsischen EC-Verband. Weitere Infos findest du unter www.die-plinke.de ".
-				"und www.ec-niedersachsen.de.\n\n".
-				"Für Rückfragen stehen wir dir gern zur Verfügung.\n".
+			$text = $event->getDonationInfo().
+				"\n\nFür Rückfragen stehen wir dir gern zur Verfügung.\n".
 				"Vielen Dank für deine Unterstützung.\n\n".
 				"Herzliche Grüße\n".
 				"- Im Namen des Running for Jesus - Teams -\n".
-				"Benjamin Schaar";
+				$event->getContactPerson();
 		}
 		$pdf->Ln();
 		$pdf->MultiCell($w, $h, self::c($text));
-		
+
 		$pdf->Output($invoicePath, 'f');
-		
+
 		return $invoicePath;
 	}
-	
+
 	protected function getRealDonationValue(Tx_EcDonationrun_Domain_Model_Donation $donation) {
 		if ($donation->getDonationFixValue() == 0) {
-			return $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+			return $donation->getDonationValue() * $donation->getRegistration()->getRealDistance();
 		} else {
 			return $donation->getDonationFixValue();
 		}
