@@ -76,6 +76,12 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 	protected $runnerTime;
 
 	/**
+	 * The covered distance.
+	 * @var double
+	 */
+	protected $coveredDistance;
+
+	/**
 	 * A list of all donations that are assigned to this run
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
 	 * @lazy
@@ -93,10 +99,9 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 
 	/**
 	 *
-	 * Creates a new project.
+	 * Creates a new registration.
 	 *
 	 */
-
 	public function __construct() {
 		$this->donations = new Tx_Extbase_Persistence_ObjectStorage();
 	}
@@ -107,34 +112,25 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 	 */
 
 	/**
-	 *
 	 * Gets the run
 	 * @return Tx_EcDonationrun_Domain_Model_Run The run
-	 *
 	 */
-
 	public function getRun() {
 		return $this->run;
 	}
 
 	/**
-	 *
 	 * Gets the runner
 	 * @return Tx_EcAssociation_Domain_Model_User The runner
-	 *
 	 */
-
 	public function getUser() {
 		return $this->user;
 	}
 
 	/**
-	 *
 	 * Gets the name
 	 * @return string The runners name
-	 *
 	 */
-
 	public function getName() {
 		return $this->getUser()->getName();
 	}
@@ -143,7 +139,6 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 	 * Gets the run status.
 	 * @return int
 	 */
-
 	public function getRunStatus() {
 		return $this->runStatus;
 	}
@@ -151,113 +146,116 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 	/**
 	 * Gets the runner number.
 	 * @return string The runner number
-	 *
 	 */
-
 	public function getRunnerNumber() {
 		return $this->runnerNumber;
 	}
 
 	/**
-	 *
 	 * Gets the runner time.
 	 * @return timesec The runner time
-	 *
 	 */
-
 	public function getRunnerTime() {
 		return $this->runnerTime;
 	}
 
 	/**
-	 *
+	 * Gets the covered distance
+	 * @return double
+	 */
+	public function getCoveredDistance() {
+		return $this->coveredDistance;
+	}
+
+	/**
 	 * Gets the edit date.
 	 * @return DateTime The edit date
-	 *
 	 */
-
 	public function getEditDate() {
 		return $this->tstamp;
 	}
 
 	/**
-	 *
 	 * Gets all donations for this registration.
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
-	 *
 	 */
 	public function getDonations() {
 		return $this->donations;
+	}
+
+	/**
+	 * Gets the distance for calculation
+	 * @return double
+	 */
+	public function getRealDistance() {
+		if ($this->getCoveredDistance() != 0) {
+		    return $this->getCoveredDistance();
+		} else {
+		    return $this->getRun()->getDistance();
+		}
 	}
 
 	/*
 	 * SETTERS
 	 */
 	/**
-	 *
 	 * Sets the run.
 	 * @param Tx_EcDonationrun_Domain_Model_Run $run The run
 	 * @return void
-	 *
 	 */
 	public function setRun(Tx_EcDonationrun_Domain_Model_Run $run) {
 		$this->run = $run;
 	}
-	
+
 	/**
-	 *
 	 * Sets the user.
 	 * @param Tx_EcAssociation_Domain_Model_User $user The user
 	 * @return void
-	 *
 	 */
 	public function setUser(Tx_EcAssociation_Domain_Model_User $user) {
 		$this->user = $user;
 	}
 
 	/**
-	 *
 	 * Sets the run status
 	 * @param int $value
 	 * @return void
-	 *
 	 */
-
 	public function setRunStatus($value) {
 		$this->runStatus = $value;
 	}
-	
+
 	/**
-	 *
 	 * Sets the start number.
 	 * @param string $runnerNumber The start number
 	 * @return void
-	 *
 	 */
-
 	public function setRunnerNumber($runnerNumber) {
 		$this->runnerNumber = $runnerNumber;
 	}
 
 	/**
-	 *
 	 * Sets the runners time.
 	 * @param timesec $runnerTime The runners time
 	 * @return void
-	 *
 	 */
-
 	public function setRunnerTime($runnerTime) {
 		$this->runnerTime = $runnerTime;
 	}
 
 	/**
-	 *
+	 * Sets the covered distance
+	 * @param double $distance
+	 * @return void
+	 */
+	public function setCoveredDistance($distance) {
+		return $this->coveredDistance = $distance;
+	}
+
+	/**
 	 * Is login user equal registration user.
 	 * @return boolan
-	 *
 	 */
-
 	public function isCurrentFeUserEqualUser() {
 		if (intval($GLOBALS['TSFE']->fe_user->user['uid']) < 0) {
 			return false;
@@ -271,25 +269,21 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 
 
 	/**
-	 *
 	 * Gets the total amount of this registration. This methods
 	 * accumulates the donation amount to this registration.
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_EcDonationrun_Domain_Model_Donation>
 	 * @return double The total amount of donation of this registration
-	 *
 	 */
-
 	public function getDonationAmount() {
 		$amount = 0.0;
 
 		foreach ($this->getDonations() as $donation) {
 			if ($donation->getDonationFixValue() == 0) {
-				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRealDistance();
 			} else {
 				$amount += $donation->getDonationFixValue();
 			}
 		}
-
 		return $amount;
 	}
 
@@ -298,7 +292,6 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 
 	/**
 	 * Load title for TCA label_userFunc
-	 *
 	 */
 	public function getLabel(&$parameters, $parentObject) {
 		$registration = t3lib_BEfunc::getRecord($parameters['table'], $parameters['row']['uid']);
@@ -307,8 +300,6 @@ class Tx_EcDonationrun_Domain_Model_Registration extends Tx_Extbase_DomainObject
 
 		$parameters['title'] = $user['first_name'].' '.$user['last_name'].' @ '.$run['name'];
 	}
-
-
 
 }
 

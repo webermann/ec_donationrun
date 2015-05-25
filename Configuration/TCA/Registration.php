@@ -4,10 +4,10 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 	'ctrl' => $TCA['tx_ecdonationrun_domain_model_registration']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'run,user,run_status,runner_number,runner_time,donations'
+		'showRecordFieldList' => 'run,user,run_status,runner_number,runner_time,covered_distance,donations'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'run,user,run_status,runner_number,runner_time,donations')
+		'1' => array('showitem' => 'run,user,run_status,runner_number,runner_time,covered_distance,donations')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
@@ -108,6 +108,16 @@ $TCA['tx_ecdonationrun_domain_model_registration'] = array(
 				'size' => 12,
 				'max' => 20,
 				'eval' => 'integer',
+			)
+		),
+		'covered_distance' => array(
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:ec_donationrun/Resources/Private/Language/locallang_db.xml:tx_ecdonationrun_domain_model_run.distance',
+			'config'  => array(
+				'type' => 'input',
+				'size' => 12,
+				'max' => 20,
+				'eval' => 'tx_ecdonationrun_double3'
 			)
 		),
 		'donations' => array(

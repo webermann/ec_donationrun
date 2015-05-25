@@ -80,6 +80,7 @@ CREATE TABLE tx_ecdonationrun_domain_model_registration (
 	run_status tinyint(4) unsigned DEFAULT '0',
 	runner_number tinytext,
 	runner_time int(11) unsigned DEFAULT '0',
+	covered_distance double(10,3) DEFAULT '0.000' NOT NULL,
 	donations int(11) unsigned DEFAULT '0', 
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
