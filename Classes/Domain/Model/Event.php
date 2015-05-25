@@ -318,7 +318,7 @@ class Tx_EcDonationrun_Domain_Model_Event extends Tx_Extbase_DomainObject_Abstra
 		    if ($run->getStart()->getTimestamp() >= time()-60*60*24*90) {
                 foreach ($run->getDonations() as $donation) {
         			if ($donation->getDonationFixValue() == 0) {
-        				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRun()->getDistance();
+        				$amount += $donation->getDonationValue() * $donation->getRegistration()->getRealDistance();
         			} else {
         				$amount += $donation->getDonationFixValue();
         			}
