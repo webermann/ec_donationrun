@@ -263,7 +263,7 @@ class Tx_EcDonationrun_Controller_DonationController extends Tx_EcDonationrun_Co
 
 			if (!isset($this->settings['confirmNoLogin'])) throw new Exception('EC Donationrun: confirmNoLogin not set');
 			$this->controllerContext->getUriBuilder()->setTargetPageUid($this->settings['confirmNoLogin']);
-			$this->controllerContext->getUriBuilder()->setArguments(array('tx_ecdonationrun_pi1[donationToConfirm]' => $ciphertext_base64));
+			$this->controllerContext->getUriBuilder()->setArguments(array('tx_ecdonationrun_pi1[donationToConfirm]' => urlencode($ciphertext_base64)));
 			$this->controllerContext->getUriBuilder()->setCreateAbsoluteUri(true);
 			$confirmLink = $this->controllerContext->getUriBuilder()->buildFrontendUri();
 
